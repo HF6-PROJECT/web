@@ -1,0 +1,16 @@
+---
+import LayoutCommon from '@layouts/LayoutCommon.astro';
+import FormSignUp from '@components/FormSignUp.vue';
+// @ts-ignore https://github.com/withastro/language-tools/issues/476
+import { url } from '@lib/helpers';
+
+if (Astro.locals.isAuthenticated) {
+	return Astro.redirect(url('u'));
+}
+---
+
+<LayoutCommon>
+	<div class="flex min-h-screen align-middle">
+		<FormSignUp client:load />
+	</div>
+</LayoutCommon>

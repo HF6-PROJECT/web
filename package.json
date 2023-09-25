@@ -1,0 +1,48 @@
+{
+	"name": "astro-vue-tailwind-template",
+	"version": "0.1",
+	"private": "true",
+	"description": "A free and open-source template built with Tailwind CSS, Vue and Astro",
+	"keywords": [],
+	"homepage": "https://github.com/OurUncomplicatedTemplates",
+	"bugs": "https://github.com/OurUncomplicatedTemplates/astro-vue-tailwind-jwt-template/issues",
+	"repository": "https://github.com/OurUncomplicatedTemplates/astro-vue-tailwind-jwt-template",
+	"license": "MIT",
+	"author": "Kristian Binau",
+	"type": "module",
+	"scripts": {
+		"astro": "astro",
+		"build": "node script/moveServiceWorker.js && astro build",
+		"dev": "node script/moveServiceWorker.js && astro dev",
+		"preview": "node script/moveServiceWorker.js && astro preview",
+		"start": "node script/moveServiceWorker.js && astro dev",
+		"format": "prettier --write . --plugin prettier-plugin-astro --plugin prettier-plugin-tailwindcss",
+		"check": "astro check --minimumFailingSeverity=warning"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.2.0",
+		"@astrojs/node": "^6.0.0",
+		"@astrojs/sitemap": "^3.0.0",
+		"@astrojs/tailwind": "^5.0.0",
+		"@astrojs/ts-plugin": "^1.1.3",
+		"@astrojs/vercel": "^5.0.1",
+		"@astrojs/vue": "^3.0.0",
+		"@tauri-apps/api": "^1.4.0",
+		"astro": "^3.1.1",
+		"flowbite": "^1.8.1",
+		"flowbite-typography": "^1.0.3",
+		"jose": "^4.14.6",
+		"tailwind-scrollbar": "^3.0.5",
+		"tailwindcss": "^3.3.3",
+		"typescript": "^5.2.2",
+		"vite": "^4.4.9",
+		"vue": "^3.3.4"
+	},
+	"devDependencies": {
+		"@tauri-apps/cli": "^1.4.0",
+		"dotenv": "^16.3.1",
+		"prettier": "^3.0.3",
+		"prettier-plugin-astro": "^0.12.0",
+		"prettier-plugin-tailwindcss": "0.5.4"
+	}
+}
