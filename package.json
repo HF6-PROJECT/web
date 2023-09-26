@@ -36,6 +36,7 @@
 		"@astrojs/vercel": "^5.0.1",
 		"@astrojs/vue": "^3.0.0",
 		"@tauri-apps/api": "^1.4.0",
+		"@vercel/blob": "^0.12.5",
 		"astro": "^3.1.1",
 		"flowbite": "^1.8.1",
 		"flowbite-typography": "^1.0.3",
