@@ -3,7 +3,6 @@ import ColorModeSwitcher from '@components/ColorModeSwitcher.astro';
 import SearchInput from '@components/SearchInput.astro';
 
 import { asset, url } from '@lib/helpers';
-import { SITE_TITLE_SHORT } from '@lib/constants';
 
 const user = Astro.locals.user as User;
 
@@ -77,7 +76,7 @@ const userColors = (() => {
 							clip-rule="evenodd"></path></svg
 					>
 				</button>
-				<a href="/" class="ml-2 flex md:mr-18">
+				<a href="/" class="md:mr-18 ml-2 flex">
 					<img src={asset('images/logo_name.svg')} class="mr-3 h-5" alt="Logo" />
 				</a>
 
