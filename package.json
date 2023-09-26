@@ -2,6 +2,7 @@
 	"name": "cloudstore-frontend",
 	"version": "0.1",
 	"private": "true",
+	"description": "CloudStore is a web application that allows users to store files in the cloud.",
 	"keywords": [],
 	"homepage": "https://frontend-cloud-store.vercel.app",
 	"bugs": "https://github.com/HF6-PROJECT/web/issues",
