@@ -6,8 +6,7 @@
 			:href="url()"
 			class="mb-8 flex items-center justify-center text-2xl font-semibold dark:text-white lg:mb-10"
 		>
-			<img :src="asset('images/logo.svg')" alt="Logo" class="mr-4 h-11" />
-			<span>{{ SITE_TITLE_SHORT }}</span>
+			<img :src="asset('images/logo_name.svg')" alt="Logo" class="mr-4 h-11" />
 		</a>
 		<!-- Card -->
 		<div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
@@ -69,7 +68,6 @@ import BaseButton, { ButtonColor } from './base/button.vue';
 import BaseAlert, { AlertType } from './base/alert.vue';
 
 import { asset, api, url } from '@lib/helpers';
-import { SITE_TITLE_SHORT } from '@lib/constants';
 import { ref } from 'vue';
 
 const form = ref<HTMLFormElement>();

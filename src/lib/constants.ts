@@ -1,2 +1,2 @@
-export const SITE_TITLE = 'Uncomplicated Templates';
-export const SITE_TITLE_SHORT = 'Uncomplicated';
+export const SITE_TITLE = 'CloudStore';
+export const SITE_TITLE_SHORT = 'CloudStore';
