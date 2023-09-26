@@ -1,14 +1,21 @@
 {
-	"name": "astro-vue-tailwind-template",
+	"name": "cloudstore-frontend",
 	"version": "0.1",
 	"private": "true",
-	"description": "A free and open-source template built with Tailwind CSS, Vue and Astro",
 	"keywords": [],
-	"homepage": "https://github.com/OurUncomplicatedTemplates",
-	"bugs": "https://github.com/OurUncomplicatedTemplates/astro-vue-tailwind-jwt-template/issues",
-	"repository": "https://github.com/OurUncomplicatedTemplates/astro-vue-tailwind-jwt-template",
+	"homepage": "https://frontend-cloud-store.vercel.app",
+	"bugs": "https://github.com/HF6-PROJECT/web/issues",
+	"repository": "https://github.com/HF6-PROJECT/web",
 	"license": "MIT",
 	"author": "Kristian Binau",
+	"contributors": [
+		{
+			"name": "Frederik Pytlick"
+		},
+		{
+			"name": "Anders Rasmussen"
+		}
+	],
 	"type": "module",
 	"scripts": {
 		"astro": "astro",
