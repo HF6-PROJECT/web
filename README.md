@@ -18,31 +18,31 @@ This product is built using the following widely used technologies:
 ### 🚀 Quick start
 
 1. Clone this repository or download the ZIP file
-2. Make sure that you have **Node.js** and NPM, PNPM or Yarn installed
+2. Make sure that you have **Node.js** and NPM installed
 3. Install the project dependencies from the `package.json` file:
 
 ```sh
-pnpm install
+npm install
 ```
 
-_PNPM is the package manager of choice for illustration, but you can use what you want._
+_NPM is the package manager we've chosen for this repository._
 
 1. Launch the Astro local development server on `localhost:4321` by running the following command:
 
 ```sh
-pnpm run dev
+npm run dev
 ```
 
 You can also build the project and get the distribution files inside the `dist/` folder by running:
 
 ```sh
-pnpm run build
+npm run build
 ```
 
 Then, you can preview the generated build with a local web server:
 
 ```sh
-pnpm run preview
+npm run preview
 ```
 
 ### 🛠 Tools

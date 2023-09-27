@@ -1,4 +1,4 @@
 src-tauri
 node_modules
-pnpm-lock.yaml
+package-lock.json
 public/lib
