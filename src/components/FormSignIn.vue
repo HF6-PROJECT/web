@@ -10,39 +10,43 @@
 		</a>
 		<!-- Card -->
 		<div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
-			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Sign in to platform</h2>
+			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+				{{ $t('auth.login.header') }}
+			</h2>
 			<form class="mt-8 space-y-6" @submit.prevent="onSubmit" ref="form">
 				<BaseInput
 					v-model="formFields.email"
 					type="email"
 					id="email"
-					placeholder="name@company.com"
+					:placeholder="$t('auth.fields.emailPlaceholder')"
 					required
-					>Your email</BaseInput
+					>{{ $t('auth.fields.email') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.password"
 					type="password"
 					id="password"
-					placeholder="••••••••"
+					:placeholder="$t('auth.fields.passwordPlaceholder')"
 					required
-					>Your password</BaseInput
+					>{{ $t('auth.fields.password') }}</BaseInput
 				>
 				<div class="flex flex-wrap items-start">
 					<a
 						:href="url('auth/forgot-password')"
 						class="mt-4 text-left text-sm text-primary-700 hover:underline dark:text-primary-500"
-						>Lost Password?</a
+						>{{ $t('auth.link.forgotPassword') }}</a
 					>
 				</div>
-				<BaseButton type="submit" :color="ButtonColor.Primary">Login to your account</BaseButton>
+				<BaseButton type="submit" :color="ButtonColor.Primary">{{
+					$t('auth.login.submit')
+				}}</BaseButton>
 				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-					Not registered?
+					{{ $t('auth.link.notRegistered') }}
 					<a
 						:href="url('auth/register')"
 						class="text-primary-700 hover:underline dark:text-primary-500"
-						>Create account</a
+						>{{ $t('auth.link.createAccount') }}</a
 					>
 				</div>
 			</form>
