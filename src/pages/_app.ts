@@ -6,6 +6,7 @@ import en from '../lang/en';
 import da from '../lang/da';
 
 const i18nPlugin = createI18n({
+	legacy: false,
 	locale: 'en',
 	messages: {
 		en: en,
