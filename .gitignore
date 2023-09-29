@@ -23,3 +23,6 @@ pnpm-debug.log*
 
 # misc.
 .dev*
+
+# generated service worker
+public/serviceWorker.js
