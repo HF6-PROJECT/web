@@ -4,7 +4,7 @@ export default {
 			name: 'Dit navn',
 			namePlaceholder: 'Peter Jensen',
 			email: 'Din e-mail',
-			emailPlaceholder: 'navn@firma.dk',
+			emailPlaceholder: "navn{'@'}firma.dk",
 			password: 'Din adgangskode',
 			passwordPlaceholder: '••••••••',
 			passwordConfirm: 'Bekræft adgangskode',
