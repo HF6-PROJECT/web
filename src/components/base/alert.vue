@@ -1,9 +1,5 @@
 <template>
-	<div
-		class="mt-6 flex items-center rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-700 dark:text-red-400"
-		role="alert"
-		:class="buttonClasses"
-	>
+	<div class="mt-6 flex items-center rounded-lg p-4 text-sm" role="alert" :class="alertClasses">
 		<svg
 			class="mr-3 inline h-4 w-4 flex-shrink-0"
 			aria-hidden="true"
@@ -31,7 +27,7 @@ export enum AlertType {
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
 
-const buttonClasses = computed(() => {
+const alertClasses = computed(() => {
 	switch (props.type) {
 		case AlertType.Info:
 			return 'bg-blue-50 text-blue-800 dark:bg-gray-700 dark:text-blue-400';

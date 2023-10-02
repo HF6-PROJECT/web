@@ -66,9 +66,7 @@
 			</div>
 		</div>
 		<p v-if="props.errors" class="ml-2 mt-2 text-xs text-red-500">
-			<template v-for="error in props.errors">
-				{{ error }}<br />
-			</template>
+			<template v-for="error in props.errors"> {{ error }}<br /> </template>
 		</p>
 	</div>
 </template>

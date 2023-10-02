@@ -71,7 +71,11 @@
 <script setup lang="ts">
 import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
-import ErrorAlert, { type ErrorObject, isDeprecatedErrorObject, convertDeprecatedErrorObject } from './base/errorAlert.vue';
+import ErrorAlert, {
+	type ErrorObject,
+	isDeprecatedErrorObject,
+	convertDeprecatedErrorObject,
+} from './base/errorAlert.vue';
 
 import { t } from '@lib/i18n';
 import { asset, api, url } from '@lib/helpers';

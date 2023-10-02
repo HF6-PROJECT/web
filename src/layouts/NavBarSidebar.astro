@@ -95,7 +95,7 @@ const userColors = (() => {
 							<a
 								href={url('u/settings')}
 								class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-								>{ t('layout.link.settings', Astro.locals.currentLocale) }</a
+								>{t('layout.link.settings', Astro.locals.currentLocale)}</a
 							>
 						</li>
 					</ul>
@@ -103,7 +103,7 @@ const userColors = (() => {
 						<a
 							href={url('u/logout')}
 							class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-							>{ t('layout.link.signOut', Astro.locals.currentLocale) }</a
+							>{t('layout.link.signOut', Astro.locals.currentLocale)}</a
 						>
 					</div>
 				</div>
@@ -120,7 +120,7 @@ const userColors = (() => {
 							aria-expanded="false"
 							data-dropdown-toggle="dropdown-2"
 						>
-							<span class="sr-only">{ t('layout.sr.openUserMenu', Astro.locals.currentLocale) }</span>
+							<span class="sr-only">{t('layout.sr.openUserMenu', Astro.locals.currentLocale)}</span>
 							<div
 								style={{ backgroundColor: userColors }}
 								class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full"
@@ -147,14 +147,14 @@ const userColors = (() => {
 								<a
 									href={url('u/settings')}
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">{ t('layout.link.settings', Astro.locals.currentLocale) }</a
+									role="menuitem">{t('layout.link.settings', Astro.locals.currentLocale)}</a
 								>
 							</li>
 							<li>
 								<a
 									href={url('u/logout')}
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">{ t('layout.link.signOut', Astro.locals.currentLocale) }</a
+									role="menuitem">{t('layout.link.signOut', Astro.locals.currentLocale)}</a
 								>
 							</li>
 						</ul>

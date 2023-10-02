@@ -4,7 +4,7 @@ export default {
 			name: 'Dit navn',
 			namePlaceholder: 'Peter Jensen',
 			email: 'Din e-mail',
-			emailPlaceholder: "navn@firma.dk",
+			emailPlaceholder: 'navn@firma.dk',
 			password: 'Din adgangskode',
 			passwordPlaceholder: '••••••••',
 			passwordConfirm: 'Bekræft adgangskode',
@@ -38,7 +38,8 @@ export default {
 		},
 		forgotPassword: {
 			header: 'Glemt din adgangskode?',
-			description: 'Fortvivl ikke! Indtast blot din e-mail, og vi sender dig en kode til at nulstille din adgangskode!',
+			description:
+				'Fortvivl ikke! Indtast blot din e-mail, og vi sender dig en kode til at nulstille din adgangskode!',
 			submit: 'Nulstil adgangskode',
 		},
 	},

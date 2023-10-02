@@ -38,7 +38,8 @@ export default {
 		},
 		forgotPassword: {
 			header: 'Forgot your password?',
-			description: 'Don\'t fret! Just type in your email and we will send you a code to reset your password!',
+			description:
+				"Don't fret! Just type in your email and we will send you a code to reset your password!",
 			submit: 'Reset password',
 		},
 	},
