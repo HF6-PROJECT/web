@@ -11,54 +11,54 @@
 		<!-- Card -->
 		<div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
 			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-				{{ $t('auth.register.header') }}
+				{{ t('auth.register.header') }}
 			</h2>
 			<form class="mt-8 space-y-6" @submit.prevent="onSubmit" ref="form">
 				<BaseInput
 					v-model="formFields.name"
 					type="text"
 					id="name"
-					:placeholder="$t('auth.fields.namePlaceholder')"
+					:placeholder="t('auth.field.namePlaceholder')"
 					min="1"
 					required
-					>{{ $t('auth.fields.name') }}</BaseInput
+					>{{ t('auth.field.name') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.email"
 					type="email"
 					id="email"
-					:placeholder="$t('auth.fields.emailPlaceholder')"
+					:placeholder="t('auth.field.emailPlaceholder')"
 					required
-					>{{ $t('auth.fields.email') }}</BaseInput
+					>{{ t('auth.field.email') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.password"
 					type="password"
 					id="password"
-					:placeholder="$t('auth.fields.passwordPlaceholder')"
+					:placeholder="t('auth.field.passwordPlaceholder')"
 					min="8"
 					required
-					>{{ $t('auth.fields.password') }}</BaseInput
+					>{{ t('auth.field.password') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.confirmPassword"
 					type="password"
 					id="confirm-password"
-					:placeholder="$t('auth.fields.passwordConfirmPlaceholder')"
+					:placeholder="t('auth.field.passwordConfirmPlaceholder')"
 					min="8"
 					required
-					>{{ $t('auth.fields.passwordConfirm') }}</BaseInput
+					>{{ t('auth.field.passwordConfirm') }}</BaseInput
 				>
 				<BaseButton type="submit" :color="ButtonColor.Primary">{{
-					$t('auth.register.submit')
+					t('auth.register.submit')
 				}}</BaseButton>
 				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-					{{ $t('auth.link.alreadyRegistered') }}
+					{{ t('auth.link.alreadyRegistered') }}
 					<a
 						:href="url('auth/login')"
 						class="text-primary-700 hover:underline dark:text-primary-500"
-						>{{ $t('auth.link.loginHere') }}</a
+						>{{ t('auth.link.loginHere') }}</a
 					>
 				</div>
 			</form>
@@ -71,9 +71,7 @@ import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
 import BaseAlert, { AlertType } from './base/alert.vue';
 
-import { useI18n } from 'vue-i18n';
-const i18n = useI18n();
-
+import { t } from '@lib/i18n';
 import { asset, api, url } from '@lib/helpers';
 import { ref } from 'vue';
 
@@ -91,7 +89,7 @@ function onSubmit() {
 	errorMessage.value = null;
 
 	if (formFields.value.password !== formFields.value.confirmPassword) {
-		errorMessage.value = i18n.t('auth.register.validation.passwordsDoNotMatch');
+		errorMessage.value = t('auth.register.validation.passwordsDoNotMatch');
 	}
 
 	if (!form.value?.checkValidity() || errorMessage.value) {

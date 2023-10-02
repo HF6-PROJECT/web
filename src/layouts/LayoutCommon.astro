@@ -8,12 +8,13 @@ const { class: clazz } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={ Astro.locals.currentLocale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{SITE_TITLE}</title>
 
+		<meta name="lang" content={pkg.author} />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={pkg.description} />
 		<link rel="icon" type="image/svg+xml" href={url('images/favicon.svg')} />

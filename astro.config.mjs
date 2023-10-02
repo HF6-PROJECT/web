@@ -29,7 +29,7 @@ export default defineConfig({
 	server: {
 		port: PORT,
 	},
-	integrations: [sitemap(), tailwind(), vue({ appEntrypoint: '/src/pages/_app' })],
+	integrations: [sitemap(), tailwind(), vue()],
 	adapter: adapter,
 	vite: {
 		server: {

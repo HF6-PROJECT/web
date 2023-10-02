@@ -17,6 +17,8 @@ export const locale = defineMiddleware(async ({ locals, request }, next) => {
 		return next();
 	}
 
+	console.log('localeHeader', localeHeader);
+
 	if (localeHeader === '*') {
 		locals.currentLocale = defaultLocale;
 		return next();

@@ -1,14 +1,18 @@
 export default {
 	auth: {
-		fields: {
+		field: {
 			name: 'Your name',
 			namePlaceholder: 'John Doe',
 			email: 'Your email',
-			emailPlaceholder: "name{'@'}company.com",
+			emailPlaceholder: 'name@company.com',
 			password: 'Your password',
 			passwordPlaceholder: '••••••••',
 			passwordConfirm: 'Confirm password',
 			passwordConfirmPlaceholder: '••••••••',
+			passwordNew: 'New password',
+			passwordNewPlaceholder: '••••••••',
+			passwordNewConfirm: 'Confirm New password',
+			passwordNewConfirmPlaceholder: '••••••••',
 		},
 		link: {
 			forgotPassword: 'Forgot password?',
@@ -27,6 +31,29 @@ export default {
 			validation: {
 				passwordsDoNotMatch: 'Passwords do not match',
 			},
+		},
+		resetPassword: {
+			header: 'Reset your password',
+			submit: 'Reset password',
+		},
+		forgotPassword: {
+			header: 'Forgot your password?',
+			description: 'Don\'t fret! Just type in your email and we will send you a code to reset your password!',
+			submit: 'Reset password',
+		},
+	},
+	layout: {
+		sr: {
+			signOut: 'Sign out',
+			openUserMenu: 'Open user menu',
+		},
+		link: {
+			dashboard: 'Dashboard',
+			settings: 'Settings',
+			signOut: 'Sign out',
+		},
+		action: {
+			toggleThemeMode: 'Light / dark mode',
 		},
 	},
 };

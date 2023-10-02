@@ -1,6 +1,5 @@
 ---
 import ColorModeSwitcher from '@components/ColorModeSwitcher.astro';
-import SearchInput from '@components/SearchInput.astro';
 
 import { asset, url } from '@lib/helpers';
 import { t } from '@lib/i18n';
@@ -80,31 +79,9 @@ const userColors = (() => {
 				<a href="/" class="md:mr-18 ml-2 flex">
 					<img src={asset('images/logo_name.svg')} class="mr-3 h-5" alt="Logo" />
 				</a>
-
-				<SearchInput />
 			</div>
 
 			<div class="flex items-center">
-				<!-- Search mobile -->
-				<button
-					id="toggleSidebarMobileSearch"
-					type="button"
-					class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white lg:hidden"
-				>
-					<span class="sr-only">Search</span>
-					<!-- Search icon -->
-					<svg
-						class="h-6 w-6"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg"
-						><path
-							fill-rule="evenodd"
-							d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-							clip-rule="evenodd"></path></svg
-					>
-				</button>
-
 				<!-- Dropdown menu -->
 				<div
 					id="dropdownNavbar"
@@ -118,7 +95,7 @@ const userColors = (() => {
 							<a
 								href={url('u/settings')}
 								class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-								>{ t('auth.login.header.popo', Astro.locals.currentLocale) }</a
+								>{ t('layout.link.settings', Astro.locals.currentLocale) }</a
 							>
 						</li>
 					</ul>
@@ -126,7 +103,7 @@ const userColors = (() => {
 						<a
 							href={url('u/logout')}
 							class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-							>Sign out</a
+							>{ t('layout.link.signOut', Astro.locals.currentLocale) }</a
 						>
 					</div>
 				</div>
@@ -143,7 +120,7 @@ const userColors = (() => {
 							aria-expanded="false"
 							data-dropdown-toggle="dropdown-2"
 						>
-							<span class="sr-only">Open user menu</span>
+							<span class="sr-only">{ t('layout.sr.openUserMenu', Astro.locals.currentLocale) }</span>
 							<div
 								style={{ backgroundColor: userColors }}
 								class="relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full"
@@ -170,14 +147,14 @@ const userColors = (() => {
 								<a
 									href={url('u/settings')}
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">{ t('auth.login.header.headerdsrgfg', Astro.locals.currentLocale) }</a
+									role="menuitem">{ t('layout.link.settings', Astro.locals.currentLocale) }</a
 								>
 							</li>
 							<li>
 								<a
 									href={url('u/logout')}
 									class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-									role="menuitem">Sign out</a
+									role="menuitem">{ t('layout.link.signOut', Astro.locals.currentLocale) }</a
 								>
 							</li>
 						</ul>

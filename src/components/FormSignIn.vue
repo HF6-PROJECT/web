@@ -11,42 +11,42 @@
 		<!-- Card -->
 		<div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
 			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-				{{ $t('auth.login.header') }}
+				{{ t('auth.login.header') }}
 			</h2>
 			<form class="mt-8 space-y-6" @submit.prevent="onSubmit" ref="form">
 				<BaseInput
 					v-model="formFields.email"
 					type="email"
 					id="email"
-					:placeholder="$t('auth.fields.emailPlaceholder')"
+					:placeholder="t('auth.field.emailPlaceholder')"
 					required
-					>{{ $t('auth.fields.email') }}</BaseInput
+					>{{ t('auth.field.email') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.password"
 					type="password"
 					id="password"
-					:placeholder="$t('auth.fields.passwordPlaceholder')"
+					:placeholder="t('auth.field.passwordPlaceholder')"
 					required
-					>{{ $t('auth.fields.password') }}</BaseInput
+					>{{ t('auth.field.password') }}</BaseInput
 				>
 				<div class="flex flex-wrap items-start">
 					<a
 						:href="url('auth/forgot-password')"
 						class="mt-4 text-left text-sm text-primary-700 hover:underline dark:text-primary-500"
-						>{{ $t('auth.link.forgotPassword') }}</a
+						>{{ t('auth.link.forgotPassword') }}</a
 					>
 				</div>
 				<BaseButton type="submit" :color="ButtonColor.Primary">{{
-					$t('auth.login.submit')
+					t('auth.login.submit')
 				}}</BaseButton>
 				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-					{{ $t('auth.link.notRegistered') }}
+					{{ t('auth.link.notRegistered') }}
 					<a
 						:href="url('auth/register')"
 						class="text-primary-700 hover:underline dark:text-primary-500"
-						>{{ $t('auth.link.createAccount') }}</a
+						>{{ t('auth.link.createAccount') }}</a
 					>
 				</div>
 			</form>
@@ -60,6 +60,7 @@ import BaseButton, { ButtonColor } from './base/button.vue';
 import BaseAlert, { AlertType } from './base/alert.vue';
 
 import { asset, api, url } from '@lib/helpers';
+import { t } from '@lib/i18n';
 import { ref } from 'vue';
 
 const form = ref<HTMLFormElement>();
