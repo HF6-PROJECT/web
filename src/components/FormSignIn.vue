@@ -20,6 +20,7 @@
 					id="email"
 					:placeholder="t('auth.field.emailPlaceholder')"
 					required
+					:errors="errorObject?.errors.email"
 					>{{ t('auth.field.email') }}</BaseInput
 				>
 				<BaseInput
@@ -28,6 +29,7 @@
 					id="password"
 					:placeholder="t('auth.field.passwordPlaceholder')"
 					required
+					:errors="errorObject?.errors.password"
 					>{{ t('auth.field.password') }}</BaseInput
 				>
 				<div class="flex flex-wrap items-start">
@@ -40,7 +42,7 @@
 				<BaseButton type="submit" :color="ButtonColor.Primary">{{
 					t('auth.login.submit')
 				}}</BaseButton>
-				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
+				<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
 					{{ t('auth.link.notRegistered') }}
 					<a
@@ -57,7 +59,11 @@
 <script setup lang="ts">
 import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
-import BaseAlert, { AlertType } from './base/alert.vue';
+import ErrorAlert, {
+	type ErrorObject,
+	isDeprecatedErrorObject,
+	convertDeprecatedErrorObject,
+} from './base/errorAlert.vue';
 
 import { asset, api, url } from '@lib/helpers';
 import { t } from '@lib/i18n';
@@ -69,10 +75,10 @@ const formFields = ref({
 	password: '',
 });
 
-const errorMessage = ref<null | string>(null);
+const errorObject = ref<null | ErrorObject>(null);
 
 function onSubmit() {
-	errorMessage.value = null;
+	errorObject.value = null;
 
 	fetch(api('auth/login'), {
 		method: 'POST',
@@ -84,11 +90,17 @@ function onSubmit() {
 	})
 		.then(async (response) => {
 			if (!response.ok) {
-				if (response.status === 401 || response.status === 400) {
+				if (response.status >= 400 && response.status < 500) {
 					const json = await response.json();
-					errorMessage.value = json.message;
 
-					throw new Error(json);
+					// Somebody didn't update the backend to return ErrorObjects..
+					if (isDeprecatedErrorObject(json)) {
+						errorObject.value = convertDeprecatedErrorObject(json);
+					} else {
+						errorObject.value = json as ErrorObject;
+					}
+
+					throw new Error(json.error);
 				}
 
 				throw new Error(await response.text());

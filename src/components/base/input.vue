@@ -6,7 +6,7 @@
 				:id="props.id"
 				:class="{
 					'border-red-500 ring-1 ring-red-500 focus:border-red-600 focus:ring-red-600 dark:border-red-500 dark:ring-red-500 dark:focus:border-red-600 dark:focus:ring-red-600':
-						props.errorText,
+						props.errors,
 				}"
 				class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
 				:type="getType"
@@ -65,14 +65,16 @@
 				</svg>
 			</div>
 		</div>
-		<p v-if="props.errorText" class="ml-2 mt-2 text-xs text-red-500">
-			{{ props.errorText }}
+		<p v-if="props.errors" class="ml-2 mt-2 text-xs text-red-500">
+			<template v-for="error in props.errors">
+				{{ error }}<br />
+			</template>
 		</p>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, type PropType } from 'vue';
 import BaseLabel from './label.vue';
 
 const props = defineProps({
@@ -104,8 +106,8 @@ const props = defineProps({
 		type: String,
 		default: '',
 	},
-	errorText: {
-		type: String,
+	errors: {
+		type: Array as PropType<string[] | undefined>,
 	},
 	required: {
 		type: Boolean,

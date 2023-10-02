@@ -21,6 +21,7 @@
 					:placeholder="t('auth.field.namePlaceholder')"
 					min="1"
 					required
+					:errors="errorObject?.errors.name"
 					>{{ t('auth.field.name') }}</BaseInput
 				>
 				<BaseInput
@@ -29,6 +30,7 @@
 					id="email"
 					:placeholder="t('auth.field.emailPlaceholder')"
 					required
+					:errors="errorObject?.errors.email"
 					>{{ t('auth.field.email') }}</BaseInput
 				>
 				<BaseInput
@@ -36,8 +38,8 @@
 					type="password"
 					id="password"
 					:placeholder="t('auth.field.passwordPlaceholder')"
-					min="8"
 					required
+					:errors="errorObject?.errors.password"
 					>{{ t('auth.field.password') }}</BaseInput
 				>
 				<BaseInput
@@ -45,14 +47,14 @@
 					type="password"
 					id="confirm-password"
 					:placeholder="t('auth.field.passwordConfirmPlaceholder')"
-					min="8"
 					required
+					:errors="errorObject?.errors.confirmPassword"
 					>{{ t('auth.field.passwordConfirm') }}</BaseInput
 				>
 				<BaseButton type="submit" :color="ButtonColor.Primary">{{
 					t('auth.register.submit')
 				}}</BaseButton>
-				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
+				<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
 					{{ t('auth.link.alreadyRegistered') }}
 					<a
@@ -69,7 +71,7 @@
 <script setup lang="ts">
 import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
-import BaseAlert, { AlertType } from './base/alert.vue';
+import ErrorAlert, { type ErrorObject, isDeprecatedErrorObject, convertDeprecatedErrorObject } from './base/errorAlert.vue';
 
 import { t } from '@lib/i18n';
 import { asset, api, url } from '@lib/helpers';
@@ -83,16 +85,22 @@ const formFields = ref({
 	confirmPassword: '',
 });
 
-const errorMessage = ref<null | string>(null);
+const errorObject = ref<null | ErrorObject>(null);
 
 function onSubmit() {
-	errorMessage.value = null;
+	errorObject.value = null;
 
 	if (formFields.value.password !== formFields.value.confirmPassword) {
-		errorMessage.value = t('auth.register.validation.passwordsDoNotMatch');
+		errorObject.value = {
+			error: 'Validation Error',
+			errors: {
+				confirmPassword: [t('auth.register.validation.passwordsDoNotMatch')],
+			},
+			statusCode: 400,
+		};
 	}
 
-	if (!form.value?.checkValidity() || errorMessage.value) {
+	if (!form.value?.checkValidity() || errorObject.value) {
 		form.value?.reportValidity();
 		return;
 	}
@@ -110,11 +118,17 @@ function onSubmit() {
 	})
 		.then(async (response) => {
 			if (!response.ok) {
-				if (response.status === 400) {
+				if (response.status >= 400 && response.status < 500) {
 					const json = await response.json();
-					errorMessage.value = json.message;
 
-					throw new Error(json);
+					// Somebody didn't update the backend to return ErrorObjects..
+					if (isDeprecatedErrorObject(json)) {
+						errorObject.value = convertDeprecatedErrorObject(json);
+					} else {
+						errorObject.value = json as ErrorObject;
+					}
+
+					throw new Error(json.error);
 				}
 
 				throw new Error(await response.text());
