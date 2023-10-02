@@ -24,5 +24,6 @@ declare namespace App {
 		userId: string | null;
 		isAuthenticated: boolean;
 		user: User | null;
+		currentLocale: 'en' | 'da';
 	}
 }

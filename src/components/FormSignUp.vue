@@ -10,51 +10,57 @@
 		</a>
 		<!-- Card -->
 		<div class="w-full max-w-xl space-y-8 rounded-lg bg-white p-6 shadow dark:bg-gray-800 sm:p-8">
-			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create a Free Account</h2>
+			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+				{{ t('auth.register.header') }}
+			</h2>
 			<form class="mt-8 space-y-6" @submit.prevent="onSubmit" ref="form">
 				<BaseInput
 					v-model="formFields.name"
 					type="text"
 					id="name"
-					placeholder="John Doe"
+					:placeholder="t('auth.field.namePlaceholder')"
 					min="1"
 					required
-					>Name</BaseInput
+					:errors="errorObject?.errors.name"
+					>{{ t('auth.field.name') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.email"
 					type="email"
 					id="email"
-					placeholder="name@company.com"
+					:placeholder="t('auth.field.emailPlaceholder')"
 					required
-					>Your email</BaseInput
+					:errors="errorObject?.errors.email"
+					>{{ t('auth.field.email') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.password"
 					type="password"
 					id="password"
-					placeholder="••••••••"
-					min="8"
+					:placeholder="t('auth.field.passwordPlaceholder')"
 					required
-					>Your password</BaseInput
+					:errors="errorObject?.errors.password"
+					>{{ t('auth.field.password') }}</BaseInput
 				>
 				<BaseInput
 					v-model="formFields.confirmPassword"
 					type="password"
 					id="confirm-password"
-					placeholder="••••••••"
-					min="8"
+					:placeholder="t('auth.field.passwordConfirmPlaceholder')"
 					required
-					>Confirm password</BaseInput
+					:errors="errorObject?.errors.confirmPassword"
+					>{{ t('auth.field.passwordConfirm') }}</BaseInput
 				>
-				<BaseButton type="submit" :color="ButtonColor.Primary">Create account</BaseButton>
-				<BaseAlert v-if="errorMessage" :type="AlertType.Danger">{{ errorMessage }}</BaseAlert>
+				<BaseButton type="submit" :color="ButtonColor.Primary">{{
+					t('auth.register.submit')
+				}}</BaseButton>
+				<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 				<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
-					Already have an account?
+					{{ t('auth.link.alreadyRegistered') }}
 					<a
 						:href="url('auth/login')"
 						class="text-primary-700 hover:underline dark:text-primary-500"
-						>Login here</a
+						>{{ t('auth.link.loginHere') }}</a
 					>
 				</div>
 			</form>
@@ -65,8 +71,13 @@
 <script setup lang="ts">
 import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
-import BaseAlert, { AlertType } from './base/alert.vue';
+import ErrorAlert, {
+	type ErrorObject,
+	isDeprecatedErrorObject,
+	convertDeprecatedErrorObject,
+} from './base/errorAlert.vue';
 
+import { t } from '@lib/i18n';
 import { asset, api, url } from '@lib/helpers';
 import { ref } from 'vue';
 
@@ -78,16 +89,22 @@ const formFields = ref({
 	confirmPassword: '',
 });
 
-const errorMessage = ref<null | string>(null);
+const errorObject = ref<null | ErrorObject>(null);
 
 function onSubmit() {
-	errorMessage.value = null;
+	errorObject.value = null;
 
 	if (formFields.value.password !== formFields.value.confirmPassword) {
-		errorMessage.value = 'Passwords do not match';
+		errorObject.value = {
+			error: 'Validation Error',
+			errors: {
+				confirmPassword: [t('auth.register.validation.passwordsDoNotMatch')],
+			},
+			statusCode: 400,
+		};
 	}
 
-	if (!form.value?.checkValidity() || errorMessage.value) {
+	if (!form.value?.checkValidity() || errorObject.value) {
 		form.value?.reportValidity();
 		return;
 	}
@@ -105,11 +122,17 @@ function onSubmit() {
 	})
 		.then(async (response) => {
 			if (!response.ok) {
-				if (response.status === 400) {
+				if (response.status >= 400 && response.status < 500) {
 					const json = await response.json();
-					errorMessage.value = json.message;
 
-					throw new Error(json);
+					// Somebody didn't update the backend to return ErrorObjects..
+					if (isDeprecatedErrorObject(json)) {
+						errorObject.value = convertDeprecatedErrorObject(json);
+					} else {
+						errorObject.value = json as ErrorObject;
+					}
+
+					throw new Error(json.error);
 				}
 
 				throw new Error(await response.text());
