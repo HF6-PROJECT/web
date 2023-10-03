@@ -71,11 +71,7 @@
 <script setup lang="ts">
 import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
-import ErrorAlert, {
-	type ErrorObject,
-	isDeprecatedErrorObject,
-	convertDeprecatedErrorObject,
-} from './base/errorAlert.vue';
+import ErrorAlert, { type ErrorObject } from './base/errorAlert.vue';
 
 import { t } from '@lib/i18n';
 import { asset, api, url } from '@lib/helpers';
@@ -124,13 +120,7 @@ function onSubmit() {
 			if (!response.ok) {
 				if (response.status >= 400 && response.status < 500) {
 					const json = await response.json();
-
-					// Somebody didn't update the backend to return ErrorObjects..
-					if (isDeprecatedErrorObject(json)) {
-						errorObject.value = convertDeprecatedErrorObject(json);
-					} else {
-						errorObject.value = json as ErrorObject;
-					}
+					errorObject.value = json as ErrorObject;
 
 					throw new Error(json.error);
 				}

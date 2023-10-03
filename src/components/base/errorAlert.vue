@@ -15,31 +15,6 @@ export type ErrorObject = {
 	};
 	statusCode: number;
 };
-
-/**
- * @deprecated Use ErrorObject instead
- */
-export type DeprecatedErrorObject = {
-	error: string;
-	message: string;
-	statusCode: number;
-};
-
-export const isDeprecatedErrorObject = (
-	errorObject: Object,
-): errorObject is DeprecatedErrorObject => {
-	return 'message' in errorObject;
-};
-
-export const convertDeprecatedErrorObject = (errorObject: DeprecatedErrorObject): ErrorObject => {
-	return {
-		error: errorObject.error,
-		errors: {
-			_: [errorObject.message],
-		},
-		statusCode: errorObject.statusCode,
-	};
-};
 </script>
 
 <script setup lang="ts">
