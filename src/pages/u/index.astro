@@ -1,11 +1,13 @@
 ---
 import LayoutSidebar from '@layouts/LayoutSidebar.astro';
-import Dashboard from '@components/Dashboard.astro';
+import FileBrowser from '@components/files/FileBrowser.vue';
 
 // We can safely cast this as we know that middleware would have already checked for a valid user
 const user = Astro.locals.user as User;
 ---
 
 <LayoutSidebar user={user}>
-	<Dashboard />
+	<div class="h-screen px-4 pt-6">
+		<FileBrowser modelValue={{}} client:only />
+	</div>
 </LayoutSidebar>

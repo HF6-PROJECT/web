@@ -49,7 +49,7 @@ export default {
 			openUserMenu: 'Åben brugermenu',
 		},
 		link: {
-			dashboard: 'Hjem',
+			myfiles: 'Mine Filer',
 			settings: 'Indstillinger',
 			signOut: 'Log ud',
 		},

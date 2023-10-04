@@ -2,7 +2,7 @@
  * Item
  */
 export abstract class ItemClass {
-	private _id: number | undefined;
+	private _id: number;
 	private _name: string;
 	private _mimeType: string;
 	private _ownerId: number;
@@ -12,7 +12,7 @@ export abstract class ItemClass {
 	private _deletedAt: Date | null;
 
 	protected constructor(ItemObject: ItemType) {
-		this._id = ItemObject.id || undefined;
+		this._id = ItemObject.id;
 		this._name = ItemObject.name;
 		this._mimeType = ItemObject.mimeType;
 		this._ownerId = ItemObject.ownerId;
@@ -56,7 +56,7 @@ export abstract class ItemClass {
 }
 
 export type ItemType = {
-	id?: number;
+	id: number;
 	name: string;
 	mimeType: string;
 	ownerId: number;
@@ -79,10 +79,6 @@ export class FolderClass extends ItemClass {
 	}
 
 	static create(name: string, parent: FolderClass | null) {
-		if (parent && !parent.id) {
-			throw new Error('Parent folder must have an id');
-		}
-
 		// Send request to create folder
 		const returnedFolder = {
 			id: 1,
@@ -140,7 +136,6 @@ const FolderColors = <const>{
 type FolderColor = keyof typeof FolderColors;
 type FolderColorValue = (typeof FolderColors)[FolderColor];
 
-
 /**
  * File
  */
@@ -154,10 +149,6 @@ export class FileClass extends ItemClass {
 	}
 
 	static create(name: string, parent: FolderClass | null) {
-		if (parent && !parent.id) {
-			throw new Error('Parent folder must have an id');
-		}
-
 		// Send request to create folder
 		const returnedFile = {
 			id: 1,
@@ -182,52 +173,3 @@ export class FileClass extends ItemClass {
 export type FileType = {
 	blobUrl: string;
 } & ItemType;
-
-
-/**
- * Mime Types
- */
-const FolderMimeType = <const>{
-	directory: 'application/vnd.cloudstore.folder',
-};
-type FolderMimeTypeValue = (typeof FolderMimeType)[keyof typeof FolderMimeType];
-
-const VideoMimeType = <const>{
-	mp4: 'video/mp4',
-	webm: 'video/webm',
-};
-
-const AudioMimeType = <const>{
-	mp3: 'audio/mpeg',
-	wav: 'audio/wav',
-	ogg: 'audio/ogg',
-};
-
-const ImageMimeType = <const>{
-	svg: 'image/svg+xml',
-	png: 'image/png',
-	jpg: 'image/jpeg',
-	gif: 'image/gif',
-};
-
-const ApplicationMimeType = <const>{
-	doc: 'application/clouddoc',
-	pdf: 'application/pdf',
-	json: 'application/json',
-	zip: 'application/zip',
-};
-
-const FileMimeType = <const>{
-	...VideoMimeType,
-	...AudioMimeType,
-	...ImageMimeType,
-	...ApplicationMimeType,
-};
-type FileMimeTypeValue = (typeof FileMimeType)[keyof typeof FileMimeType];
-
-const SupportedItemMimeTypes = <const>{
-	...FolderMimeType,
-	...FileMimeType,
-};
-type SupportedItemMimeTypesValue =
-	(typeof SupportedItemMimeTypes)[keyof typeof SupportedItemMimeTypes];
