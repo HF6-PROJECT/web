@@ -1,0 +1,42 @@
+---
+import LayoutSidebar from '@layouts/LayoutSidebar.astro';
+import FileBrowser from '@components/files/FileBrowser.vue';
+// @ts-ignore https://github.com/withastro/language-tools/issues/476
+import { api, url } from '@lib/helpers';
+import { FolderClass } from '@lib/items/folders';
+
+const { id } = Astro.params;
+
+// Send a request to the API to get the folder
+const authenticationHeader = Astro.locals.authHeader as string;
+const folderResponse = await (
+	await fetch(api(`folder/${id}`), {
+		method: 'GET',
+		headers: {
+			Authorization: authenticationHeader,
+		},
+	})
+).json();
+
+// If the folder doesn't exist, redirect
+if (!folderResponse || folderResponse?.statusCode <= 400) {
+	return Astro.redirect(url('404'));
+}
+
+// If the folder isn't a valid folder, redirect
+if (!FolderClass.isFolder(folderResponse)) {
+	return Astro.redirect(url('404'));
+}
+
+// Otherwise, create a new folder instance
+const folder = folderResponse;
+
+// We can safely cast this as we know that middleware would have already checked for a valid user
+const user = Astro.locals.user as User;
+---
+
+<LayoutSidebar user={user}>
+	<div class="h-screen px-4 pt-6">
+		<FileBrowser modelValue={folder} client:only />
+	</div>
+</LayoutSidebar>

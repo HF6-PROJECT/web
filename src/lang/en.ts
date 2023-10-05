@@ -49,7 +49,7 @@ export default {
 			openUserMenu: 'Open user menu',
 		},
 		link: {
-			dashboard: 'Dashboard',
+			myfiles: 'My Files',
 			settings: 'Settings',
 			signOut: 'Sign out',
 		},
