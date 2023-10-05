@@ -48,22 +48,13 @@ const items = ref<ItemClass[]>([]);
 getItems();
 
 function getItems() {
-	fetch(
-		api(
-			`item${
-				ItemClass.isItem(props.modelValue) && FolderClass.isFolder(props.modelValue)
-					? `/${props.modelValue.id}`
-					: ''
-			}`,
-		),
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
+	fetch(api(`item${FolderClass.isFolder(props.modelValue) ? `/${props.modelValue.id}` : ''}`), {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
 		},
-	)
+		credentials: 'include',
+	})
 		.then(async (response) => {
 			if (!response.ok) {
 				if (response.status >= 400 && response.status < 500) {

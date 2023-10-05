@@ -3,7 +3,6 @@ import LayoutSidebar from '@layouts/LayoutSidebar.astro';
 import FileBrowser from '@components/files/FileBrowser.vue';
 // @ts-ignore https://github.com/withastro/language-tools/issues/476
 import { api, url } from '@lib/helpers';
-import { ItemClass } from '@lib/items/items';
 import { FolderClass } from '@lib/items/folders';
 
 const { id } = Astro.params;
@@ -25,7 +24,7 @@ if (!folderResponse || folderResponse?.statusCode <= 400) {
 }
 
 // If the folder isn't a valid folder, redirect
-if (!(ItemClass.isItem(folderResponse) && FolderClass.isFolder(folderResponse))) {
+if (!FolderClass.isFolder(folderResponse)) {
 	return Astro.redirect(url('404'));
 }
 

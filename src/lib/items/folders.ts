@@ -42,7 +42,9 @@ export class FolderClass extends ItemClass {
 		] as FolderColor;
 	}
 
-	static isFolder(object: ItemType): object is FolderType {
+	static isFolder(object: any): object is FolderType {
+		if (!ItemClass.isItem(object)) return false;
+
 		// Color
 		if (!('color' in object && typeof object.color === 'string')) return false;
 

@@ -33,7 +33,9 @@ export class FileClass extends ItemClass {
 		return this._blobUrl;
 	}
 
-	static isFile(object: ItemType): object is FileType {
+	static isFile(object: any): object is FileType {
+		if (!ItemClass.isItem(object)) return false;
+
 		// BlobUrl
 		if (!('blobUrl' in object && typeof object.blobUrl === 'string')) return false;
 
