@@ -6,12 +6,12 @@
 		<div class="flex flex-wrap gap-3">
 			<Folder
 				v-for="folder in folders"
-				:modelValue="folder"
-				@update:modelValue="updateItem(folder)"
+				:key="folder.id"
+				v-model="items[getItemIndex(folder)] as FolderClass"
 			/>
 		</div>
 		<div class="mt-3 flex flex-wrap gap-3">
-			<File v-for="file in files" :modelValue="file" @update:modelValue="updateItem(file)" />
+			<File v-for="file in files" :key="file.id" v-model="items[getItemIndex(file)] as FileClass" />
 		</div>
 	</template>
 </template>
@@ -66,10 +66,10 @@ function getItems() {
 
 			const rawItems = await response.json();
 
-			for (let rawItem of rawItems) {
+			for (const rawItem of rawItems) {
 				if (!ItemClass.isItem(rawItem)) continue;
 
-				let item = ItemClass.getItemFromObject(rawItem);
+				const item = ItemClass.getItemFromObject(rawItem);
 
 				if (item === null) continue;
 
@@ -83,9 +83,8 @@ function getItems() {
 		});
 }
 
-function updateItem(item: ItemClass) {
-	// Todo, Should find the item in the array and update it
-	console.log(item);
+function getItemIndex(item: ItemClass) {
+	return items.value.findIndex((i) => i.id === item.id);
 }
 
 /**
