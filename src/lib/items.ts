@@ -126,7 +126,7 @@ export abstract class ItemClass {
 		return true;
 	}
 
-		private static convertDate(date: Date | string | undefined | null) {
+	private static convertDate(date: Date | string | undefined | null) {
 		if (typeof date === 'string') return new Date(date);
 		if (date instanceof Date) return date;
 		return null;
