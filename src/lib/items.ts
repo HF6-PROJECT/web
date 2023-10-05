@@ -157,7 +157,9 @@ export class FolderClass extends ItemClass {
 	}
 
 	static create(name: string, parent: FolderClass | null) {
-		// Send request to create folder
+		// TODO: Send request to create folder
+
+		// Placeholder for now
 		const returnedFolder = {
 			id: 1,
 			name: name,
@@ -237,7 +239,9 @@ export class FileClass extends ItemClass {
 	}
 
 	static create(name: string, parent: FolderClass | null) {
-		// Send request to create folder
+		// TODO: Send request to create folder
+
+		// Placeholder for now
 		const returnedFile = {
 			id: 1,
 			name: name,

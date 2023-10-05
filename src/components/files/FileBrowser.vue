@@ -41,9 +41,9 @@ getItems();
 function getItems() {
 	fetch(
 		api(
-			`${
+			`item${
 				ItemClass.isItem(props.modelValue) && FolderClass.isFolder(props.modelValue)
-					? props.modelValue.id
+					? `/${props.modelValue.id}`
 					: ''
 			}`,
 		),
