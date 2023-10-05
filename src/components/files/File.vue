@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { type PropType } from 'vue';
-import { FileClass } from '@lib/items';
+import { FileClass } from '@lib/items/files';
 
 defineProps({
 	modelValue: {

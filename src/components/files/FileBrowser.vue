@@ -4,14 +4,20 @@
 	</template>
 	<template v-else>
 		<div class="flex flex-wrap gap-3">
+			<!-- prettier-ignore-attribute -->
 			<Folder
 				v-for="folder in folders"
 				:key="folder.id"
-				v-model="items[getItemIndex(folder)] as FolderClass"
+				v-model="(items[getItemIndex(folder)] as FolderClass)"
 			/>
 		</div>
 		<div class="mt-3 flex flex-wrap gap-3">
-			<File v-for="file in files" :key="file.id" v-model="items[getItemIndex(file)] as FileClass" />
+			<!-- prettier-ignore-attribute -->
+			<File
+				v-for="file in files"
+				:key="file.id"
+				v-model="(items[getItemIndex(file)] as FileClass)"
+			/>
 		</div>
 	</template>
 </template>
@@ -21,7 +27,10 @@ import { computed, ref, type PropType } from 'vue';
 import NoFiles from './NoFiles.vue';
 import Folder from './Folder.vue';
 import File from './File.vue';
-import { FolderClass, FileClass, ItemClass, type FolderType } from '@lib/items';
+import { ItemClass } from '@lib/items/items';
+import { ItemFactory } from '@lib/items/factory';
+import { FolderClass, type FolderType } from '@lib/items/folders';
+import { FileClass } from '@lib/items/files';
 import { api } from '@lib/helpers';
 
 const props = defineProps({
@@ -69,7 +78,7 @@ function getItems() {
 			for (const rawItem of rawItems) {
 				if (!ItemClass.isItem(rawItem)) continue;
 
-				const item = ItemClass.getItemFromObject(rawItem);
+				const item = ItemFactory.getItemFromObject(rawItem);
 
 				if (item === null) continue;
 

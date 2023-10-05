@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { type PropType, computed } from 'vue';
-import { FolderClass } from '@lib/items';
+import { FolderClass } from '@lib/items/folders';
 import { url } from '@lib/helpers';
 import ContextMenu from './ContextMenu.vue';
 

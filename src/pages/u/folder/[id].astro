@@ -3,7 +3,8 @@ import LayoutSidebar from '@layouts/LayoutSidebar.astro';
 import FileBrowser from '@components/files/FileBrowser.vue';
 // @ts-ignore https://github.com/withastro/language-tools/issues/476
 import { api, url } from '@lib/helpers';
-import { ItemClass, FolderClass } from '@lib/items';
+import { ItemClass } from '@lib/items/items';
+import { FolderClass } from '@lib/items/folders';
 
 const { id } = Astro.params;
 
