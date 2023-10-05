@@ -21,11 +21,12 @@ import { computed, ref, type PropType } from 'vue';
 import NoFiles from './NoFiles.vue';
 import Folder from './Folder.vue';
 import File from './File.vue';
-import { FolderClass, FileClass, ItemClass } from '@lib/items';
+import { FolderClass, FileClass, ItemClass, type FolderType } from '@lib/items';
+import { api } from '@lib/helpers';
 
 const props = defineProps({
 	modelValue: {
-		type: Object as PropType<FolderClass>,
+		type: Object as PropType<FolderType>,
 		required: false,
 	},
 });
@@ -38,19 +39,52 @@ const items = ref<ItemClass[]>([]);
 getItems();
 
 function getItems() {
-	console.log(props.modelValue instanceof FolderClass);
-	if (props.modelValue instanceof FolderClass) {
-		//
-	}
+	fetch(
+		api(
+			`${
+				ItemClass.isItem(props.modelValue) && FolderClass.isFolder(props.modelValue)
+					? props.modelValue.id
+					: ''
+			}`,
+		),
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+		},
+	)
+		.then(async (response) => {
+			if (!response.ok) {
+				if (response.status >= 400 && response.status < 500) {
+					throw new Error((await response.json()).error);
+				}
 
-	for (let i = 0; i < 29; i++) {
-		const item =
-			Math.random() > 0.5 ? FolderClass.create('jkghk', null) : FileClass.create('grffrw', null);
-		items.value.push(item);
-	}
+				throw new Error(await response.text());
+			}
+
+			const rawItems = await response.json();
+
+			for (let rawItem of rawItems) {
+				if (!ItemClass.isItem(rawItem)) continue;
+
+				let item = ItemClass.getItemFromObject(rawItem);
+
+				if (item === null) continue;
+
+				items.value.push(item);
+			}
+
+			return items.value;
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+		});
 }
 
 function updateItem(item: ItemClass) {
+	// Todo, Should find the item in the array and update it
 	console.log(item);
 }
 

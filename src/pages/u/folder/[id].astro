@@ -3,7 +3,7 @@ import LayoutSidebar from '@layouts/LayoutSidebar.astro';
 import FileBrowser from '@components/files/FileBrowser.vue';
 // @ts-ignore https://github.com/withastro/language-tools/issues/476
 import { api, url } from '@lib/helpers';
-import { FolderClass } from '@lib/items';
+import { ItemClass, FolderClass } from '@lib/items';
 
 const { id } = Astro.params;
 
@@ -23,8 +23,13 @@ if (!folderResponse || folderResponse?.statusCode <= 400) {
 	return Astro.redirect(url('404'));
 }
 
+// If the folder isn't a valid folder, redirect
+if (!(ItemClass.isItem(folderResponse) && FolderClass.isFolder(folderResponse))) {
+	return Astro.redirect(url('404'));
+}
+
 // Otherwise, create a new folder instance
-const folder = new FolderClass(folderResponse.data);
+const folder = folderResponse;
 
 // We can safely cast this as we know that middleware would have already checked for a valid user
 const user = Astro.locals.user as User;

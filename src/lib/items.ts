@@ -7,8 +7,8 @@ export abstract class ItemClass {
 	private _mimeType: string;
 	private _ownerId: number;
 	private _parentId: number | null;
-	private _createdAt: Date | undefined;
-	private _updatedAt: Date | undefined;
+	private _createdAt: Date;
+	private _updatedAt: Date;
 	private _deletedAt: Date | null;
 
 	protected constructor(ItemObject: ItemType) {
@@ -17,9 +17,17 @@ export abstract class ItemClass {
 		this._mimeType = ItemObject.mimeType;
 		this._ownerId = ItemObject.ownerId;
 		this._parentId = ItemObject.parentId;
-		this._createdAt = ItemObject.createdAt || undefined;
-		this._updatedAt = ItemObject.updatedAt || undefined;
-		this._deletedAt = ItemObject.deletedAt || null;
+
+		const createdAt = ItemClass.convertDate(ItemObject.createdAt);
+		const updatedAt = ItemClass.convertDate(ItemObject.updatedAt);
+		const deletedAt = ItemClass.convertDate(ItemObject.deletedAt);
+
+		if (createdAt === null) throw new Error('Invalid createdAt');
+		if (updatedAt === null) throw new Error('Invalid updatedAt');
+
+		this._createdAt = createdAt;
+		this._updatedAt = updatedAt;
+		this._deletedAt = deletedAt;
 	}
 
 	get id() {
@@ -53,6 +61,76 @@ export abstract class ItemClass {
 	get deletedAt() {
 		return this._deletedAt;
 	}
+
+	static getItemFromObject(object: ItemType) {
+		if (FolderClass.isFolder(object)) return new FolderClass(object);
+		if (FileClass.isFile(object)) return new FileClass(object);
+
+		console.error('ItemClass.getItemFromObject: Invalid object');
+		return null;
+	}
+
+	static isItem(object: any): object is ItemType {
+		// Id
+		if (!('id' in object && typeof object.id === 'number')) return false;
+
+		// Name
+		if (!('name' in object && typeof object.name === 'string')) return false;
+
+		// MimeType
+		if (!('mimeType' in object && typeof object.mimeType === 'string')) return false;
+
+		// OwnerId
+		if (!('ownerId' in object && typeof object.ownerId === 'number')) return false;
+
+		// ParentId
+		if (
+			!(('parentId' in object && typeof object.parentId === 'number') || object.parentId === null)
+		)
+			return false;
+
+		// CreatedAt
+		if (
+			!(
+				'createdAt' in object &&
+				(object.createdAt === undefined ||
+					object.createdAt instanceof Date ||
+					typeof object.createdAt === 'string')
+			)
+		)
+			return false;
+
+		// UpdatedAt
+		if (
+			!(
+				'updatedAt' in object &&
+				(object.updatedAt === undefined ||
+					object.updatedAt instanceof Date ||
+					typeof object.updatedAt === 'string')
+			)
+		)
+			return false;
+
+		// DeletedAt
+		if (
+			!(
+				'deletedAt' in object &&
+				(object.deletedAt === undefined ||
+					object.deletedAt === null ||
+					object.deletedAt instanceof Date ||
+					typeof object.deletedAt === 'string')
+			)
+		)
+			return false;
+
+		return true;
+	}
+
+		private static convertDate(date: Date | string | undefined | null) {
+		if (typeof date === 'string') return new Date(date);
+		if (date instanceof Date) return date;
+		return null;
+	}
 }
 
 export type ItemType = {
@@ -61,9 +139,9 @@ export type ItemType = {
 	mimeType: string;
 	ownerId: number;
 	parentId: number | null;
-	createdAt?: Date;
-	updatedAt?: Date;
-	deletedAt?: Date | null;
+	createdAt?: Date | string;
+	updatedAt?: Date | string;
+	deletedAt?: Date | string | null;
 };
 
 /**
@@ -107,6 +185,16 @@ export class FolderClass extends ItemClass {
 		return Object.keys(FolderColors)[
 			Math.floor(Math.random() * Object.keys(FolderColors).length)
 		] as FolderColor;
+	}
+
+	static isFolder(object: ItemType): object is FolderType {
+		// Color
+		if (!('color' in object && typeof object.color === 'string')) return false;
+
+		// MimeType
+		if (object.mimeType !== 'application/vnd.cloudstore.folder') return false;
+
+		return true;
 	}
 }
 
@@ -167,6 +255,13 @@ export class FileClass extends ItemClass {
 
 	get blobUrl() {
 		return this._blobUrl;
+	}
+
+	static isFile(object: ItemType): object is FileType {
+		// BlobUrl
+		if (!('blobUrl' in object && typeof object.blobUrl === 'string')) return false;
+
+		return true;
 	}
 }
 
