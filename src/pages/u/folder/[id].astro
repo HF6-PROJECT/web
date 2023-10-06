@@ -36,7 +36,7 @@ const user = Astro.locals.user as User;
 ---
 
 <LayoutSidebar user={user}>
-	<div class="h-screen px-4 pt-6">
+	<div class="h-screen">
 		<FileBrowser modelValue={folder} client:only />
 	</div>
 </LayoutSidebar>

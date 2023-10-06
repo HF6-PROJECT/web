@@ -1,5 +1,7 @@
 import { ItemClass, type ItemType } from './items';
-import { FolderClass } from './folders';
+import { type FolderType } from './folders';
+import { upload } from '@vercel/blob/client';
+import { api } from '@lib/helpers';
 
 export class FileClass extends ItemClass {
 	private _blobUrl: string;
@@ -10,23 +12,16 @@ export class FileClass extends ItemClass {
 		this._blobUrl = fileObject.blobUrl;
 	}
 
-	static create(name: string, parent: FolderClass | null) {
-		// TODO: Send request to create folder
+	static async create(file: File, parent: FolderType | null) {
+		await upload(file.name, file, {
+			access: 'public',
+			handleUploadUrl: api('blob'),
+			clientPayload: JSON.stringify({
+				parentId: parent?.id ?? null,
+			}),
+		});
 
-		// Placeholder for now
-		const returnedFile = {
-			id: 1,
-			name: name,
-			mimeType: 'application/vnd.cloudstore.folder',
-			ownerId: 43535,
-			parentId: parent?.id || null,
-			deletedAt: null,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			blobUrl: 'https://www.google.com',
-		};
-
-		return new FileClass(returnedFile);
+		//return new FileClass(returnedFile);
 	}
 
 	get blobUrl() {

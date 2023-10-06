@@ -1,3 +1,4 @@
+import { api } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 
 export class FolderClass extends ItemClass {
@@ -9,23 +10,77 @@ export class FolderClass extends ItemClass {
 		this._color = folderObject.color;
 	}
 
-	static create(name: string, parent: FolderClass | null) {
+	static async create(name: string, parent: FolderType | null, color: FolderColor) {
 		// TODO: Send request to create folder
 
-		// Placeholder for now
-		const returnedFolder = {
-			id: 1,
-			name: name,
-			mimeType: 'application/vnd.cloudstore.folder',
-			ownerId: 43535,
-			parentId: parent?.id || null,
-			deletedAt: null,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			color: FolderClass.randomColor(),
-		};
+		const returnedFolder = await fetch(api('folder'), {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				name: name,
+				parentId: parent?.id ?? null,
+				color: color,
+			}),
+		})
+			.then(async (response) => {
+				if (!response.ok) {
+					if (response.status >= 400 && response.status < 500) {
+						const json = await response.json();
+
+						throw new Error(json.error);
+					}
+
+					throw new Error(await response.text());
+				}
+
+				return response.json();
+			})
+			.then((data) => {
+				console.log('Success:', data);
+
+				return data;
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 
 		return new FolderClass(returnedFolder);
+	}
+
+	async delete() {
+		return await fetch(api('folder/' + this.id), {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+		})
+			.then(async (response) => {
+				if (!response.ok) {
+					if (response.status >= 400 && response.status < 500) {
+						const json = await response.json();
+
+						throw new Error(json.error);
+					}
+
+					throw new Error(await response.text());
+				}
+
+				return response.json();
+			})
+			.then((data) => {
+				console.log('Success:', data);
+
+				return true;
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+
+				return false;
+			});
 	}
 
 	get color() {
@@ -59,7 +114,7 @@ export type FolderType = {
 	color: FolderColor;
 } & ItemType;
 
-const FolderColors = <const>{
+export const FolderColors = <const>{
 	red: 'from-red-500 to-orange-500',
 	orange: 'from-orange-500 to-amber-500',
 	amber: 'from-amber-500 to-yellow-500',
@@ -78,5 +133,5 @@ const FolderColors = <const>{
 	pink: 'from-pink-500 to-rose-500',
 	rose: 'from-rose-500 to-red-500',
 };
-type FolderColor = keyof typeof FolderColors;
+export type FolderColor = keyof typeof FolderColors;
 type FolderColorValue = (typeof FolderColors)[FolderColor];
