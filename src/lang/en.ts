@@ -43,6 +43,37 @@ export default {
 			submit: 'Reset password',
 		},
 	},
+	fileBrowser: {
+		file: {
+			uploadFile: 'Upload file',
+		},
+		folder: {
+			name: 'Name',
+			createFolder: 'Create folder',
+			create: 'Create',
+			color: {
+				name: 'Color',
+				required: 'Color is required',
+				red: 'Red',
+				orange: 'Orange',
+				amber: 'Amber',
+				yellow: 'Yellow',
+				lime: 'Lime',
+				green: 'Green',
+				emerald: 'Emerald',
+				teal: 'Teal',
+				cyan: 'Cyan',
+				sky: 'Sky',
+				blue: 'Blue',
+				indigo: 'Indigo',
+				violet: 'Violet',
+				purple: 'Purple',
+				fuchsia: 'Fuchsia',
+				pink: 'Pink',
+				rose: 'Rose',
+			},
+		},
+	},
 	layout: {
 		sr: {
 			signOut: 'Sign out',

@@ -20,8 +20,6 @@ export class FileClass extends ItemClass {
 				parentId: parent?.id ?? null,
 			}),
 		});
-
-		//return new FileClass(returnedFile);
 	}
 
 	get blobUrl() {

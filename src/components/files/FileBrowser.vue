@@ -35,7 +35,7 @@
 							fileBrowserContextMenu?.closeMenu();
 						"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Create folder</a
+						>{{ t('fileBrowser.folder.createFolder') }}</a
 					>
 				</li>
 			</ul>
@@ -48,7 +48,7 @@
 						"
 						href="javascript:void(0)"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Upload file</a
+						>{{ t('fileBrowser.file.uploadFile') }}</a
 					>
 					<input ref="fileInput" type="file" class="hidden" @change="uploadFiles" />
 				</li>
@@ -57,13 +57,15 @@
 
 		<!-- Modals -->
 		<BaseModal v-show="showCreateFolderModal" @close="closeCreateFolderModal">
-			<h3 class="mb-4 text-xl font-medium">Create folder</h3>
-			<form class="space-y-6" @submit.prevent="createFolder">
-				<BaseInput id="folderName" type="text" v-model="folder.name">Name</BaseInput>
-				<BaseSelect id="folderColor" v-model="folder.color">
+			<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.createFolder') }}</h3>
+			<form class="space-y-6" @submit.prevent="createFolder" ref="createFolderForm">
+				<BaseInput id="folderName" type="text" v-model="folder.name" :required="true">{{
+					t('fileBrowser.folder.name')
+				}}</BaseInput>
+				<BaseSelect id="folderColor" v-model="folder.color" :required="true">
 					<template v-slot:label>
 						<div class="flex">
-							<span>Color</span>
+							<span>{{ t('fileBrowser.folder.color.name') }}</span>
 							<div
 								v-if="folder.color"
 								:class="
@@ -74,23 +76,25 @@
 						</div>
 					</template>
 					<template v-slot:options>
-						<option v-for="(_value, key) in FolderColors" :key="key">
-							{{ key }}
+						<option v-for="(_value, key) in FolderColors" :key="key" :value="key">
+							{{ t('fileBrowser.folder.color.' + key) }}
 						</option>
 					</template>
 				</BaseSelect>
-				<BaseButton type="submit" :color="ButtonColor.Primary">Create</BaseButton>
+				<BaseButton type="submit" :color="ButtonColor.Primary">{{
+					t('fileBrowser.folder.create')
+				}}</BaseButton>
+				<ErrorAlert
+					v-if="createFolderErrorObject"
+					:errorObject="createFolderErrorObject"
+				></ErrorAlert>
 			</form>
 		</BaseModal>
 
 		<!-- Toasts -->
-		<TransitionGroup
-			name="toasts"
-			tag="div"
-			class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col"
-		>
+		<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
 			<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
-		</TransitionGroup>
+		</div>
 	</div>
 </template>
 <script setup lang="ts">
@@ -109,6 +113,8 @@ import BaseModal from '@components/base/modal.vue';
 import BaseInput from '@components/base/input.vue';
 import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import BaseSelect from '@components/base/select.vue';
+import type { ErrorObject } from '@components/base/errorAlert.vue';
+import { t } from '@lib/i18n';
 
 const props = defineProps({
 	modelValue: {
@@ -184,19 +190,45 @@ function closeCreateFolderModal() {
 	showCreateFolderModal.value = false;
 	folder.value = { name: '', color: '' };
 }
+
+const createFolderForm = ref<HTMLFormElement>();
+const createFolderErrorObject = ref<null | ErrorObject>(null);
+
 async function createFolder() {
-	if (!folder.value.color) return;
+	createFolderErrorObject.value = null;
 
-	items.value?.push(
-		await FolderClass.create(folder.value.name, props.modelValue ?? null, folder.value.color),
-	);
+	if (!folder.value.color) {
+		createFolderErrorObject.value = {
+			error: 'Validation Error',
+			errors: {
+				confirmPassword: [t('fileBrowser.folder.color.required')],
+			},
+			statusCode: 400,
+		};
+		return;
+	}
 
-	toasts.value.push({
-		message: `Folder ${folder.value.name} created`,
-		type: ToastType.Success,
-	});
+	if (!createFolderForm.value?.checkValidity() || createFolderErrorObject.value) {
+		createFolderForm.value?.reportValidity();
+		return;
+	}
 
-	closeCreateFolderModal();
+	try {
+		const createdFolder = await FolderClass.create({
+			name: folder.value.name,
+			parent: props.modelValue ?? null,
+			color: folder.value.color,
+		});
+
+		items.value?.push(createdFolder);
+
+		toasts.value.push({
+			message: `Folder ${folder.value.name} created`,
+			type: ToastType.Success,
+		});
+
+		closeCreateFolderModal();
+	} catch (e) {}
 }
 
 const folders = computed(() => {
