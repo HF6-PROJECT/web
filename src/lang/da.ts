@@ -43,6 +43,37 @@ export default {
 			submit: 'Nulstil adgangskode',
 		},
 	},
+	fileBrowser: {
+		file: {
+			uploadFile: 'Upload fil',
+		},
+		folder: {
+			name: 'Navn',
+			createFolder: 'Opret mappe',
+			create: 'Opret',
+			color: {
+				name: 'Farve',
+				required: 'Farve er påkrævet',
+				red: 'Rød',
+				orange: 'Orange',
+				amber: 'Amber',
+				yellow: 'Gul',
+				lime: 'Lime',
+				green: 'Grøn',
+				emerald: 'Emerald',
+				teal: 'Blågrøn',
+				cyan: 'Cyan',
+				sky: 'Sky',
+				blue: 'Blå',
+				indigo: 'Indigo',
+				violet: 'Violet',
+				purple: 'Lilla',
+				fuchsia: 'Fuchsia',
+				pink: 'Pink',
+				rose: 'Rose',
+			},
+		},
+	},
 	layout: {
 		sr: {
 			signOut: 'Log ud',

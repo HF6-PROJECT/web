@@ -10,9 +10,7 @@ export class FolderClass extends ItemClass {
 		this._color = folderObject.color;
 	}
 
-	static async create(name: string, parent: FolderType | null, color: FolderColor) {
-		// TODO: Send request to create folder
-
+	static async create(input: { name: string; parent: FolderType | null; color: FolderColor }) {
 		const returnedFolder = await fetch(api('folder'), {
 			method: 'POST',
 			headers: {
@@ -20,9 +18,9 @@ export class FolderClass extends ItemClass {
 			},
 			credentials: 'include',
 			body: JSON.stringify({
-				name: name,
-				parentId: parent?.id ?? null,
-				color: color,
+				name: input.name,
+				parentId: input.parent?.id ?? null,
+				color: input.color,
 			}),
 		})
 			.then(async (response) => {
