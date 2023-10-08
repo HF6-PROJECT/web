@@ -10,7 +10,8 @@
 		"paths": {
 			"@components/*": ["src/components/*"],
 			"@layouts/*": ["src/layouts/*"],
-			"@lib/*": ["src/lib/*"]
+			"@lib/*": ["src/lib/*"],
+			"@stores/*": ["src/stores/*"]
 		},
 		"strictNullChecks": true,
 		"verbatimModuleSyntax": true,

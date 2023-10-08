@@ -46,11 +46,21 @@ export default {
 	fileBrowser: {
 		file: {
 			uploadFile: 'Upload fil',
+			renameFile: 'Omdøb fil',
+			name: 'Navn',
+			delete: 'Slet',
+			rename: 'Omdøb',
+			areYouSureYouWantToDeleteThisFile: 'Er du sikker på, at du vil slette denne fil?',
 		},
 		folder: {
 			name: 'Navn',
 			createFolder: 'Opret mappe',
 			create: 'Opret',
+			edit: 'Rediger',
+			share: 'Del',
+			delete: 'Slet',
+			openInNewTab: 'Åben i ny fane',
+			areYouSureYouWantToDeleteThisFolder: 'Er du sikker på, at du vil slette denne mappe?',
 			color: {
 				name: 'Farve',
 				required: 'Farve er påkrævet',
@@ -88,4 +98,6 @@ export default {
 			toggleThemeMode: 'Lys / mørk tilstand',
 		},
 	},
+	yesImSure: 'Ja, jeg er sikker',
+	noCancel: 'Nej, annuller',
 };

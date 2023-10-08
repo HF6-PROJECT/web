@@ -48,37 +48,51 @@ export class FolderClass extends ItemClass {
 		return new FolderClass(returnedFolder);
 	}
 
+	async update(input: { name: string; color: FolderColor }) {
+		const response = await fetch(api('folder'), {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				id: this.id,
+				name: input.name,
+				color: input.color,
+			}),
+		});
+
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
+
+				throw new Error(json.error);
+			}
+
+			throw new Error(await response.text());
+		}
+
+		return new FolderClass(await response.json());
+	}
+
 	async delete() {
-		return await fetch(api('folder/' + this.id), {
+		const response = await fetch(api('folder/' + this.id), {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			credentials: 'include',
-		})
-			.then(async (response) => {
-				if (!response.ok) {
-					if (response.status >= 400 && response.status < 500) {
-						const json = await response.json();
+		});
 
-						throw new Error(json.error);
-					}
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
 
-					throw new Error(await response.text());
-				}
+				throw new Error(json.error);
+			}
 
-				return response.json();
-			})
-			.then((data) => {
-				console.log('Success:', data);
-
-				return true;
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-
-				return false;
-			});
+			throw new Error(await response.text());
+		}
 	}
 
 	get color() {
@@ -87,12 +101,6 @@ export class FolderClass extends ItemClass {
 
 	get colorClass(): FolderColorValue {
 		return FolderColors[this._color];
-	}
-
-	private static randomColor() {
-		return Object.keys(FolderColors)[
-			Math.floor(Math.random() * Object.keys(FolderColors).length)
-		] as FolderColor;
 	}
 
 	static isFolder(object: any): object is FolderType {
