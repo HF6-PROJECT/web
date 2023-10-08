@@ -46,11 +46,21 @@ export default {
 	fileBrowser: {
 		file: {
 			uploadFile: 'Upload file',
+			renameFile: 'Rename file',
+			name: 'Name',
+			delete: 'Delete',
+			rename: 'Rename',
+			areYouSureYouWantToDeleteThisFile: 'Are you sure you want to delete this file?',
 		},
 		folder: {
 			name: 'Name',
 			createFolder: 'Create folder',
 			create: 'Create',
+			edit: 'Edit',
+			share: 'Share',
+			delete: 'Delete',
+			openInNewTab: 'Open in new tab',
+			areYouSureYouWantToDeleteThisFolder: 'Are you sure you want to delete this folder?',
 			color: {
 				name: 'Color',
 				required: 'Color is required',
@@ -88,4 +98,6 @@ export default {
 			toggleThemeMode: 'Light / dark mode',
 		},
 	},
+	yesImSure: 'Yes, I am sure',
+	noCancel: 'No, cancel',
 };

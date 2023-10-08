@@ -1,5 +1,6 @@
 <template>
 	<div class="relative">
+		<!-- Folder -->
 		<a
 			:href="url(`u/folder/${modelValue.id}`)"
 			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
@@ -13,6 +14,7 @@
 			</button>
 		</a>
 
+		<!-- Folder ContextMenu -->
 		<ContextMenu ref="folderContextMenu">
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 				<li>
@@ -20,32 +22,53 @@
 						:href="url(`u/folder/${modelValue.id}`)"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Open in new tab</a
+						>{{ t('fileBrowser.folder.openInNewTab') }}</a
 					>
 				</li>
 				<li>
 					<a
 						href="javascript:void(0)"
+						@click="
+							showEditModal = true;
+							folderContextMenu?.closeMenu();
+						"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Change Name</a
+						>{{ t('fileBrowser.folder.edit') }}</a
 					>
 				</li>
+				<!--
 				<li>
 					<a
 						href="#"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Share</a
+						>{{ t('fileBrowser.folder.share') }}</a
 					>
 				</li>
+				-->
 			</ul>
 			<div class="py-2">
 				<a
 					href="javascript:void(0)"
+					@click="
+						showDeleteModal = true;
+						folderContextMenu?.closeMenu();
+					"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
-					>Delete</a
+					>{{ t('fileBrowser.folder.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
+
+		<!-- Modals -->
+		<BaseConfirmModal
+			v-if="showDeleteModal"
+			:type="ConfirmModalType.Danger"
+			@confirm="deleteFolder"
+			@close="showDeleteModal = false"
+		>
+			{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
+		>
+		<EditFolderModal v-if="showEditModal" :folder="modelValue" @close="showEditModal = false" />
 	</div>
 </template>
 
@@ -53,19 +76,42 @@
 import { type PropType, computed, ref } from 'vue';
 import { FolderClass } from '@lib/items/folders';
 import { url } from '@lib/helpers';
-import ContextMenu from './ContextMenu.vue';
+import ContextMenu from '@components/base/contextMenu.vue';
+import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
+import EditFolderModal from './EditModal.vue';
+import { t } from '@lib/i18n';
+import { removeItem } from '@stores/items';
 
 const folderContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
+defineEmits(['update:modelValue']);
 const props = defineProps({
 	modelValue: {
 		type: Object as PropType<FolderClass>,
 		required: true,
 	},
 });
-defineEmits(['update:modelValue']);
 
 const classes = computed(() => {
 	return props.modelValue.colorClass;
 });
+
+const showDeleteModal = ref(false);
+async function deleteFolder() {
+	try {
+		await props.modelValue.delete();
+
+		removeItem(props.modelValue);
+
+		// TODO: Show success toast
+	} catch (e) {
+		console.error('Error: ' + e);
+
+		// TODO: Show error toast
+	}
+
+	showDeleteModal.value = false;
+}
+
+const showEditModal = ref(false);
 </script>

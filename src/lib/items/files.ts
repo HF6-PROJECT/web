@@ -22,6 +22,52 @@ export class FileClass extends ItemClass {
 		});
 	}
 
+	async update(input: { name: string }) {
+		const response = await fetch(api('blob'), {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				id: this.id,
+				name: input.name,
+			}),
+		});
+
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
+
+				throw new Error(json.error);
+			}
+
+			throw new Error(await response.text());
+		}
+
+		return new FileClass(await response.json());
+	}
+
+	async delete() {
+		const response = await fetch(api('blob/' + this.id), {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+		});
+
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
+
+				throw new Error(json.error);
+			}
+
+			throw new Error(await response.text());
+		}
+	}
+
 	get blobUrl() {
 		return this._blobUrl;
 	}
