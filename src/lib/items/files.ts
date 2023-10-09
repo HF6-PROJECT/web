@@ -45,9 +45,7 @@ export class FileClass extends ItemClass {
 			throw new Error(await response.text());
 		}
 
-		this.name = input.name;
-
-		return this;
+		return new FileClass(await response.json());
 	}
 
 	async delete() {

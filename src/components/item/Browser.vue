@@ -1,7 +1,7 @@
 <template>
 	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
-		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" />
+		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" :modelValue="modelValue" />
 		<template v-else-if="items">
 			<div class="flex flex-wrap gap-3">
 				<!-- prettier-ignore-attribute -->

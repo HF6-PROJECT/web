@@ -99,6 +99,8 @@ export default {
 			toggleThemeMode: 'Light / dark mode',
 		},
 	},
-	yesImSure: 'Yes, I am sure',
-	noCancel: 'No, cancel',
+	confirmModal: {
+		yesImSure: 'Yes, I am sure',
+		noCancel: 'No, cancel',
+	},
 };
