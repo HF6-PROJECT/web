@@ -54,6 +54,7 @@
 		<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
 	</div>
 </template>
+
 <script setup lang="ts">
 import { useStore } from '@nanostores/vue';
 import { addItem, itemsStore } from '@stores/items';

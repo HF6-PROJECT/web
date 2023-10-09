@@ -17,9 +17,7 @@
 				<li>
 					<a
 						href="javascript:void(0)"
-						@click="
-							editFileModal?.open();
-						"
+						@click="editFileModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.file.rename') }}</a
 					>
@@ -37,9 +35,7 @@
 			<div class="py-2">
 				<a
 					href="javascript:void(0)"
-					@click="
-						deleteFileModal?.open();
-					"
+					@click="deleteFileModal?.open()"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
 					>{{ t('fileBrowser.file.delete') }}</a
 				>
