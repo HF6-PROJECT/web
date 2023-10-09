@@ -1,11 +1,21 @@
 <template>
-	<BaseModal @close="closeUpdateFolderModal">
+	<BaseModal ref="modal" @close="close">
 		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.editFolder') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
-			<BaseInput id="folderName" type="text" v-model="folder.name" :required="true">{{
-				t('fileBrowser.folder.name')
-			}}</BaseInput>
-			<BaseSelect id="folderColor" v-model="folder.color" :required="true">
+			<BaseInput
+				id="folderName"
+				type="text"
+				v-model="folder.name"
+				:required="true"
+				:errors="errorObject?.errors.name"
+				>{{ t('fileBrowser.folder.name') }}</BaseInput
+			>
+			<BaseSelect
+				id="folderColor"
+				v-model="folder.color"
+				:required="true"
+				:errors="errorObject?.errors.color"
+			>
 				<template v-slot:label>
 					<div class="flex">
 						<span>{{ t('fileBrowser.folder.color.name') }}</span>
@@ -43,13 +53,19 @@ import BaseSelect from '@components/base/select.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 
-const emit = defineEmits(['close']);
 const props = defineProps({
 	folder: {
 		type: Object as PropType<FolderClass>,
 		required: true,
 	},
 });
+
+defineExpose({
+	open,
+	close,
+});
+
+const modal = ref<InstanceType<typeof BaseModal>>();
 
 const folder = ref<{ name: string; color: FolderColor | '' }>({
 	name: props.folder.name,
@@ -87,16 +103,19 @@ async function updateFolder() {
 
 		// TODO: Show success toast
 
-		closeUpdateFolderModal();
+		close();
 	} catch (e) {}
 }
 
-function closeUpdateFolderModal() {
+function open() {
+	modal.value?.open();
+}
+
+function close() {
 	folder.value = {
 		name: props.folder.name,
 		color: props.folder.color,
 	};
-
-	emit('close');
+	modal.value?.close(false);
 }
 </script>

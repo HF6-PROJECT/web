@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-if="showModal"
 		tabindex="-1"
 		aria-hidden="true"
 		class="fixed left-0 right-0 top-0 z-50 flex h-full max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-50 p-4 md:inset-0"
@@ -11,7 +12,7 @@
 				<button
 					type="button"
 					class="absolute right-2.5 top-3 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-					@click="emit('close')"
+					@click="close()"
 				>
 					<svg
 						class="h-3 w-3"
@@ -39,15 +40,37 @@
 </template>
 
 <script setup lang="ts">
-import { onClickOutside, onKeyDown } from '@vueuse/core';
 import { ref } from 'vue';
+import { onClickOutside, onKeyDown } from '@vueuse/core';
+import { isModalOpen } from '@stores/modal';
+
+const showModal = ref(false);
 
 const emit = defineEmits(['close']);
+defineExpose({
+	open,
+	close,
+});
 
 const modal = ref<HTMLElement>();
-onClickOutside(modal, () => emit('close'));
 
+onClickOutside(modal, () => close());
 onKeyDown('Escape', () => {
-	emit('close');
+	close();
 });
+
+function open() {
+	isModalOpen.set(true);
+
+	showModal.value = true;
+}
+
+function close(emitClose: boolean = true) {
+	isModalOpen.set(false);
+	showModal.value = false;
+
+	if (emitClose) {
+		emit('close');
+	}
+}
 </script>

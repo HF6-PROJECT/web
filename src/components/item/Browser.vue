@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="relative h-full w-full px-4 pt-6"
-		v-on:contextmenu.capture.prevent="fileBrowserContextMenu?.openMenu"
-	>
+	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
 		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" />
 		<template v-else-if="items">
@@ -26,10 +23,7 @@
 				<li>
 					<a
 						href="javascript:void(0)"
-						@click="
-							showCreateFolderModal = true;
-							fileBrowserContextMenu?.closeMenu();
-						"
+						@click="createFolderModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.folder.createFolder') }}</a
 					>
@@ -50,18 +44,14 @@
 				</li>
 			</ul>
 		</ContextMenu>
+	</div>
 
-		<!-- Modals -->
-		<CreateFolderModal
-			v-if="showCreateFolderModal"
-			:parentFolder="props.modelValue"
-			@close="showCreateFolderModal = false"
-		/>
+	<!-- Modals -->
+	<CreateFolderModal ref="createFolderModal" :parentFolder="props.modelValue" />
 
-		<!-- Toasts -->
-		<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
-			<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
-		</div>
+	<!-- Toasts -->
+	<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
+		<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
 	</div>
 </template>
 <script setup lang="ts">
@@ -80,6 +70,7 @@ import { FileClass } from '@lib/items/files';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseToast, { ToastType } from '@components/base/toast.vue';
 import { t } from '@lib/i18n';
+import { isModalOpen } from '@stores/modal';
 
 const props = defineProps({
 	modelValue: {
@@ -89,6 +80,15 @@ const props = defineProps({
 });
 
 const fileBrowserContextMenu = ref<InstanceType<typeof ContextMenu>>();
+
+function openContextMenu(e: MouseEvent) {
+	if (isModalOpen.get()) {
+		return;
+	}
+
+	e.preventDefault();
+	fileBrowserContextMenu?.value?.openMenu(e);
+}
 
 // TODO: Fix toasts
 const toasts = ref<{ message: string; type: ToastType }[]>([]);
@@ -143,7 +143,7 @@ async function getItems() {
 /**
  * Folders
  */
-const showCreateFolderModal = ref(false);
+const createFolderModal = ref<InstanceType<typeof CreateFolderModal>>();
 
 const folders = computed(() => {
 	return Object.values(items.value).filter((item) => item instanceof FolderClass) as FolderClass[];

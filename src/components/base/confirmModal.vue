@@ -1,5 +1,5 @@
 <template>
-	<BaseModal @close="emit('close')" class="text-center">
+	<BaseModal ref="modal" class="text-center">
 		<svg
 			class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200"
 			aria-hidden="true"
@@ -21,7 +21,10 @@
 		<div class="flex">
 			<button
 				type="button"
-				@click.prevent="$emit('confirm')"
+				@click.prevent="
+					modal?.close();
+					$emit('confirm');
+				"
 				:class="
 					classes +
 					' ml-auto mr-2 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4'
@@ -31,7 +34,7 @@
 			</button>
 			<button
 				type="button"
-				@click.prevent="$emit('close')"
+				@click.prevent="modal?.close()"
 				class="mr-auto rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
 			>
 				{{ t('noCancel') }}
@@ -47,11 +50,11 @@ export enum ConfirmModalType {
 </script>
 
 <script setup lang="ts">
-import { computed, type PropType } from 'vue';
+import { computed, ref, type PropType } from 'vue';
 import BaseModal from '@components/base/modal.vue';
 import { t } from '@lib/i18n';
 
-const emit = defineEmits(['close', 'confirm']);
+const emit = defineEmits(['confirm']);
 const props = defineProps({
 	type: {
 		type: String as PropType<ConfirmModalType>,
@@ -59,10 +62,25 @@ const props = defineProps({
 	},
 });
 
+defineExpose({
+	open,
+	close,
+});
+
+const modal = ref<InstanceType<typeof BaseModal>>();
+
 const classes = computed(() => {
 	switch (props.type) {
 		case ConfirmModalType.Danger:
 			return 'bg-red-600 hover:bg-red-800 focus:ring-red-300 dark:focus:ring-red-800';
 	}
 });
+
+function open() {
+	modal.value?.open();
+}
+
+function close() {
+	modal.value?.close(false);
+}
 </script>

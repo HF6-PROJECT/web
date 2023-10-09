@@ -29,8 +29,7 @@
 					<a
 						href="javascript:void(0)"
 						@click="
-							showEditModal = true;
-							folderContextMenu?.closeMenu();
+							editFolderModal?.open();
 						"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.folder.edit') }}</a
@@ -49,27 +48,19 @@
 			<div class="py-2">
 				<a
 					href="javascript:void(0)"
-					@click="
-						showDeleteModal = true;
-						folderContextMenu?.closeMenu();
-					"
+					@click="deleteFolderModal?.open()"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
 					>{{ t('fileBrowser.folder.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
-
-		<!-- Modals -->
-		<BaseConfirmModal
-			v-if="showDeleteModal"
-			:type="ConfirmModalType.Danger"
-			@confirm="deleteFolder"
-			@close="showDeleteModal = false"
-		>
-			{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
-		>
-		<EditFolderModal v-if="showEditModal" :folder="modelValue" @close="showEditModal = false" />
 	</div>
+
+	<!-- Modals -->
+	<BaseConfirmModal ref="deleteFolderModal" :type="ConfirmModalType.Danger" @confirm="deleteFolder">
+		{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
+	>
+	<EditFolderModal ref="editFolderModal" :folder="modelValue" />
 </template>
 
 <script setup lang="ts">
@@ -96,7 +87,7 @@ const classes = computed(() => {
 	return props.modelValue.colorClass;
 });
 
-const showDeleteModal = ref(false);
+const deleteFolderModal = ref<InstanceType<typeof BaseConfirmModal>>();
 async function deleteFolder() {
 	try {
 		await props.modelValue.delete();
@@ -109,9 +100,7 @@ async function deleteFolder() {
 
 		// TODO: Show error toast
 	}
-
-	showDeleteModal.value = false;
 }
 
-const showEditModal = ref(false);
+const editFolderModal = ref<InstanceType<typeof EditFolderModal>>();
 </script>
