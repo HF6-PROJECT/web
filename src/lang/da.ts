@@ -99,6 +99,8 @@ export default {
 			toggleThemeMode: 'Lys / mørk tilstand',
 		},
 	},
-	yesImSure: 'Ja, jeg er sikker',
-	noCancel: 'Nej, annuller',
+	confirmModal: {
+		yesImSure: 'Ja, jeg er sikker',
+		noCancel: 'Nej, annuller',
+	},
 };

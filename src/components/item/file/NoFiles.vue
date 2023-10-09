@@ -27,9 +27,44 @@
 					SVG, PNG, JPG or GIF (MAX. 800x400px)
 				</p>
 			</div>
-			<input id="dropzone-file" type="file" class="hidden" />
+			<input id="dropzone-file" ref="fileInput" type="file" class="hidden" @change="uploadFiles" />
 		</label>
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { FileClass } from '@lib/items/files';
+import type { FolderType } from '@lib/items/folders';
+import { ref, type PropType } from 'vue';
+
+const props = defineProps({
+	modelValue: {
+		type: Object as PropType<FolderType>,
+		required: false,
+	},
+});
+
+const fileInput = ref<HTMLInputElement>();
+async function uploadFiles(e: Event) {
+	const fileInput = e.currentTarget as HTMLInputElement;
+
+	if (!fileInput.files?.length) {
+		return;
+	}
+
+	Array.from(fileInput.files).forEach(async (file) => {
+		try {
+			await FileClass.create(file, props.modelValue ?? null);
+
+			// TODO: replace waiting 1 second with websocket
+			setTimeout(async () => {
+				window.location.reload();
+
+				// TODO: Toast
+			}, 1000);
+		} catch (error) {
+			// TODO: Toast
+		}
+	});
+}
+</script>

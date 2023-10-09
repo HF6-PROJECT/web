@@ -30,14 +30,14 @@
 					' ml-auto mr-2 inline-flex items-center rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4'
 				"
 			>
-				{{ t('yesImSure') }}
+				{{ t('confirmModal.yesImSure') }}
 			</button>
 			<button
 				type="button"
 				@click.prevent="modal?.close()"
 				class="mr-auto rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
 			>
-				{{ t('noCancel') }}
+				{{ t('confirmModal.noCancel') }}
 			</button>
 		</div>
 	</BaseModal>
