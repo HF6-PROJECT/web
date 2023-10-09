@@ -1,6 +1,6 @@
 <template>
 	<BaseModal @close="closeUpdateFolderModal">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.createFolder') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.editFolder') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
 			<BaseInput id="folderName" type="text" v-model="folder.name" :required="true">{{
 				t('fileBrowser.folder.name')
@@ -85,10 +85,7 @@ async function updateFolder() {
 
 		updateItem(updatedFolder);
 
-		/*toasts.value.push({
-			message: `Folder ${folder.value.name} created`,
-			type: ToastType.Success,
-		});*/
+		// TODO: Show success toast
 
 		closeUpdateFolderModal();
 	} catch (e) {}

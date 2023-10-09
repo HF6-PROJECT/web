@@ -83,10 +83,7 @@ async function createFolder() {
 
 		addItem(createdFolder);
 
-		/*toasts.value.push({
-			message: `Folder ${folder.value.name} created`,
-			type: ToastType.Success,
-		});*/
+		// TODO: Show success toast
 
 		closeCreateFolderModal();
 	} catch (e) {}

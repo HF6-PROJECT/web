@@ -104,10 +104,7 @@ getItems();
 async function getItems() {
 	try {
 		const response = await fetch(
-			/* TODO: use api function */
-			`http://localhost:3000/api/${
-				FolderClass.isFolder(props.modelValue) ? `${props.modelValue.id}` : ''
-			}`,
+			api(`item/${FolderClass.isFolder(props.modelValue) ? `${props.modelValue.id}` : ''}`),
 			{
 				method: 'GET',
 				headers: {

@@ -55,6 +55,7 @@ export default {
 		folder: {
 			name: 'Name',
 			createFolder: 'Create folder',
+			editFolder: 'Edit folder',
 			create: 'Create',
 			edit: 'Edit',
 			share: 'Share',

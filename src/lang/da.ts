@@ -55,6 +55,7 @@ export default {
 		folder: {
 			name: 'Navn',
 			createFolder: 'Opret mappe',
+			editFolder: 'Rediger mappe',
 			create: 'Opret',
 			edit: 'Rediger',
 			share: 'Del',
