@@ -1,10 +1,15 @@
 <template>
-	<BaseModal @close="closeUpdateFileModal">
+	<BaseModal ref="modal" @close="close">
 		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.file.renameFile') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
-			<BaseInput id="fileName" type="text" v-model="file.name" :required="true">{{
-				t('fileBrowser.file.name')
-			}}</BaseInput>
+			<BaseInput
+				id="fileName"
+				type="text"
+				v-model="file.name"
+				:required="true"
+				:errors="errorObject?.errors.name"
+				>{{ t('fileBrowser.file.name') }}</BaseInput
+			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
 				t('fileBrowser.folder.edit')
 			}}</BaseButton>
@@ -23,13 +28,19 @@ import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import type { FileClass } from '@lib/items/files';
 
-const emit = defineEmits(['close']);
 const props = defineProps({
 	file: {
 		type: Object as PropType<FileClass>,
 		required: true,
 	},
 });
+
+defineExpose({
+	open,
+	close,
+});
+
+const modal = ref<InstanceType<typeof BaseModal>>();
 
 const file = ref<{ name: string }>({
 	name: props.file.name,
@@ -54,15 +65,18 @@ async function updateFile() {
 
 		// TODO: Show success toast
 
-		closeUpdateFileModal();
+		close();
 	} catch (e) {}
 }
 
-function closeUpdateFileModal() {
+function open() {
+	modal.value?.open();
+}
+
+function close() {
 	file.value = {
 		name: props.file.name,
 	};
-
-	emit('close');
+	modal.value?.close(false);
 }
 </script>

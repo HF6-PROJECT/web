@@ -18,8 +18,7 @@
 					<a
 						href="javascript:void(0)"
 						@click="
-							showEditModal = true;
-							fileContextMenu?.closeMenu();
+							editFileModal?.open();
 						"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.file.rename') }}</a
@@ -39,26 +38,20 @@
 				<a
 					href="javascript:void(0)"
 					@click="
-						showDeleteModal = true;
-						fileContextMenu?.closeMenu();
+						deleteFileModal?.open();
 					"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
 					>{{ t('fileBrowser.file.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
-
-		<!-- Modals -->
-		<BaseConfirmModal
-			v-if="showDeleteModal"
-			:type="ConfirmModalType.Danger"
-			@confirm="deleteFile"
-			@close="showDeleteModal = false"
-		>
-			{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
-		>
-		<EditFileModal v-if="showEditModal" :file="modelValue" @close="showEditModal = false" />
 	</div>
+
+	<!-- Modals -->
+	<BaseConfirmModal ref="deleteFileModal" :type="ConfirmModalType.Danger" @confirm="deleteFile">
+		{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
+	>
+	<EditFileModal ref="editFileModal" :file="modelValue" />
 </template>
 
 <script setup lang="ts">
@@ -80,7 +73,7 @@ const props = defineProps({
 	},
 });
 
-const showDeleteModal = ref(false);
+const deleteFileModal = ref<InstanceType<typeof BaseConfirmModal>>();
 async function deleteFile() {
 	try {
 		await props.modelValue.delete();
@@ -93,9 +86,7 @@ async function deleteFile() {
 
 		// TODO: Show error toast
 	}
-
-	showDeleteModal.value = false;
 }
 
-const showEditModal = ref(false);
+const editFileModal = ref<InstanceType<typeof EditFileModal>>();
 </script>

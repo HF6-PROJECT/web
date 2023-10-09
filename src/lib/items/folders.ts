@@ -11,7 +11,7 @@ export class FolderClass extends ItemClass {
 	}
 
 	static async create(input: { name: string; parent: FolderType | null; color: FolderColor }) {
-		const returnedFolder = await fetch(api('folder'), {
+		const response = await fetch(api('folder'), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -22,30 +22,19 @@ export class FolderClass extends ItemClass {
 				parentId: input.parent?.id ?? null,
 				color: input.color,
 			}),
-		})
-			.then(async (response) => {
-				if (!response.ok) {
-					if (response.status >= 400 && response.status < 500) {
-						const json = await response.json();
+		});
 
-						throw new Error(json.error);
-					}
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
 
-					throw new Error(await response.text());
-				}
+				throw new Error(json.error);
+			}
 
-				return response.json();
-			})
-			.then((data) => {
-				console.log('Success:', data);
+			throw new Error(await response.text());
+		}
 
-				return data;
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-
-		return new FolderClass(returnedFolder);
+		return new FolderClass(await response.json());
 	}
 
 	async update(input: { name: string; color: FolderColor }) {
