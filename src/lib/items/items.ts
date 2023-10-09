@@ -35,6 +35,10 @@ export abstract class ItemClass {
 		return this._name;
 	}
 
+	protected set name(value: string) {
+		this._name = value;
+	}
+
 	get mimeType() {
 		return this._mimeType;
 	}
