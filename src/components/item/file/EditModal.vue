@@ -52,10 +52,7 @@ async function updateFile() {
 
 		updateItem(updatedFile);
 
-		/*toasts.value.push({
-			message: `Folder ${folder.value.name} created`,
-			type: ToastType.Success,
-		});*/
+		// TODO: Show success toast
 
 		closeUpdateFileModal();
 	} catch (e) {}
