@@ -10,6 +10,7 @@ interface ImportMetaEnv {
 	readonly PUBLIC_SITE_URL: string;
 	readonly PUBLIC_SITE_PORT: number | undefined;
 	readonly PUBLIC_API_URL: string;
+	readonly PUBLIC_LOCAL_DEVELOPMENT_API_URL: string | undefined;
 	readonly JWT_PUBLIC_KEY: string;
 	readonly NODE_BUILD: boolean | undefined;
 }
