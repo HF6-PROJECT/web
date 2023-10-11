@@ -65,6 +65,7 @@ import Folder from './folder/Folder.vue';
 import CreateFolderModal from './folder/CreateModal.vue';
 import File from './file/File.vue';
 import { ItemClass } from '@lib/items/items';
+import { ShortcutClass } from '@lib/items/shortcuts';
 import { ItemFactory } from '@lib/items/factory';
 import { FolderClass, type FolderType } from '@lib/items/folders';
 import { FileClass } from '@lib/items/files';
@@ -128,7 +129,7 @@ async function getItems() {
 		for (const rawItem of rawItems) {
 			if (!ItemClass.isItem(rawItem)) continue;
 
-			const item = ItemFactory.getItemFromObject(rawItem);
+			const item = await ItemFactory.getItemFromObject(rawItem);
 
 			if (item === null) continue;
 
@@ -147,14 +148,14 @@ async function getItems() {
 const createFolderModal = ref<InstanceType<typeof CreateFolderModal>>();
 
 const folders = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FolderClass) as FolderClass[];
+	return Object.values(items.value).filter((item) => item instanceof FolderClass || (item instanceof ShortcutClass && item._linkedItem instanceof FolderClass)) as FolderClass[];
 });
 
 /**
  * Files
  */
 const files = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FileClass) as FileClass[];
+	return Object.values(items.value).filter((item) => item instanceof FileClass || (item instanceof ShortcutClass && item._linkedItem instanceof FileClass)) as FileClass[];
 });
 
 const fileInput = ref<HTMLInputElement>();

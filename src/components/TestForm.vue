@@ -49,7 +49,7 @@ async function onSubmit() {
 
 	const newBlob = await upload(file.name, file, {
 		access: 'public',
-		handleUploadUrl: api('item'),
+		handleUploadUrl: api('blob'),
 		clientPayload: JSON.stringify({
 			parentId: null,
 		}),

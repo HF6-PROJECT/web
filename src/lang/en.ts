@@ -85,6 +85,9 @@ export default {
 			},
 		},
 	},
+	item: {
+		createShortcut: 'Opret genvej',
+	},
 	layout: {
 		sr: {
 			signOut: 'Sign out',

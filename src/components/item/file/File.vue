@@ -9,6 +9,16 @@
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				{{ modelValue.name }}
 			</h5>
+			<svg v-if="(modelValue instanceof ShortcutClass)" class="absolute -left-6 -bottom-1/3" fill="lightblue" version="1.0" xmlns="http://www.w3.org/2000/svg"
+			width="50.000000pt" height="50.000000pt" viewBox="0 0 50.000000 50.000000"
+			preserveAspectRatio="xMidYMid meet">
+				<g transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)" stroke="black" stroke-width="6px">
+					<path d="M236 449 c-49 -10 -92 -21 -95 -24 -3 -3 8 -16 24 -29 l30 -24 -25
+					-43 c-19 -35 -25 -58 -25 -109 1 -68 19 -114 69 -175 30 -37 43 -28 22 14 -30
+					57 -14 146 39 215 15 19 15 19 38 -2 42 -40 47 -30 47 88 0 127 12 118 -124
+					89z"/>
+				</g>
+			</svg>
 		</a>
 
 		<!-- File ContextMenu -->
@@ -20,6 +30,14 @@
 						@click="editFileModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.file.rename') }}</a
+					>
+				</li>
+				<li>
+					<a
+						href="javascript:void(0)"
+						@click="createShortcutModal?.open()"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('item.createShortcut') }}</a
 					>
 				</li>
 				<!--
@@ -48,14 +66,17 @@
 		{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
 	>
 	<EditFileModal ref="editFileModal" :file="modelValue" />
+	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
 
 <script setup lang="ts">
 import { ref, type PropType } from 'vue';
 import { FileClass } from '@lib/items/files';
+import { ShortcutClass } from '@lib/items/shortcuts';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
 import EditFileModal from './EditModal.vue';
+import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
 
@@ -85,4 +106,5 @@ async function deleteFile() {
 }
 
 const editFileModal = ref<InstanceType<typeof EditFileModal>>();
+const createShortcutModal = ref<InstanceType<typeof CreateShortcutModal>>();
 </script>
