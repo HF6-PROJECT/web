@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import { url, api } from '@lib/helpers';
+import { url, fetchFromApi } from '@lib/helpers';
 
 export const user = defineMiddleware(async ({ locals, request, redirect }, next) => {
 	// If page url starts with '/u', then we know this is a user page.
@@ -16,7 +16,7 @@ export const user = defineMiddleware(async ({ locals, request, redirect }, next)
 	// Get User data from the API.
 	const authenticationHeader = locals.authHeader as string;
 	const userResponse = await (
-		await fetch(api('auth/user'), {
+		await fetchFromApi('auth/user', {
 			method: 'GET',
 			headers: {
 				Authorization: authenticationHeader,

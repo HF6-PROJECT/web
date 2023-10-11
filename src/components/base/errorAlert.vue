@@ -1,9 +1,7 @@
 <template>
-	<div>
-		<BaseAlert v-if="errorObject && errorObject.errors._" :type="AlertType.Danger">
-			<template v-for="error in errorObject.errors._"> {{ error }}<br /> </template>
-		</BaseAlert>
-	</div>
+	<BaseAlert v-if="errorObject && errorObject.errors._" :type="AlertType.Danger">
+		<template v-for="error in errorObject.errors._"> {{ error }}<br /> </template>
+	</BaseAlert>
 </template>
 
 <script lang="ts">

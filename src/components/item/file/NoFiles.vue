@@ -39,8 +39,8 @@ import { ref, type PropType } from 'vue';
 
 const props = defineProps({
 	modelValue: {
-		type: Object as PropType<FolderType>,
-		required: false,
+		type: Object as PropType<FolderType | undefined>,
+		required: true,
 	},
 });
 
