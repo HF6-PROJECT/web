@@ -59,7 +59,7 @@
 import { useStore } from '@nanostores/vue';
 import { addItem, itemsStore } from '@stores/items';
 import { computed, ref, type PropType } from 'vue';
-import { api } from '@lib/helpers';
+import { fetchFromApi } from '@lib/helpers';
 import NoFiles from './file/NoFiles.vue';
 import Folder from './folder/Folder.vue';
 import CreateFolderModal from './folder/CreateModal.vue';
@@ -104,8 +104,8 @@ getItems();
 
 async function getItems() {
 	try {
-		const response = await fetch(
-			api(`item/${FolderClass.isFolder(props.modelValue) ? `${props.modelValue.id}` : ''}`),
+		const response = await fetchFromApi(
+			`item/${FolderClass.isFolder(props.modelValue) ? `${props.modelValue.id}` : ''}`,
 			{
 				method: 'GET',
 				headers: {

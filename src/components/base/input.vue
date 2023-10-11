@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<BaseLabel class="mb-2" :for="props.id"><slot /></BaseLabel>
+		<BaseLabel v-if="$slots.default" class="mb-2" :for="props.id"><slot /></BaseLabel>
 		<div class="relative">
 			<input
 				:id="props.id"

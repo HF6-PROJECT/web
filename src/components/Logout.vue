@@ -1,9 +1,9 @@
 <template></template>
 
 <script setup lang="ts">
-import { api, url } from '@lib/helpers';
+import { fetchFromApi, url } from '@lib/helpers';
 
-fetch(api('auth/logout'), {
+fetchFromApi('auth/logout', {
 	method: 'POST',
 	credentials: 'include',
 }).then(() => {

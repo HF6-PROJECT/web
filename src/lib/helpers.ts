@@ -14,6 +14,20 @@ export const api = (path = '') => {
 	return `${import.meta.env.PUBLIC_API_URL}${path}`;
 };
 
+export const fetchFromApi = async (input: string, options: RequestInit = {}) => {
+	try {
+		const response = await fetch(api(input), options);
+
+		if (response.status === 401) {
+			throw new Error('Unauthorized');
+		}
+
+		return response;
+	} catch (e) {
+		return await fetch(api(input), options);
+	}
+};
+
 export const asset = (path: string) => {
 	return `/${path}`;
 };

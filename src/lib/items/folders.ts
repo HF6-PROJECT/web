@@ -1,4 +1,4 @@
-import { api } from '@lib/helpers';
+import { fetchFromApi } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 
 export class FolderClass extends ItemClass {
@@ -11,7 +11,7 @@ export class FolderClass extends ItemClass {
 	}
 
 	static async create(input: { name: string; parent: FolderType | null; color: FolderColor }) {
-		const response = await fetch(api('folder'), {
+		const response = await fetchFromApi('folder', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export class FolderClass extends ItemClass {
 	}
 
 	async update(input: { name: string; color: FolderColor }) {
-		const response = await fetch(api('folder'), {
+		const response = await fetchFromApi('folder', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export class FolderClass extends ItemClass {
 	}
 
 	async delete() {
-		const response = await fetch(api('folder/' + this.id), {
+		const response = await fetchFromApi('folder/' + this.id, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
