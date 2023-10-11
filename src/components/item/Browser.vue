@@ -72,11 +72,16 @@ import ContextMenu from '@components/base/contextMenu.vue';
 import BaseToast, { ToastType } from '@components/base/toast.vue';
 import { t } from '@lib/i18n';
 import { isModalOpen } from '@stores/modal';
+import Pusher from 'pusher-js';
 
 const props = defineProps({
 	modelValue: {
 		type: Object as PropType<FolderType>,
 		required: false,
+	},
+	user: {
+		type: Object as PropType<User>,
+		required: true,
 	},
 });
 
@@ -186,4 +191,25 @@ async function uploadFiles(e: Event) {
 		}
 	});
 }
+
+/**
+ * Live Updates
+ */
+Pusher.logToConsole = true;
+
+let pusher = new Pusher(import.meta.env.PUBLIC_PUSHER_APP_KEY, {
+	cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER,
+});
+
+const channelName = FolderClass.isFolder(props.modelValue)
+	? `browser-folder-${props.modelValue.id}`
+	: `browser-root-${await crypto.subtle.digest(
+			'SHA-256',
+			new TextEncoder().encode(props.user.email),
+	  )}`;
+
+var channel = pusher.subscribe(channelName);
+channel.bind('update', function (data: any) {
+	alert(JSON.stringify(data));
+});
 </script>
