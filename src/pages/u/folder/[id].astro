@@ -3,7 +3,7 @@ import LayoutSidebar from '@layouts/LayoutSidebar.astro';
 // @ts-ignore
 import Browser from '@components/item/Browser.vue';
 // @ts-ignore https://github.com/withastro/language-tools/issues/476
-import { api, url } from '@lib/helpers';
+import { url, fetchFromApi } from '@lib/helpers';
 import { FolderClass } from '@lib/items/folders';
 
 const { id } = Astro.params;
@@ -11,7 +11,7 @@ const { id } = Astro.params;
 // Send a request to the API to get the folder
 const authenticationHeader = Astro.locals.authHeader as string;
 const folderResponse = await (
-	await fetch(api(`folder/${id}`), {
+	await fetchFromApi(`folder/${id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: authenticationHeader,
