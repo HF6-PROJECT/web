@@ -57,14 +57,14 @@
 
 <script setup lang="ts">
 import { useStore } from '@nanostores/vue';
-import { addItem, itemsStore } from '@stores/items';
+import { addItem, itemsStore, removeItem } from '@stores/items';
 import { computed, ref, type PropType } from 'vue';
 import { fetchFromApi } from '@lib/helpers';
 import NoFiles from './file/NoFiles.vue';
 import Folder from './folder/Folder.vue';
 import CreateFolderModal from './folder/CreateModal.vue';
 import File from './file/File.vue';
-import { ItemClass } from '@lib/items/items';
+import { ItemClass, type ItemType } from '@lib/items/items';
 import { ItemFactory } from '@lib/items/factory';
 import { FolderClass, type FolderType } from '@lib/items/folders';
 import { FileClass } from '@lib/items/files';
@@ -72,7 +72,7 @@ import ContextMenu from '@components/base/contextMenu.vue';
 import BaseToast, { ToastType } from '@components/base/toast.vue';
 import { t } from '@lib/i18n';
 import { isModalOpen } from '@stores/modal';
-import Pusher from 'pusher-js';
+import { getFolderChannel } from '@lib/pusher';
 
 const props = defineProps({
 	modelValue: {
@@ -173,16 +173,6 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
-
-			// TODO: replace waiting 1 second with websocket
-			setTimeout(async () => {
-				await getItems();
-
-				toasts.value.push({
-					message: `File ${file.name} uploaded`,
-					type: ToastType.Success,
-				});
-			}, 1000);
 		} catch (error) {
 			toasts.value.push({
 				message: `Failed to upload file ${file.name}`,
@@ -195,21 +185,36 @@ async function uploadFiles(e: Event) {
 /**
  * Live Updates
  */
-Pusher.logToConsole = true;
 
-let pusher = new Pusher(import.meta.env.PUBLIC_PUSHER_APP_KEY, {
-	cluster: import.meta.env.PUBLIC_PUSHER_APP_CLUSTER,
+const channel = getFolderChannel(props.user.id, props.modelValue?.id);
+channel.bind('update', (data: ItemType) => {
+	if (!ItemClass.isItem(data)) return;
+
+	const item = ItemFactory.getItemFromObject(data);
+
+	if (item === null) return;
+
+	const isNew = items.value[item.id] === undefined;
+	const isOwner = item.ownerId === props.user.id;
+
+	if (isNew && isOwner) {
+		// TODO: Fix toasts
+		toasts.value.push({
+			message: `${item.name} has been created`,
+			type: ToastType.Success,
+		});
+	}
+
+	addItem(item);
 });
 
-const channelName = FolderClass.isFolder(props.modelValue)
-	? `browser-folder-${props.modelValue.id}`
-	: `browser-root-${await crypto.subtle.digest(
-			'SHA-256',
-			new TextEncoder().encode(props.user.email),
-	  )}`;
+channel.bind('delete', (data: ItemType) => {
+	if (!ItemClass.isItem(data)) return;
 
-var channel = pusher.subscribe(channelName);
-channel.bind('update', function (data: any) {
-	alert(JSON.stringify(data));
+	const item = ItemFactory.getItemFromObject(data);
+
+	if (item === null) return;
+
+	removeItem(item);
 });
 </script>
