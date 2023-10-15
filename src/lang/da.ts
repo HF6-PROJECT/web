@@ -62,11 +62,13 @@ export default {
 			create: {
 				header: 'Opret mappe',
 				name: 'Navn',
+				color: 'Farve',
 				submit: 'Opret',
 			},
 			edit: {
 				header: 'Omdøb mappe',
 				name: 'Navn',
+				color: 'Farve',
 				submit: 'Omdøb',
 			},
 			action: {
