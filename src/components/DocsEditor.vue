@@ -12,6 +12,13 @@ import * as Y from 'yjs';
 import { createClient } from '@liveblocks/client';
 import LiveblocksProvider from '@liveblocks/yjs';
 
+const props = defineProps({
+	docs: {
+		type: Object as PropType<Docs>,
+		required: true,
+	},
+});
+
 const client = createClient({
 	publicApiKey: 'pk_dev_Nwp6X3J4wQWoOKenVZfTTo20uVznlY5ir2_W95bx0RjleqvW7LKKMlPbCZISFsYI',
 });
