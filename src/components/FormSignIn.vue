@@ -61,7 +61,7 @@ import BaseInput from './base/input.vue';
 import BaseButton, { ButtonColor } from './base/button.vue';
 import ErrorAlert, { type ErrorObject } from './base/errorAlert.vue';
 
-import { asset, api, url } from '@lib/helpers';
+import { asset, fetchFromApi, url } from '@lib/helpers';
 import { t } from '@lib/i18n';
 import { ref } from 'vue';
 
@@ -76,7 +76,7 @@ const errorObject = ref<null | ErrorObject>(null);
 function onSubmit() {
 	errorObject.value = null;
 
-	fetch(api('auth/login'), {
+	fetchFromApi('auth/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

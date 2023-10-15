@@ -4,7 +4,7 @@ import 'dotenv/config';
 const sourcePath = './script/serviceWorker.js';
 const destinationPath = './public/serviceWorker.js';
 
-const API_URL = process.env.PUBLIC_API_URL || '';
+const API_URL = process.env.PUBLIC_LOCAL_DEVELOPMENT_API_URL || process.env.PUBLIC_API_URL || '';
 
 fs.readFile(sourcePath, { encoding: 'utf8' }, function (err, data) {
 	const formatted = data.replace(/^const API_URL.*/g, `const API_URL = '${API_URL}';`);
