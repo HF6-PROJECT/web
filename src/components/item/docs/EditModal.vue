@@ -1,17 +1,17 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.file.edit.header') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.docs.edit.header') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
 			<BaseInput
-				id="fileName"
+				id="docsName"
 				type="text"
-				v-model="file.name"
+				v-model="docs.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.file.edit.name') }}</BaseInput
+				>{{ t('fileBrowser.docs.edit.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.file.edit.submit')
+				t('fileBrowser.docs.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -26,11 +26,11 @@ import BaseInput from '@components/base/input.vue';
 import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
-import type { FileClass } from '@lib/items/files';
+import type { DocsClass } from '@lib/items/docs';
 
 const props = defineProps({
-	file: {
-		type: Object as PropType<FileClass>,
+	docs: {
+		type: Object as PropType<DocsClass>,
 		required: true,
 	},
 });
@@ -42,8 +42,8 @@ defineExpose({
 
 const modal = ref<InstanceType<typeof BaseModal>>();
 
-const file = ref<{ name: string }>({
-	name: props.file.name,
+const docs = ref<{ name: string }>({
+	name: props.docs.name,
 });
 const form = ref<HTMLFormElement>();
 const errorObject = ref<null | ErrorObject>(null);
@@ -57,11 +57,9 @@ async function updateFile() {
 	}
 
 	try {
-		const updatedFile = await props.file.update({
-			name: file.value.name,
-		});
+		const updatedDocs = await props.docs.update(docs.value.name, props.docs.text);
 
-		updateItem(updatedFile);
+		updateItem(updatedDocs);
 
 		// TODO: Show success toast
 
@@ -75,8 +73,8 @@ function open() {
 
 function close(resetValue = true) {
 	if (resetValue) {
-		file.value = {
-			name: props.file.name,
+		docs.value = {
+			name: props.docs.name,
 		};
 	}
 

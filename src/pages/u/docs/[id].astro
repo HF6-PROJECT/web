@@ -1,17 +1,17 @@
 ---
 import LayoutSidebar from '@layouts/LayoutSidebar.astro';
-// @ts-ignore
-import Browser from '@components/item/Browser.vue';
 // @ts-ignore https://github.com/withastro/language-tools/issues/476
 import { url, fetchFromApi } from '@lib/helpers';
-import { FolderClass } from '@lib/items/folders';
+import { DocsClass } from '@lib/items/docs';
+import DocsEditor from '@components/DocsEditor.vue';
+import { getInitialsByName, getUserColorByInitials } from '@lib/helpers';
 
 const { id } = Astro.params;
 
 // Send a request to the API to get the folder
 const authenticationHeader = Astro.locals.authHeader as string;
-const folderResponse = await (
-	await fetchFromApi(`folder/${id}`, {
+const docsResponse = await (
+	await fetchFromApi(`docs/${id}`, {
 		method: 'GET',
 		headers: {
 			Authorization: authenticationHeader,
@@ -19,25 +19,33 @@ const folderResponse = await (
 	})
 ).json();
 
-// If the folder doesn't exist, redirect
-if (!folderResponse || folderResponse?.statusCode <= 400) {
+// If the docs doesn't exist, redirect
+if (!docsResponse || docsResponse?.statusCode <= 400) {
 	return Astro.redirect(url('404'));
 }
 
-// If the folder isn't a valid folder, redirect
-if (!FolderClass.isFolder(folderResponse)) {
+// If the docs isn't a valid docs, redirect
+if (!DocsClass.isDocs(docsResponse)) {
 	return Astro.redirect(url('404'));
 }
 
 // Otherwise, we can continue
-const folder = folderResponse;
+const docs = docsResponse;
 
 // We can safely cast this as we know that middleware would have already checked for a valid user
 const user = Astro.locals.user as User;
+
+const userInitials = getInitialsByName(user.name);
+const userColor = getUserColorByInitials(userInitials);
+
+const collaborationUser = {
+	name: user.name,
+	color: userColor,
+};
 ---
 
 <LayoutSidebar user={user}>
 	<div class="h-screen">
-		<Browser modelValue={folder} client:only />
+		<DocsEditor modelValue={docs} user={collaborationUser} client:only />
 	</div>
 </LayoutSidebar>
