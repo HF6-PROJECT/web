@@ -22,7 +22,7 @@
 						:href="url(`u/folder/${modelValue.id}`)"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.openInNewTab') }}</a
+						>{{ t('fileBrowser.folder.action.openInNewTab') }}</a
 					>
 				</li>
 				<li>
@@ -30,7 +30,7 @@
 						href="javascript:void(0)"
 						@click="editFolderModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.edit') }}</a
+						>{{ t('fileBrowser.folder.action.edit') }}</a
 					>
 				</li>
 				<li>
@@ -38,7 +38,7 @@
 						href="javascript:void(0)"
 						@click="shareItemModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.share') }}</a
+						>{{ t('fileBrowser.folder.action.share') }}</a
 					>
 				</li>
 			</ul>
@@ -47,7 +47,7 @@
 					href="javascript:void(0)"
 					@click="deleteFolderModal?.open()"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
-					>{{ t('fileBrowser.folder.delete') }}</a
+					>{{ t('fileBrowser.folder.action.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
@@ -55,7 +55,7 @@
 
 	<!-- Modals -->
 	<BaseConfirmModal ref="deleteFolderModal" :type="ConfirmModalType.Danger" @confirm="deleteFolder">
-		{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
+		{{ t('fileBrowser.folder.action.confirmDelete') }}</BaseConfirmModal
 	>
 	<EditFolderModal ref="editFolderModal" :folder="modelValue" />
 	<ShareItemModal ref="shareItemModal" :item="modelValue" />

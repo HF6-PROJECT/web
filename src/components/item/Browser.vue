@@ -14,6 +14,8 @@
 			<div class="mt-3 flex flex-wrap gap-3">
 				<!-- prettier-ignore-attribute -->
 				<File v-for="file in files" :key="file.id" v-model="(items[file.id] as FileClass)" />
+				<!-- prettier-ignore-attribute -->
+				<Docs v-for="doc in docs" :key="doc.id" v-model="(items[doc.id] as DocsClass)" />
 			</div>
 		</template>
 
@@ -25,7 +27,7 @@
 						href="javascript:void(0)"
 						@click="createFolderModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.createFolder') }}</a
+						>{{ t('fileBrowser.folder.action.create') }}</a
 					>
 				</li>
 			</ul>
@@ -38,9 +40,19 @@
 						"
 						href="javascript:void(0)"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.file.uploadFile') }}</a
+						>{{ t('fileBrowser.file.action.create') }}</a
 					>
 					<input ref="fileInput" type="file" class="hidden" @change="uploadFiles" />
+				</li>
+			</ul>
+			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+				<li>
+					<a
+						@click="createDocsModal?.open()"
+						href="javascript:void(0)"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.docs.action.create') }}</a
+					>
 				</li>
 			</ul>
 		</ContextMenu>
@@ -48,6 +60,7 @@
 
 	<!-- Modals -->
 	<CreateFolderModal ref="createFolderModal" :parentFolder="props.modelValue" />
+	<CreateDocsModal ref="createDocsModal" :parentFolder="props.modelValue" />
 
 	<!-- Toasts -->
 	<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
@@ -56,22 +69,21 @@
 </template>
 
 <script setup lang="ts">
+// Lib
+import { computed, ref, type PropType } from 'vue';
+
+// Helpers
+import { t } from '@lib/i18n';
+import { fetchFromApi } from '@lib/helpers';
+
+// Stores
 import { useStore } from '@nanostores/vue';
 import { addItem, itemsStore } from '@stores/items';
-import { computed, ref, type PropType } from 'vue';
-import { fetchFromApi } from '@lib/helpers';
-import NoFiles from './file/NoFiles.vue';
-import Folder from './folder/Folder.vue';
-import CreateFolderModal from './folder/CreateModal.vue';
-import File from './file/File.vue';
-import { ItemClass } from '@lib/items/items';
-import { ItemFactory } from '@lib/items/factory';
-import { FolderClass, type FolderType } from '@lib/items/folders';
-import { FileClass } from '@lib/items/files';
+import { isModalOpen } from '@stores/modal';
+
+// Components
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseToast, { ToastType } from '@components/base/toast.vue';
-import { t } from '@lib/i18n';
-import { isModalOpen } from '@stores/modal';
 
 const props = defineProps({
 	modelValue: {
@@ -97,6 +109,11 @@ const toasts = ref<{ message: string; type: ToastType }[]>([]);
 /**
  * Items
  */
+import { ItemClass } from '@lib/items/items';
+import { ItemFactory } from '@lib/items/factory';
+
+import NoFiles from './file/NoFiles.vue';
+
 const hasItemsLoaded = ref(false);
 const items = useStore(itemsStore);
 
@@ -144,6 +161,10 @@ async function getItems() {
 /**
  * Folders
  */
+import { FolderClass, type FolderType } from '@lib/items/folders';
+import Folder from './folder/Folder.vue';
+import CreateFolderModal from './folder/CreateModal.vue';
+
 const createFolderModal = ref<InstanceType<typeof CreateFolderModal>>();
 
 const folders = computed(() => {
@@ -153,6 +174,9 @@ const folders = computed(() => {
 /**
  * Files
  */
+import { FileClass } from '@lib/items/files';
+import File from './file/File.vue';
+
 const files = computed(() => {
 	return Object.values(items.value).filter((item) => item instanceof FileClass) as FileClass[];
 });
@@ -186,4 +210,17 @@ async function uploadFiles(e: Event) {
 		}
 	});
 }
+
+/**
+ * Docs
+ */
+import { DocsClass, type DocsType } from '@lib/items/docs';
+import Docs from './docs/Docs.vue';
+import CreateDocsModal from './docs/CreateModal.vue';
+
+const createDocsModal = ref<InstanceType<typeof CreateDocsModal>>();
+
+const docs = computed(() => {
+	return Object.values(items.value).filter((item) => item instanceof DocsClass) as DocsClass[];
+});
 </script>
