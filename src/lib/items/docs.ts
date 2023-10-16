@@ -12,7 +12,7 @@ export class DocsClass extends ItemClass {
 	}
 
 	static async create(name: string, text: string, parent: FolderType | null) {
-		const response = await fetchFromApi(api('docs'), {
+		const response = await fetchFromApi('docs', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export class DocsClass extends ItemClass {
 	}
 
 	async update(name: string, text: string) {
-		const response = await fetchFromApi(api('docs'), {
+		const response = await fetchFromApi('docs', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
