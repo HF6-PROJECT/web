@@ -8,7 +8,7 @@ import { getInitialsByName, getUserColorByInitials } from '@lib/helpers';
 
 const { id } = Astro.params;
 
-// Send a request to the API to get the folder
+// Send a request to the API to get the document
 const authenticationHeader = Astro.locals.authHeader as string;
 const docsResponse = await (
 	await fetchFromApi(`docs/${id}`, {
