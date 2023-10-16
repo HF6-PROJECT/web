@@ -65,15 +65,14 @@
 						>{{ t('item.createShortcut') }}</a
 					>
 				</li>
-				<!--
 				<li>
 					<a
-						href="#"
+						href="javascript:void(0)"
+						@click="shareItemModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.folder.share') }}</a
 					>
 				</li>
-				-->
 			</ul>
 			<div class="py-2">
 				<a
@@ -91,6 +90,7 @@
 		{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
 	>
 	<EditFolderModal ref="editFolderModal" :folder="modelValue" />
+	<ShareItemModal ref="shareItemModal" :item="modelValue" />
 	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
 
@@ -102,6 +102,7 @@ import { url } from '@lib/helpers';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
 import EditFolderModal from './EditModal.vue';
+import ShareItemModal from '../ShareItemModal.vue';
 import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
@@ -140,5 +141,7 @@ async function deleteFolder() {
 }
 
 const editFolderModal = ref<InstanceType<typeof EditFolderModal>>();
+
+const shareItemModal = ref<InstanceType<typeof ShareItemModal>>();
 const createShortcutModal = ref<InstanceType<typeof CreateShortcutModal>>();
 </script>

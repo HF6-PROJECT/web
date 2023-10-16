@@ -40,15 +40,14 @@
 						>{{ t('item.createShortcut') }}</a
 					>
 				</li>
-				<!--
 				<li>
 					<a
 						href="javascript:void(0)"
+						@click="shareItemModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>Share</a
 					>
 				</li>
-				-->
 			</ul>
 			<div class="py-2">
 				<a
@@ -66,6 +65,7 @@
 		{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
 	>
 	<EditFileModal ref="editFileModal" :file="modelValue" />
+	<ShareItemModal ref="shareItemModal" :item="modelValue" />
 	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
 
@@ -76,6 +76,7 @@ import { ShortcutClass } from '@lib/items/shortcuts';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
 import EditFileModal from './EditModal.vue';
+import ShareItemModal from '../ShareItemModal.vue';
 import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
@@ -106,5 +107,7 @@ async function deleteFile() {
 }
 
 const editFileModal = ref<InstanceType<typeof EditFileModal>>();
+
+const shareItemModal = ref<InstanceType<typeof ShareItemModal>>();
 const createShortcutModal = ref<InstanceType<typeof CreateShortcutModal>>();
 </script>

@@ -1,7 +1,7 @@
 import { ItemClass, type ItemType } from './items';
 import { type FolderType } from './folders';
 import { upload } from '@vercel/blob/client';
-import { api } from '@lib/helpers';
+import { api, fetchFromApi } from '@lib/helpers';
 
 export class FileClass extends ItemClass {
 	private _blobUrl: string;
@@ -23,7 +23,7 @@ export class FileClass extends ItemClass {
 	}
 
 	async update(input: { name: string }) {
-		const response = await fetch(api('blob'), {
+		const response = await fetchFromApi('blob', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export class FileClass extends ItemClass {
 	}
 
 	async delete() {
-		const response = await fetch(api('blob/' + this.id), {
+		const response = await fetchFromApi('blob/' + this.id, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',

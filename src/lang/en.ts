@@ -95,6 +95,7 @@ export default {
 		},
 		link: {
 			myfiles: 'My Files',
+			sharedWithMe: 'Shared with me',
 			settings: 'Settings',
 			signOut: 'Sign out',
 		},
@@ -105,5 +106,12 @@ export default {
 	confirmModal: {
 		yesImSure: 'Yes, I am sure',
 		noCancel: 'No, cancel',
+	},
+	shareItemModal: {
+		share: 'Share',
+		peopleWithAccess: 'People with access',
+		addPeople: 'Add people',
+		owner: 'Owner',
+		confirm: 'Confirm',
 	},
 };

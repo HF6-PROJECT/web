@@ -74,7 +74,7 @@ import BaseButton, { ButtonColor } from './base/button.vue';
 import ErrorAlert, { type ErrorObject } from './base/errorAlert.vue';
 
 import { t } from '@lib/i18n';
-import { asset, api, url } from '@lib/helpers';
+import { asset, fetchFromApi, url } from '@lib/helpers';
 import { ref } from 'vue';
 
 const form = ref<HTMLFormElement>();
@@ -105,7 +105,7 @@ function onSubmit() {
 		return;
 	}
 
-	fetch(api('auth/register'), {
+	fetchFromApi('auth/register', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

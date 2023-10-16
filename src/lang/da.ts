@@ -95,6 +95,7 @@ export default {
 		},
 		link: {
 			myfiles: 'Mine Filer',
+			sharedWithMe: 'Delt med mig',
 			settings: 'Indstillinger',
 			signOut: 'Log ud',
 		},
@@ -105,5 +106,12 @@ export default {
 	confirmModal: {
 		yesImSure: 'Ja, jeg er sikker',
 		noCancel: 'Nej, annuller',
+	},
+	shareItemModal: {
+		share: 'Del',
+		peopleWithAccess: 'Personer med adgang',
+		addPeople: 'Tilføj personer',
+		owner: 'Ejer',
+		confirm: 'Bekræft',
 	},
 };
