@@ -6,25 +6,37 @@
 			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 			v-on:contextmenu.prevent="fileContextMenu?.openMenu"
 		>
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<h5
+				class="mb-2 flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+			>
 				{{ modelValue.name }}
+				<svg
+					v-if="modelValue instanceof ShortcutClass"
+					class="h-6 w-6 text-gray-800 dark:text-white"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 19 17"
+				>
+					<path
+						d="M2.057 6.9a8.718 8.718 0 0 1 6.41-3.62v-1.2A2.064 2.064 0 0 1 9.626.2a1.979 1.979 0 0 1 2.1.23l5.481 4.308a2.107 2.107 0 0 1 0 3.3l-5.479 4.308a1.977 1.977 0 0 1-2.1.228 2.063 2.063 0 0 1-1.158-1.876v-.942c-5.32 1.284-6.2 5.25-6.238 5.44a1 1 0 0 1-.921.807h-.06a1 1 0 0 1-.953-.7A10.24 10.24 0 0 1 2.057 6.9Z"
+					/>
+				</svg>
 			</h5>
-			<svg v-if="(modelValue instanceof ShortcutClass)" class="absolute -left-6 -bottom-1/3" fill="lightblue" version="1.0" xmlns="http://www.w3.org/2000/svg"
-			width="50.000000pt" height="50.000000pt" viewBox="0 0 50.000000 50.000000"
-			preserveAspectRatio="xMidYMid meet">
-				<g transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)" stroke="black" stroke-width="6px">
-					<path d="M236 449 c-49 -10 -92 -21 -95 -24 -3 -3 8 -16 24 -29 l30 -24 -25
-					-43 c-19 -35 -25 -58 -25 -109 1 -68 19 -114 69 -175 30 -37 43 -28 22 14 -30
-					57 -14 146 39 215 15 19 15 19 38 -2 42 -40 47 -30 47 88 0 127 12 118 -124
-					89z"/>
-				</g>
-			</svg>
 		</a>
 
 		<!-- File ContextMenu -->
 		<ContextMenu ref="fileContextMenu">
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-				<li>
+				<li v-if="modelValue instanceof ShortcutClass">
+					<a
+						href="javascript:void(0)"
+						@click="editShortcutModal?.open()"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.shortcut.rename') }}</a
+					>
+				</li>
+				<li v-else>
 					<a
 						href="javascript:void(0)"
 						@click="editFileModal?.open()"
@@ -32,12 +44,12 @@
 						>{{ t('fileBrowser.file.rename') }}</a
 					>
 				</li>
-				<li>
+				<li v-if="!(modelValue instanceof ShortcutClass)">
 					<a
 						href="javascript:void(0)"
 						@click="createShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('item.createShortcut') }}</a
+						>{{ t('fileBrowser.shortcut.create') }}</a
 					>
 				</li>
 				<li>
@@ -64,7 +76,12 @@
 	<BaseConfirmModal ref="deleteFileModal" :type="ConfirmModalType.Danger" @confirm="deleteFile">
 		{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
 	>
-	<EditFileModal ref="editFileModal" :file="modelValue" />
+	<EditFileModal v-if="modelValue instanceof FileClass" ref="editFileModal" :file="modelValue" />
+	<EditShortcutModal
+		v-if="modelValue instanceof ShortcutClass"
+		ref="editShortcutModal"
+		:shortcut="modelValue"
+	/>
 	<ShareItemModal ref="shareItemModal" :item="modelValue" />
 	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
@@ -76,6 +93,7 @@ import { ShortcutClass } from '@lib/items/shortcuts';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
 import EditFileModal from './EditModal.vue';
+import EditShortcutModal from './EditShortcutModal.vue';
 import ShareItemModal from '../ShareItemModal.vue';
 import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { t } from '@lib/i18n';
@@ -86,7 +104,7 @@ const fileContextMenu = ref<InstanceType<typeof ContextMenu>>();
 defineEmits(['update:modelValue']);
 const props = defineProps({
 	modelValue: {
-		type: Object as PropType<FileClass>,
+		type: Object as PropType<FileClass | ShortcutClass>,
 		required: true,
 	},
 });
@@ -107,6 +125,7 @@ async function deleteFile() {
 }
 
 const editFileModal = ref<InstanceType<typeof EditFileModal>>();
+const editShortcutModal = ref<InstanceType<typeof EditShortcutModal>>();
 
 const shareItemModal = ref<InstanceType<typeof ShareItemModal>>();
 const createShortcutModal = ref<InstanceType<typeof CreateShortcutModal>>();

@@ -1,4 +1,4 @@
-import { api } from '@lib/helpers';
+import { api, fetchFromApi } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 import { FolderClass } from './folders';
 import { FileClass } from './files';
@@ -14,7 +14,7 @@ export class ShortcutClass extends ItemClass {
 		this._linkedItemId = shortcutObject.linkedItemId;
 	}
 
-	async setLinkedItem(linkedItemId: number) {		
+	async setLinkedItem(linkedItemId: number) {
 		const response = await fetch(api('item/' + linkedItemId + '/single'), {
 			method: 'GET',
 			headers: {
@@ -29,18 +29,18 @@ export class ShortcutClass extends ItemClass {
 		if (json.mimeType === 'application/vnd.cloudstore.folder') {
 			const newJson = {
 				...json,
-				color: json.ItemFolder.color
-			}
+				color: json.ItemFolder.color,
+			};
 			this.color = json.ItemFolder.color;
 			this._linkedItem = new FolderClass(newJson);
 			return;
 		}
 
-		if (('blobUrl' in json.ItemBlob && typeof json.ItemBlob?.blobUrl === 'string')) {
+		if ('blobUrl' in json.ItemBlob && typeof json.ItemBlob?.blobUrl === 'string') {
 			const newJson = {
 				...json,
-				blobUrl: json.ItemBlob.blobUrl
-			}
+				blobUrl: json.ItemBlob.blobUrl,
+			};
 			this._linkedItem = new FileClass(newJson);
 		}
 	}
@@ -56,6 +56,32 @@ export class ShortcutClass extends ItemClass {
 				name: input.name,
 				parentId: input.parentId ?? null,
 				linkedItemId: input.linkedItemId,
+			}),
+		});
+
+		if (!response.ok) {
+			if (response.status >= 400 && response.status < 500) {
+				const json = await response.json();
+
+				throw new Error(json.error);
+			}
+
+			throw new Error(await response.text());
+		}
+
+		return new ShortcutClass(await response.json());
+	}
+
+	async update(input: { name: string }) {
+		const response = await fetchFromApi('shortcut', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				id: this.id,
+				name: input.name,
 			}),
 		});
 
@@ -111,7 +137,6 @@ export class ShortcutClass extends ItemClass {
 }
 
 export type ShortcutType = {
-	linkedItemId: number,
-	linkedItem: FileClass | ShortcutClass | undefined,
+	linkedItemId: number;
+	linkedItem: FileClass | ShortcutClass | undefined;
 } & ItemType;
-

@@ -84,9 +84,11 @@ export default {
 				rose: 'Rose',
 			},
 		},
-	},
-	item: {
-		createShortcut: 'Opret genvej',
+		shortcut: {
+			create: 'Opret genvej',
+			rename: 'Omdøb genvej',
+			add: 'Opret',
+		},
 	},
 	layout: {
 		sr: {

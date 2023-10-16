@@ -84,28 +84,6 @@ export class FolderClass extends ItemClass {
 		}
 	}
 
-	static async all() {
-		const response = await fetch(api('item/folders'), {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
-		});
-
-		if (!response.ok) {
-			if (response.status >= 400 && response.status < 500) {
-				const json = await response.json();
-
-				throw new Error(json.error);
-			}
-
-			throw new Error(await response.text());
-		}
-
-		return await response.json();
-	}
-
 	get color() {
 		return this._color;
 	}

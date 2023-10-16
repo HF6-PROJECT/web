@@ -83,10 +83,12 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
+			shortcut: {
+				create: 'Create shortcut',
+				rename: 'Rename shortcut',
+				add: 'Create',
+			},
 		},
-	},
-	item: {
-		createShortcut: 'Opret genvej',
 	},
 	layout: {
 		sr: {

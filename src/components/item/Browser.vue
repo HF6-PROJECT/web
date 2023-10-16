@@ -148,14 +148,22 @@ async function getItems() {
 const createFolderModal = ref<InstanceType<typeof CreateFolderModal>>();
 
 const folders = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FolderClass || (item instanceof ShortcutClass && item._linkedItem instanceof FolderClass)) as FolderClass[];
+	return Object.values(items.value).filter(
+		(item) =>
+			item instanceof FolderClass ||
+			(item instanceof ShortcutClass && item._linkedItem instanceof FolderClass),
+	) as FolderClass[];
 });
 
 /**
  * Files
  */
 const files = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FileClass || (item instanceof ShortcutClass && item._linkedItem instanceof FileClass)) as FileClass[];
+	return Object.values(items.value).filter(
+		(item) =>
+			item instanceof FileClass ||
+			(item instanceof ShortcutClass && item._linkedItem instanceof FileClass),
+	) as FileClass[];
 });
 
 const fileInput = ref<HTMLInputElement>();

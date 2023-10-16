@@ -17,25 +17,26 @@
 		<a
 			:href="url(`u/folder/${modelValue._linkedItemId}`)"
 			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
-			v-if="(modelValue instanceof ShortcutClass)"
+			v-if="modelValue instanceof ShortcutClass"
 		>
 			<button
 				type="button"
 				:class="classes"
-				class="h-[40px] rounded-lg bg-gradient-to-br px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+				class="flex h-[40px] items-center gap-2 rounded-lg bg-gradient-to-br px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
 			>
 				{{ modelValue.name }}
+				<svg
+					class="h-4 w-4 text-gray-800 dark:text-white"
+					aria-hidden="true"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					viewBox="0 0 19 17"
+				>
+					<path
+						d="M2.057 6.9a8.718 8.718 0 0 1 6.41-3.62v-1.2A2.064 2.064 0 0 1 9.626.2a1.979 1.979 0 0 1 2.1.23l5.481 4.308a2.107 2.107 0 0 1 0 3.3l-5.479 4.308a1.977 1.977 0 0 1-2.1.228 2.063 2.063 0 0 1-1.158-1.876v-.942c-5.32 1.284-6.2 5.25-6.238 5.44a1 1 0 0 1-.921.807h-.06a1 1 0 0 1-.953-.7A10.24 10.24 0 0 1 2.057 6.9Z"
+					/>
+				</svg>
 			</button>
-			<svg class="absolute -left-3 -bottom-3" fill="lightblue" version="1.0" xmlns="http://www.w3.org/2000/svg"
-			width="25.000000pt" height="25.000000pt" viewBox="0 0 50.000000 50.000000"
-			preserveAspectRatio="xMidYMid meet">
-				<g transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)" stroke="black" stroke-width="6px">
-					<path d="M236 449 c-49 -10 -92 -21 -95 -24 -3 -3 8 -16 24 -29 l30 -24 -25
-					-43 c-19 -35 -25 -58 -25 -109 1 -68 19 -114 69 -175 30 -37 43 -28 22 14 -30
-					57 -14 146 39 215 15 19 15 19 38 -2 42 -40 47 -30 47 88 0 127 12 118 -124
-					89z"/>
-				</g>
-			</svg>
 		</a>
 
 		<!-- Folder ContextMenu -->
@@ -43,13 +44,29 @@
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 				<li>
 					<a
+						v-if="modelValue instanceof ShortcutClass"
+						:href="url(`u/folder/${modelValue.linkedItemId}`)"
+						target="_blank"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.folder.openInNewTab') }}</a
+					>
+					<a
+						v-if="!(modelValue instanceof ShortcutClass)"
 						:href="url(`u/folder/${modelValue.id}`)"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.folder.openInNewTab') }}</a
 					>
 				</li>
-				<li>
+				<li v-if="modelValue instanceof ShortcutClass">
+					<a
+						href="javascript:void(0)"
+						@click="editShortcutModal?.open()"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.shortcut.rename') }}</a
+					>
+				</li>
+				<li v-else>
 					<a
 						href="javascript:void(0)"
 						@click="editFolderModal?.open()"
@@ -57,12 +74,12 @@
 						>{{ t('fileBrowser.folder.edit') }}</a
 					>
 				</li>
-				<li>
+				<li v-if="!(modelValue instanceof ShortcutClass)">
 					<a
 						href="javascript:void(0)"
 						@click="createShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('item.createShortcut') }}</a
+						>{{ t('fileBrowser.shortcut.create') }}</a
 					>
 				</li>
 				<li>
@@ -89,7 +106,16 @@
 	<BaseConfirmModal ref="deleteFolderModal" :type="ConfirmModalType.Danger" @confirm="deleteFolder">
 		{{ t('fileBrowser.folder.areYouSureYouWantToDeleteThisFolder') }}</BaseConfirmModal
 	>
-	<EditFolderModal ref="editFolderModal" :folder="modelValue" />
+	<EditFolderModal
+		v-if="modelValue instanceof FolderClass"
+		ref="editFolderModal"
+		:folder="modelValue"
+	/>
+	<EditShortcutModal
+		v-if="modelValue instanceof ShortcutClass"
+		ref="editShortcutModal"
+		:shortcut="modelValue"
+	/>
 	<ShareItemModal ref="shareItemModal" :item="modelValue" />
 	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
@@ -102,6 +128,7 @@ import { url } from '@lib/helpers';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
 import EditFolderModal from './EditModal.vue';
+import EditShortcutModal from './EditShortcutModal.vue';
 import ShareItemModal from '../ShareItemModal.vue';
 import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { t } from '@lib/i18n';
@@ -118,7 +145,10 @@ const props = defineProps({
 });
 
 const classes = computed(() => {
-	if (props.modelValue instanceof ShortcutClass && props.modelValue._linkedItem instanceof FolderClass) {
+	if (
+		props.modelValue instanceof ShortcutClass &&
+		props.modelValue._linkedItem instanceof FolderClass
+	) {
 		return props.modelValue._linkedItem.colorClass;
 	}
 
@@ -141,6 +171,7 @@ async function deleteFolder() {
 }
 
 const editFolderModal = ref<InstanceType<typeof EditFolderModal>>();
+const editShortcutModal = ref<InstanceType<typeof EditShortcutModal>>();
 
 const shareItemModal = ref<InstanceType<typeof ShareItemModal>>();
 const createShortcutModal = ref<InstanceType<typeof CreateShortcutModal>>();
