@@ -226,6 +226,9 @@ async function refreshTokens(event) {
 		method: 'POST',
 		signal: controller.signal,
 		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+		},
 	});
 	event.waitUntil(refreshResponse);
 
