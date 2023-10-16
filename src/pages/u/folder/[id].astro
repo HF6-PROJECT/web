@@ -29,7 +29,7 @@ if (!FolderClass.isFolder(folderResponse)) {
 	return Astro.redirect(url('404'));
 }
 
-// Otherwise, create a new folder instance
+// Otherwise, we can continue
 const folder = folderResponse;
 
 // We can safely cast this as we know that middleware would have already checked for a valid user

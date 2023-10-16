@@ -1,6 +1,6 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.editFolder') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.edit.header') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
 			<BaseInput
 				id="folderName"
@@ -8,7 +8,7 @@
 				v-model="folder.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.folder.name') }}</BaseInput
+				>{{ t('fileBrowser.folder.edit.name') }}</BaseInput
 			>
 			<BaseSelect
 				id="folderColor"
@@ -18,7 +18,7 @@
 			>
 				<template v-slot:label>
 					<div class="flex">
-						<span>{{ t('fileBrowser.folder.color.name') }}</span>
+						<span>{{ t('fileBrowser.folder.edit.color') }}</span>
 						<div
 							v-if="folder.color"
 							:class="
@@ -35,7 +35,7 @@
 				</template>
 			</BaseSelect>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit')
+				t('fileBrowser.folder.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -81,7 +81,7 @@ async function updateFolder() {
 		errorObject.value = {
 			error: 'Validation Error',
 			errors: {
-				confirmPassword: [t('fileBrowser.folder.color.required')],
+				color: [t('fileBrowser.folder.color.required')],
 			},
 			statusCode: 400,
 		};
@@ -103,7 +103,7 @@ async function updateFolder() {
 
 		// TODO: Show success toast
 
-		close();
+		close(false);
 	} catch (e) {}
 }
 
@@ -115,11 +115,14 @@ function open() {
 	modal.value?.open();
 }
 
-function close() {
-	folder.value = {
-		name: props.folder.name,
-		color: props.folder.color,
-	};
+function close(resetValue = true) {
+	if (resetValue) {
+		folder.value = {
+			name: props.folder.name,
+			color: props.folder.color,
+		};
+	}
+
 	modal.value?.close(false);
 }
 </script>
