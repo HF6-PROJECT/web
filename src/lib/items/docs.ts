@@ -1,6 +1,6 @@
 import { ItemClass, type ItemType } from './items';
 import { type FolderType } from './folders';
-import { api } from '@lib/helpers';
+import { api, fetchFromApi } from '@lib/helpers';
 
 export class DocsClass extends ItemClass {
 	private _text: string;

@@ -1,6 +1,7 @@
 /// <reference types="astro/client" />
 
 interface User {
+	id: number;
 	name: string;
 	email: string;
 }
@@ -13,6 +14,8 @@ interface ImportMetaEnv {
 	readonly PUBLIC_LOCAL_DEVELOPMENT_API_URL: string | undefined;
 	readonly JWT_PUBLIC_KEY: string;
 	readonly NODE_BUILD: boolean | undefined;
+	readonly PUBLIC_PUSHER_APP_KEY: string;
+	readonly PUBLIC_PUSHER_APP_CLUSTER: string;
 }
 
 interface ImportMeta {

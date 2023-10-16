@@ -70,6 +70,9 @@ async function updateFile() {
 }
 
 function open() {
+	file.value = {
+		name: props.file.name,
+	};
 	modal.value?.open();
 }
 

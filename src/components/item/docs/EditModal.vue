@@ -64,10 +64,15 @@ async function updateFile() {
 		// TODO: Show success toast
 
 		close(false);
-	} catch (e) {}
+	} catch (e) {
+		console.error('Error: ' + e);
+	}
 }
 
 function open() {
+	docs.value = {
+		name: props.docs.name,
+	};
 	modal.value?.open();
 }
 

@@ -154,6 +154,10 @@ async function getItem() {
 
 	rawItem.ItemSharing.forEach(
 		(sharing: { id: number; user: { id: number; name: string; email: string } }) => {
+			if (sharing.user.id === rawItem.owner.id) {
+				return;
+			}
+
 			usersWithAccess.value.push({
 				id: sharing.user.id,
 				sharingId: sharing.id,

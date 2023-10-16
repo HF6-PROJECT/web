@@ -78,7 +78,7 @@ import { fetchFromApi } from '@lib/helpers';
 
 // Stores
 import { useStore } from '@nanostores/vue';
-import { addItem, itemsStore } from '@stores/items';
+import { addItem, removeItem, itemsStore } from '@stores/items';
 import { isModalOpen } from '@stores/modal';
 
 // Components
@@ -89,6 +89,10 @@ const props = defineProps({
 	modelValue: {
 		type: Object as PropType<FolderType>,
 		required: false,
+	},
+	user: {
+		type: Object as PropType<User>,
+		required: true,
 	},
 });
 
@@ -109,7 +113,7 @@ const toasts = ref<{ message: string; type: ToastType }[]>([]);
 /**
  * Items
  */
-import { ItemClass } from '@lib/items/items';
+import { ItemClass, type ItemType } from '@lib/items/items';
 import { ItemFactory } from '@lib/items/factory';
 
 import NoFiles from './file/NoFiles.vue';
@@ -192,16 +196,6 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
-
-			// TODO: replace waiting 1 second with websocket
-			setTimeout(async () => {
-				await getItems();
-
-				toasts.value.push({
-					message: `File ${file.name} uploaded`,
-					type: ToastType.Success,
-				});
-			}, 1000);
 		} catch (error) {
 			toasts.value.push({
 				message: `Failed to upload file ${file.name}`,
@@ -222,5 +216,42 @@ const createDocsModal = ref<InstanceType<typeof CreateDocsModal>>();
 
 const docs = computed(() => {
 	return Object.values(items.value).filter((item) => item instanceof DocsClass) as DocsClass[];
+});
+
+/**
+ * Live Updates
+ */
+import { getFolderChannel } from '@lib/pusher';
+
+const channel = getFolderChannel(props.user.id, props.modelValue?.id);
+channel.bind('update', (data: ItemType) => {
+	if (!ItemClass.isItem(data)) return;
+
+	const item = ItemFactory.getItemFromObject(data);
+
+	if (item === null) return;
+
+	const isNew = items.value[item.id] === undefined;
+	const isOwner = item.ownerId === props.user.id;
+
+	if (isNew && isOwner) {
+		// TODO: Fix toasts
+		toasts.value.push({
+			message: `${item.name} has been created`,
+			type: ToastType.Success,
+		});
+	}
+
+	addItem(item);
+});
+
+channel.bind('delete', (data: ItemType) => {
+	if (!ItemClass.isItem(data)) return;
+
+	const item = ItemFactory.getItemFromObject(data);
+
+	if (item === null) return;
+
+	removeItem(item);
 });
 </script>
