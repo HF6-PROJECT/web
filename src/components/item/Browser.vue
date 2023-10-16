@@ -216,7 +216,6 @@ const createDocsModal = ref<InstanceType<typeof CreateDocsModal>>();
 
 const docs = computed(() => {
 	return Object.values(items.value).filter((item) => item instanceof DocsClass) as DocsClass[];
-
 });
 
 /**
