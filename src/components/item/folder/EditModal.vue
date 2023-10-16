@@ -108,6 +108,10 @@ async function updateFolder() {
 }
 
 function open() {
+	folder.value = {
+		name: props.folder.name,
+		color: props.folder.color,
+	};
 	modal.value?.open();
 }
 
