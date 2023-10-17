@@ -61,11 +61,6 @@
 	<!-- Modals -->
 	<CreateFolderModal ref="createFolderModal" :parentFolder="props.modelValue" />
 	<CreateDocsModal ref="createDocsModal" :parentFolder="props.modelValue" />
-
-	<!-- Toasts -->
-	<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
-		<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
-	</div>
 </template>
 
 <script setup lang="ts">
@@ -75,15 +70,17 @@ import { computed, ref, type PropType } from 'vue';
 // Helpers
 import { t } from '@lib/i18n';
 import { fetchFromApi } from '@lib/helpers';
+import { v4 as uuid } from 'uuid';
 
 // Stores
 import { useStore } from '@nanostores/vue';
 import { addItem, removeItem, itemsStore } from '@stores/items';
+import { addToast } from '@stores/toasts';
 import { isModalOpen } from '@stores/modal';
 
 // Components
 import ContextMenu from '@components/base/contextMenu.vue';
-import BaseToast, { ToastType } from '@components/base/toast.vue';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	modelValue: {
@@ -106,9 +103,6 @@ function openContextMenu(e: MouseEvent) {
 	e.preventDefault();
 	fileBrowserContextMenu?.value?.openMenu(e);
 }
-
-// TODO: Fix toasts
-const toasts = ref<{ message: string; type: ToastType }[]>([]);
 
 /**
  * Items
@@ -197,7 +191,8 @@ async function uploadFiles(e: Event) {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
 		} catch (error) {
-			toasts.value.push({
+			addToast({
+				id: uuid(),
 				message: `Failed to upload file ${file.name}`,
 				type: ToastType.Danger,
 			});
@@ -235,8 +230,8 @@ channel.bind('update', (data: ItemType) => {
 	const isOwner = item.ownerId === props.user.id;
 
 	if (isNew && isOwner) {
-		// TODO: Fix toasts
-		toasts.value.push({
+		addToast({
+			id: uuid(),
 			message: `${item.name} has been created`,
 			type: ToastType.Success,
 		});
