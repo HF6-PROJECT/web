@@ -2,9 +2,10 @@
 	<div class="relative">
 		<!-- File -->
 		<a
-			href="#"
+			href="javascript:void(0)"
 			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 			v-on:contextmenu.prevent="fileContextMenu?.openMenu"
+			@click.prevent="downloadFile"
 		>
 			<h5
 				class="mb-2 flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
@@ -60,6 +61,14 @@
 						>{{ t('fileBrowser.file.action.share') }}</a
 					>
 				</li>
+				<li>
+					<a
+						href="javascript:void(0)"
+						@click="downloadFile"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.file.action.download') }}</a
+					>
+				</li>
 			</ul>
 			<div class="py-2">
 				<a
@@ -87,17 +96,23 @@
 </template>
 
 <script setup lang="ts">
+// Lib
 import { ref, type PropType } from 'vue';
-import { FileClass } from '@lib/items/files';
-import { ShortcutClass } from '@lib/items/shortcuts';
-import ContextMenu from '@components/base/contextMenu.vue';
-import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
-import EditFileModal from './EditModal.vue';
-import EditShortcutModal from './EditShortcutModal.vue';
-import ShareItemModal from '../ShareItemModal.vue';
-import CreateShortcutModal from '../CreateShortcutModal.vue';
+
+// Helpers
 import { t } from '@lib/i18n';
+
+// Components
+import ContextMenu from '@components/base/contextMenu.vue';
+
+// Stores
 import { removeItem } from '@stores/items';
+
+// File
+import { FileClass } from '@lib/items/files';
+
+// Shortcut
+import { ShortcutClass } from '@lib/items/shortcuts';
 
 const fileContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
@@ -108,6 +123,28 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+function downloadFile() {
+	if (
+		props.modelValue instanceof ShortcutClass &&
+		props.modelValue.linkedItem instanceof FileClass
+	) {
+		window.open(props.modelValue.linkedItem.blobUrl, '_blank');
+	} else if (props.modelValue instanceof FileClass) {
+		window.open(props.modelValue.blobUrl, '_blank');
+	}
+
+	fileContextMenu.value?.closeMenu();
+}
+
+/*
+ * Modals
+ */
+import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
+import EditFileModal from './EditModal.vue';
+import ShareItemModal from '../ShareItemModal.vue';
+import EditShortcutModal from './EditShortcutModal.vue';
+import CreateShortcutModal from '../CreateShortcutModal.vue';
 
 const deleteFileModal = ref<InstanceType<typeof BaseConfirmModal>>();
 async function deleteFile() {

@@ -55,6 +55,7 @@ export default {
 				edit: 'Omdøb fil',
 				share: 'Del',
 				delete: 'Slet',
+				download: 'Download',
 				confirmDelete: 'Er du sikker på, at du vil slette denne fil?',
 			},
 		},
