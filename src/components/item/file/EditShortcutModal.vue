@@ -8,10 +8,10 @@
 				v-model="shortcut.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.file.name') }}</BaseInput
+				>{{ t('fileBrowser.file.edit.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit')
+				t('fileBrowser.folder.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>

@@ -1,17 +1,17 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.rename') }}</h3>
-		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.docs.edit.header') }}</h3>
+		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
 			<BaseInput
-				id="folderName"
+				id="docsName"
 				type="text"
-				v-model="shortcut.name"
+				v-model="docs.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.folder.edit.name') }}</BaseInput
+				>{{ t('fileBrowser.docs.edit.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit.submit')
+				t('fileBrowser.docs.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -26,11 +26,11 @@ import BaseInput from '@components/base/input.vue';
 import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
-import type { ShortcutClass } from '@lib/items/shortcuts';
+import type { DocsClass } from '@lib/items/docs';
 
 const props = defineProps({
-	shortcut: {
-		type: Object as PropType<ShortcutClass>,
+	docs: {
+		type: Object as PropType<DocsClass>,
 		required: true,
 	},
 });
@@ -42,13 +42,13 @@ defineExpose({
 
 const modal = ref<InstanceType<typeof BaseModal>>();
 
-const shortcut = ref<{ name: string }>({
-	name: props.shortcut.name,
+const docs = ref<{ name: string }>({
+	name: props.docs.name,
 });
 const form = ref<HTMLFormElement>();
 const errorObject = ref<null | ErrorObject>(null);
 
-async function updateFolder() {
+async function updateFile() {
 	errorObject.value = null;
 
 	if (!form.value?.checkValidity() || errorObject.value) {
@@ -57,28 +57,32 @@ async function updateFolder() {
 	}
 
 	try {
-		const updatedShortcut = await props.shortcut.update({
-			name: shortcut.value.name,
-		});
+		const updatedDocs = await props.docs.update(docs.value.name, props.docs.text);
 
-		await updatedShortcut.setLinkedItem(updatedShortcut._linkedItemId);
-
-		updateItem(updatedShortcut);
+		updateItem(updatedDocs);
 
 		// TODO: Show success toast
 
-		close();
-	} catch (e) {}
+		close(false);
+	} catch (e) {
+		console.error('Error: ' + e);
+	}
 }
 
 function open() {
+	docs.value = {
+		name: props.docs.name,
+	};
 	modal.value?.open();
 }
 
-function close() {
-	shortcut.value = {
-		name: props.shortcut.name,
-	};
+function close(resetValue = true) {
+	if (resetValue) {
+		docs.value = {
+			name: props.docs.name,
+		};
+	}
+
 	modal.value?.close(false);
 }
 </script>

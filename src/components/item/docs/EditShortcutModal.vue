@@ -1,17 +1,17 @@
 <template>
 	<BaseModal ref="modal" @close="close">
 		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.rename') }}</h3>
-		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
+		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
 			<BaseInput
-				id="folderName"
+				id="docsName"
 				type="text"
 				v-model="shortcut.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.folder.edit.name') }}</BaseInput
+				>{{ t('fileBrowser.docs.edit.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit.submit')
+				t('fileBrowser.docs.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -48,7 +48,7 @@ const shortcut = ref<{ name: string }>({
 const form = ref<HTMLFormElement>();
 const errorObject = ref<null | ErrorObject>(null);
 
-async function updateFolder() {
+async function updateFile() {
 	errorObject.value = null;
 
 	if (!form.value?.checkValidity() || errorObject.value) {
@@ -67,7 +67,7 @@ async function updateFolder() {
 
 		// TODO: Show success toast
 
-		close();
+		close(false);
 	} catch (e) {}
 }
 
@@ -75,10 +75,13 @@ function open() {
 	modal.value?.open();
 }
 
-function close() {
-	shortcut.value = {
-		name: props.shortcut.name,
-	};
+function close(resetValue = true) {
+	if (resetValue) {
+		shortcut.value = {
+			name: props.shortcut.name,
+		};
+	}
+
 	modal.value?.close(false);
 }
 </script>

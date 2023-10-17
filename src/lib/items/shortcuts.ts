@@ -2,11 +2,14 @@ import { api, fetchFromApi } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 import { FolderClass } from './folders';
 import { FileClass } from './files';
+import { DocsClass } from './docs';
 
 export class ShortcutClass extends ItemClass {
 	public _linkedItemId: number;
-	public _linkedItem: FolderClass | FileClass | undefined;
+	public _linkedItem: FolderClass | FileClass | DocsClass | undefined;
 	public color: string | undefined;
+	public text: string | undefined;
+	public blobUrl: string | undefined;
 
 	constructor(shortcutObject: ShortcutType) {
 		super(shortcutObject);
@@ -25,23 +28,18 @@ export class ShortcutClass extends ItemClass {
 
 		const json = await response.json();
 
-		// MimeType
 		if (json.mimeType === 'application/vnd.cloudstore.folder') {
-			const newJson = {
-				...json,
-				color: json.ItemFolder.color,
-			};
-			this.color = json.ItemFolder.color;
-			this._linkedItem = new FolderClass(newJson);
+			this._linkedItem = new FolderClass(json);
 			return;
 		}
 
-		if ('blobUrl' in json.ItemBlob && typeof json.ItemBlob?.blobUrl === 'string') {
-			const newJson = {
-				...json,
-				blobUrl: json.ItemBlob.blobUrl,
-			};
-			this._linkedItem = new FileClass(newJson);
+		if (json.mimeType === 'application/vnd.cloudstore.docs') {
+			this._linkedItem = new DocsClass(json);
+			return;
+		}
+
+		if ('blobUrl' in json && typeof json.blobUrl === 'string') {
+			this._linkedItem = new FileClass(json);
 		}
 	}
 

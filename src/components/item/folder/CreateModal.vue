@@ -1,6 +1,6 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.createFolder') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.folder.create.header') }}</h3>
 		<form class="space-y-6" @submit.prevent="createFolder" ref="form">
 			<BaseInput
 				id="folderName"
@@ -8,7 +8,7 @@
 				v-model="folder.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.folder.name') }}</BaseInput
+				>{{ t('fileBrowser.folder.create.name') }}</BaseInput
 			>
 			<BaseSelect
 				id="folderColor"
@@ -18,7 +18,7 @@
 			>
 				<template v-slot:label>
 					<div class="flex">
-						<span>{{ t('fileBrowser.folder.color.name') }}</span>
+						<span>{{ t('fileBrowser.folder.create.color') }}</span>
 						<div
 							v-if="folder.color"
 							:class="
@@ -35,7 +35,7 @@
 				</template>
 			</BaseSelect>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.create')
+				t('fileBrowser.folder.create.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -78,7 +78,7 @@ async function createFolder() {
 		errorObject.value = {
 			error: 'Validation Error',
 			errors: {
-				confirmPassword: [t('fileBrowser.folder.color.required')],
+				color: [t('fileBrowser.folder.color.required')],
 			},
 			statusCode: 400,
 		};

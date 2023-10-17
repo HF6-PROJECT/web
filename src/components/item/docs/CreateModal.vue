@@ -1,17 +1,17 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.rename') }}</h3>
-		<form class="space-y-6" @submit.prevent="updateFolder" ref="form">
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.docs.create.header') }}</h3>
+		<form class="space-y-6" @submit.prevent="createDocs" ref="form">
 			<BaseInput
-				id="folderName"
+				id="docsName"
 				type="text"
-				v-model="shortcut.name"
+				v-model="docs.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.folder.edit.name') }}</BaseInput
+				>{{ t('fileBrowser.docs.create.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit.submit')
+				t('fileBrowser.docs.create.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -19,18 +19,20 @@
 </template>
 
 <script setup lang="ts">
-import { updateItem } from '@stores/items';
+import { addItem } from '@stores/items';
 import { ref, type PropType } from 'vue';
+import { type FolderType } from '@lib/items/folders';
+import { DocsClass } from '@lib/items/docs';
 import BaseModal from '@components/base/modal.vue';
 import BaseInput from '@components/base/input.vue';
 import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
-import type { ShortcutClass } from '@lib/items/shortcuts';
+import { v4 as uuid } from 'uuid';
 
 const props = defineProps({
-	shortcut: {
-		type: Object as PropType<ShortcutClass>,
+	parentFolder: {
+		type: Object as PropType<FolderType | undefined>,
 		required: true,
 	},
 });
@@ -42,13 +44,11 @@ defineExpose({
 
 const modal = ref<InstanceType<typeof BaseModal>>();
 
-const shortcut = ref<{ name: string }>({
-	name: props.shortcut.name,
-});
+const docs = ref<{ name: string }>({ name: '' });
 const form = ref<HTMLFormElement>();
 const errorObject = ref<null | ErrorObject>(null);
 
-async function updateFolder() {
+async function createDocs() {
 	errorObject.value = null;
 
 	if (!form.value?.checkValidity() || errorObject.value) {
@@ -57,13 +57,9 @@ async function updateFolder() {
 	}
 
 	try {
-		const updatedShortcut = await props.shortcut.update({
-			name: shortcut.value.name,
-		});
+		const createdDocs = await DocsClass.create(docs.value.name, uuid(), props.parentFolder ?? null);
 
-		await updatedShortcut.setLinkedItem(updatedShortcut._linkedItemId);
-
-		updateItem(updatedShortcut);
+		addItem(createdDocs);
 
 		// TODO: Show success toast
 
@@ -76,9 +72,7 @@ function open() {
 }
 
 function close() {
-	shortcut.value = {
-		name: props.shortcut.name,
-	};
+	docs.value = { name: '' };
 	modal.value?.close(false);
 }
 </script>

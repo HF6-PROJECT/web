@@ -1,32 +1,29 @@
 <template>
 	<div class="relative">
-		<!-- Folder -->
+		<!-- Docs -->
 		<a
-			:href="url(`u/folder/${modelValue.id}`)"
-			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
+			:href="url(`u/docs/${modelValue.id}`)"
+			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+			v-on:contextmenu.prevent="docsContextMenu?.openMenu"
 			v-if="!(modelValue instanceof ShortcutClass)"
 		>
-			<button
-				type="button"
-				:class="classes"
-				class="h-[40px] rounded-lg bg-gradient-to-br px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-			>
+			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				{{ modelValue.name }}
-			</button>
+			</h5>
 		</a>
 		<a
-			:href="url(`u/folder/${modelValue.linkedItemId}`)"
-			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
+			:href="url(`u/docs/${modelValue.linkedItemId}`)"
+			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+			v-on:contextmenu.prevent="docsContextMenu?.openMenu"
 			v-else
 		>
-			<button
-				type="button"
-				:class="classes"
-				class="flex h-[40px] items-center gap-2 rounded-lg bg-gradient-to-br px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
+			<h5
+				class="mb-2 flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
 			>
 				{{ modelValue.name }}
+
 				<svg
-					class="h-4 w-4 text-gray-800 dark:text-white"
+					class="h-6 w-6 text-gray-800 dark:text-white"
 					aria-hidden="true"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="currentColor"
@@ -36,42 +33,42 @@
 						d="M2.057 6.9a8.718 8.718 0 0 1 6.41-3.62v-1.2A2.064 2.064 0 0 1 9.626.2a1.979 1.979 0 0 1 2.1.23l5.481 4.308a2.107 2.107 0 0 1 0 3.3l-5.479 4.308a1.977 1.977 0 0 1-2.1.228 2.063 2.063 0 0 1-1.158-1.876v-.942c-5.32 1.284-6.2 5.25-6.238 5.44a1 1 0 0 1-.921.807h-.06a1 1 0 0 1-.953-.7A10.24 10.24 0 0 1 2.057 6.9Z"
 					/>
 				</svg>
-			</button>
+			</h5>
 		</a>
 
-		<!-- Folder ContextMenu -->
-		<ContextMenu ref="folderContextMenu">
+		<!-- Docs ContextMenu -->
+		<ContextMenu ref="docsContextMenu">
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 				<li>
 					<a
-						v-if="modelValue instanceof ShortcutClass"
-						:href="url(`u/folder/${modelValue.linkedItemId}`)"
+						v-if="!(modelValue instanceof ShortcutClass)"
+						:href="url(`u/docs/${modelValue.id}`)"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.openInNewTab') }}</a
+						>{{ t('fileBrowser.docs.action.openInNewTab') }}</a
 					>
 					<a
 						v-else
-						:href="url(`u/folder/${modelValue.id}`)"
+						:href="url(`u/docs/${modelValue.linkedItemId}`)"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.action.openInNewTab') }}</a
+						>{{ t('fileBrowser.docs.action.openInNewTab') }}</a
 					>
 				</li>
-				<li v-if="modelValue instanceof ShortcutClass">
+				<li>
 					<a
+						v-if="!(modelValue instanceof ShortcutClass)"
+						href="javascript:void(0)"
+						@click="editDocsModal?.open()"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.docs.action.edit') }}</a
+					>
+					<a
+						v-else
 						href="javascript:void(0)"
 						@click="editShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.shortcut.rename') }}</a
-					>
-				</li>
-				<li v-else>
-					<a
-						href="javascript:void(0)"
-						@click="editFolderModal?.open()"
-						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.action.edit') }}</a
 					>
 				</li>
 				<li v-if="!(modelValue instanceof ShortcutClass)">
@@ -87,72 +84,57 @@
 						href="javascript:void(0)"
 						@click="shareItemModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.folder.action.share') }}</a
+						>{{ t('fileBrowser.docs.action.share') }}</a
 					>
 				</li>
 			</ul>
 			<div class="py-2">
 				<a
 					href="javascript:void(0)"
-					@click="deleteFolderModal?.open()"
+					@click="deleteDocsModal?.open()"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
-					>{{ t('fileBrowser.folder.action.delete') }}</a
+					>{{ t('fileBrowser.docs.action.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
 	</div>
 
 	<!-- Modals -->
-	<BaseConfirmModal ref="deleteFolderModal" :type="ConfirmModalType.Danger" @confirm="deleteFolder">
-		{{ t('fileBrowser.folder.action.confirmDelete') }}</BaseConfirmModal
+	<BaseConfirmModal ref="deleteDocsModal" :type="ConfirmModalType.Danger" @confirm="deleteDocs">
+		{{ t('fileBrowser.docs.action.confirmDelete') }}</BaseConfirmModal
 	>
-	<EditFolderModal
-		v-if="modelValue instanceof FolderClass"
-		ref="editFolderModal"
-		:folder="modelValue"
-	/>
+	<EditDocsModal v-if="modelValue instanceof DocsClass" ref="editDocsModal" :docs="modelValue" />
 	<EditShortcutModal v-else ref="editShortcutModal" :shortcut="modelValue" />
 	<ShareItemModal ref="shareItemModal" :item="modelValue" />
 	<CreateShortcutModal ref="createShortcutModal" :item="modelValue" />
 </template>
 
 <script setup lang="ts">
-import { type PropType, computed, ref } from 'vue';
-import { FolderClass } from '@lib/items/folders';
-import { ShortcutClass } from '@lib/items/shortcuts';
-import { url } from '@lib/helpers';
+import { ref, type PropType } from 'vue';
 import ContextMenu from '@components/base/contextMenu.vue';
+import { ShortcutClass } from '@lib/items/shortcuts';
 import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
-import EditFolderModal from './EditModal.vue';
-import EditShortcutModal from './EditShortcutModal.vue';
+import EditDocsModal from './EditModal.vue';
 import ShareItemModal from '../ShareItemModal.vue';
-import CreateShortcutModal from '../CreateShortcutModal.vue';
+import EditShortcutModal from './EditShortcutModal.vue';
 import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
+import { DocsClass } from '@lib/items/docs';
+import CreateShortcutModal from '../CreateShortcutModal.vue';
+import { url } from '@lib/helpers';
 
-const folderContextMenu = ref<InstanceType<typeof ContextMenu>>();
+const docsContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
 defineEmits(['update:modelValue']);
 const props = defineProps({
 	modelValue: {
-		type: Object as PropType<FolderClass>,
+		type: Object as PropType<DocsClass>,
 		required: true,
 	},
 });
 
-const classes = computed(() => {
-	if (
-		props.modelValue instanceof ShortcutClass &&
-		props.modelValue.linkedItem instanceof FolderClass
-	) {
-		return props.modelValue.linkedItem.colorClass;
-	}
-
-	return props.modelValue.colorClass;
-});
-
-const deleteFolderModal = ref<InstanceType<typeof BaseConfirmModal>>();
-async function deleteFolder() {
+const deleteDocsModal = ref<InstanceType<typeof BaseConfirmModal>>();
+async function deleteDocs() {
 	try {
 		await props.modelValue.delete();
 
@@ -166,7 +148,7 @@ async function deleteFolder() {
 	}
 }
 
-const editFolderModal = ref<InstanceType<typeof EditFolderModal>>();
+const editDocsModal = ref<InstanceType<typeof EditDocsModal>>();
 const editShortcutModal = ref<InstanceType<typeof EditShortcutModal>>();
 
 const shareItemModal = ref<InstanceType<typeof ShareItemModal>>();

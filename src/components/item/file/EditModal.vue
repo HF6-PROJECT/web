@@ -1,6 +1,6 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.file.renameFile') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.file.edit.header') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
 			<BaseInput
 				id="fileName"
@@ -8,10 +8,10 @@
 				v-model="file.name"
 				:required="true"
 				:errors="errorObject?.errors.name"
-				>{{ t('fileBrowser.file.name') }}</BaseInput
+				>{{ t('fileBrowser.file.edit.name') }}</BaseInput
 			>
 			<BaseButton type="submit" :color="ButtonColor.Primary">{{
-				t('fileBrowser.folder.edit')
+				t('fileBrowser.file.edit.submit')
 			}}</BaseButton>
 			<ErrorAlert v-if="errorObject" :errorObject="errorObject"></ErrorAlert>
 		</form>
@@ -65,18 +65,24 @@ async function updateFile() {
 
 		// TODO: Show success toast
 
-		close();
+		close(false);
 	} catch (e) {}
 }
 
 function open() {
-	modal.value?.open();
-}
-
-function close() {
 	file.value = {
 		name: props.file.name,
 	};
+	modal.value?.open();
+}
+
+function close(resetValue = true) {
+	if (resetValue) {
+		file.value = {
+			name: props.file.name,
+		};
+	}
+
 	modal.value?.close(false);
 }
 </script>

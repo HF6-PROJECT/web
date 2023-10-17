@@ -30,7 +30,7 @@ export const user = defineMiddleware(async ({ locals, request, redirect }, next)
 	}
 
 	// Otherwise, set the user data in the locals.
-	locals.user = userResponse as User;
+	locals.user = { id: locals.userId, ...userResponse } as User;
 
 	return next();
 });

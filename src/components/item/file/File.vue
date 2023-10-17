@@ -41,7 +41,7 @@
 						href="javascript:void(0)"
 						@click="editFileModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.file.rename') }}</a
+						>{{ t('fileBrowser.file.action.edit') }}</a
 					>
 				</li>
 				<li v-if="!(modelValue instanceof ShortcutClass)">
@@ -57,7 +57,7 @@
 						href="javascript:void(0)"
 						@click="shareItemModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>Share</a
+						>{{ t('fileBrowser.file.action.share') }}</a
 					>
 				</li>
 			</ul>
@@ -66,7 +66,7 @@
 					href="javascript:void(0)"
 					@click="deleteFileModal?.open()"
 					class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:text-red-500 dark:hover:bg-gray-600"
-					>{{ t('fileBrowser.file.delete') }}</a
+					>{{ t('fileBrowser.file.action.delete') }}</a
 				>
 			</div>
 		</ContextMenu>
@@ -74,7 +74,7 @@
 
 	<!-- Modals -->
 	<BaseConfirmModal ref="deleteFileModal" :type="ConfirmModalType.Danger" @confirm="deleteFile">
-		{{ t('fileBrowser.file.areYouSureYouWantToDeleteThisFile') }}</BaseConfirmModal
+		{{ t('fileBrowser.file.action.confirmDelete') }}</BaseConfirmModal
 	>
 	<EditFileModal v-if="modelValue instanceof FileClass" ref="editFileModal" :file="modelValue" />
 	<EditShortcutModal
