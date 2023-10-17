@@ -1,6 +1,6 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.rename') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.action.edit') }}</h3>
 		<form class="space-y-6" @submit.prevent="updateFile" ref="form">
 			<BaseInput
 				id="fileName"

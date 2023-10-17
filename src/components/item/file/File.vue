@@ -33,7 +33,7 @@
 						href="javascript:void(0)"
 						@click="editShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.rename') }}</a
+						>{{ t('fileBrowser.shortcut.action.edit') }}</a
 					>
 				</li>
 				<li v-else>
@@ -49,7 +49,7 @@
 						href="javascript:void(0)"
 						@click="createShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.create') }}</a
+						>{{ t('fileBrowser.shortcut.action.create') }}</a
 					>
 				</li>
 				<li>

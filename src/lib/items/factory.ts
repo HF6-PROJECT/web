@@ -11,9 +11,7 @@ export class ItemFactory {
 		if (DocsClass.isDocs(object)) return new DocsClass(object);
 		if (ShortcutClass.isShortcut(object)) {
 			const shortcutClass = new ShortcutClass(object);
-
 			await shortcutClass.setLinkedItem(object.linkedItemId);
-
 			return shortcutClass;
 		}
 

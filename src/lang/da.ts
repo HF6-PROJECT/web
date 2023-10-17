@@ -121,10 +121,16 @@ export default {
 			},
 		},
 		shortcut: {
-			create: 'Opret genvej',
-			rename: 'Omdøb genvej',
-			add: 'Opret',
-			openInNewTab: 'Åben i nyt faneblad',
+			link: {
+				myfiles: 'Mine Filer',
+			},
+			action: {
+				create: 'Opret genvej',
+				edit: 'Omdøb genvej',
+				share: 'Del',
+				delete: 'Slet',
+				openInNewTab: 'Åben i nyt faneblad',
+			},
 		},
 	},
 	layout: {

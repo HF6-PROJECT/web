@@ -2,22 +2,12 @@
 	<div class="relative">
 		<!-- Folder -->
 		<a
-			:href="url(`u/folder/${modelValue.id}`)"
+			:href="
+				modelValue instanceof ShortcutClass
+					? url(`u/folder/${modelValue.linkedItemId}`)
+					: url(`u/folder/${modelValue.id}`)
+			"
 			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
-			v-if="!(modelValue instanceof ShortcutClass)"
-		>
-			<button
-				type="button"
-				:class="classes"
-				class="h-[40px] rounded-lg bg-gradient-to-br px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800"
-			>
-				{{ modelValue.name }}
-			</button>
-		</a>
-		<a
-			:href="url(`u/folder/${modelValue.linkedItemId}`)"
-			v-on:contextmenu.prevent="folderContextMenu?.openMenu"
-			v-else
 		>
 			<button
 				type="button"
@@ -31,6 +21,7 @@
 					xmlns="http://www.w3.org/2000/svg"
 					fill="currentColor"
 					viewBox="0 0 19 17"
+					v-if="modelValue instanceof ShortcutClass"
 				>
 					<path
 						d="M2.057 6.9a8.718 8.718 0 0 1 6.41-3.62v-1.2A2.064 2.064 0 0 1 9.626.2a1.979 1.979 0 0 1 2.1.23l5.481 4.308a2.107 2.107 0 0 1 0 3.3l-5.479 4.308a1.977 1.977 0 0 1-2.1.228 2.063 2.063 0 0 1-1.158-1.876v-.942c-5.32 1.284-6.2 5.25-6.238 5.44a1 1 0 0 1-.921.807h-.06a1 1 0 0 1-.953-.7A10.24 10.24 0 0 1 2.057 6.9Z"
@@ -44,15 +35,11 @@
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 				<li>
 					<a
-						v-if="modelValue instanceof ShortcutClass"
-						:href="url(`u/folder/${modelValue.linkedItemId}`)"
-						target="_blank"
-						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.openInNewTab') }}</a
-					>
-					<a
-						v-else
-						:href="url(`u/folder/${modelValue.id}`)"
+						:href="
+							modelValue instanceof ShortcutClass
+								? url(`u/folder/${modelValue.linkedItemId}`)
+								: url(`u/folder/${modelValue.id}`)
+						"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.folder.action.openInNewTab') }}</a
@@ -63,7 +50,7 @@
 						href="javascript:void(0)"
 						@click="editShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.rename') }}</a
+						>{{ t('fileBrowser.shortcut.action.edit') }}</a
 					>
 				</li>
 				<li v-else>
@@ -79,7 +66,7 @@
 						href="javascript:void(0)"
 						@click="createShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.create') }}</a
+						>{{ t('fileBrowser.shortcut.action.create') }}</a
 					>
 				</li>
 				<li>

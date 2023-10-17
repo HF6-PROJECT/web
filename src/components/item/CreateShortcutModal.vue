@@ -1,6 +1,6 @@
 <template>
 	<BaseModal ref="modal" @close="close">
-		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.create') }}</h3>
+		<h3 class="mb-4 text-xl font-medium">{{ t('fileBrowser.shortcut.action.create') }}</h3>
 		<hr />
 		<div class="mb-5">
 			<div
@@ -10,7 +10,7 @@
 				@mouseleave="hideChildArrow(0)"
 				id="folder0"
 			>
-				<h1 class="ml-2 mr-auto">Mine Filer</h1>
+				<h1 class="ml-2 mr-auto">{{ t('fileBrowser.shortcut.link.myfiles') }}</h1>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					id="svg0"
@@ -56,7 +56,7 @@
 			@click="createShortcut()"
 			:color="ButtonColor.Primary"
 			class="dark:brightness-75"
-			>{{ t('fileBrowser.shortcut.add') }}</BaseButton
+			>{{ t('fileBrowser.shortcut.action.create') }}</BaseButton
 		>
 	</BaseModal>
 </template>

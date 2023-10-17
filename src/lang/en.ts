@@ -99,12 +99,6 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
-			shortcut: {
-				create: 'Create shortcut',
-				rename: 'Rename shortcut',
-				add: 'Create',
-				openInNewTab: 'Open in new tab',
-			},
 		},
 		docs: {
 			create: {
@@ -124,6 +118,18 @@ export default {
 				delete: 'Delete',
 				openInNewTab: 'Open in new tab',
 				confirmDelete: 'Are you sure you want to delete this docs?',
+			},
+		},
+		shortcut: {
+			link: {
+				myfiles: 'My Files',
+			},
+			action: {
+				create: 'Create shortcut',
+				edit: 'Rename shortcut',
+				share: 'Share',
+				delete: 'Delete',
+				openInNewTab: 'Open in new tab',
 			},
 		},
 	},

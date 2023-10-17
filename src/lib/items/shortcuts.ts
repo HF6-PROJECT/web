@@ -2,14 +2,11 @@ import { api, fetchFromApi } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 import { FolderClass } from './folders';
 import { FileClass } from './files';
-import { DocsClass } from './docs';
+import { DocsClass, type DocsType } from './docs';
 
 export class ShortcutClass extends ItemClass {
 	public _linkedItemId: number;
 	public _linkedItem: FolderClass | FileClass | DocsClass | undefined;
-	public color: string | undefined;
-	public text: string | undefined;
-	public blobUrl: string | undefined;
 
 	constructor(shortcutObject: ShortcutType) {
 		super(shortcutObject);
@@ -28,17 +25,17 @@ export class ShortcutClass extends ItemClass {
 
 		const json = await response.json();
 
-		if (json.mimeType === 'application/vnd.cloudstore.folder') {
+		if (FolderClass.isFolder(json)) {
 			this._linkedItem = new FolderClass(json);
 			return;
 		}
 
-		if (json.mimeType === 'application/vnd.cloudstore.docs') {
+		if (DocsClass.isDocs(json)) {
 			this._linkedItem = new DocsClass(json);
 			return;
 		}
 
-		if ('blobUrl' in json && typeof json.blobUrl === 'string') {
+		if (FileClass.isFile(json)) {
 			this._linkedItem = new FileClass(json);
 		}
 	}
@@ -122,6 +119,8 @@ export class ShortcutClass extends ItemClass {
 		// MimeType
 		if (object.mimeType !== 'application/vnd.cloudstore.shortcut') return false;
 
+		if (!('linkedItemId' in object && typeof object.linkedItemId === 'number')) return false;
+
 		return true;
 	}
 
@@ -136,5 +135,5 @@ export class ShortcutClass extends ItemClass {
 
 export type ShortcutType = {
 	linkedItemId: number;
-	linkedItem: FileClass | ShortcutClass | undefined;
+	linkedItem: FolderClass | FileClass | DocsClass | undefined;
 } & ItemType;

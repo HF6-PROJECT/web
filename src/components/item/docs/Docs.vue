@@ -2,27 +2,20 @@
 	<div class="relative">
 		<!-- Docs -->
 		<a
-			:href="url(`u/docs/${modelValue.id}`)"
+			:href="
+				modelValue instanceof ShortcutClass
+					? url(`u/docs/${modelValue.linkedItemId}`)
+					: url(`u/docs/${modelValue.id}`)
+			"
 			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 			v-on:contextmenu.prevent="docsContextMenu?.openMenu"
-			v-if="!(modelValue instanceof ShortcutClass)"
-		>
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-				{{ modelValue.name }}
-			</h5>
-		</a>
-		<a
-			:href="url(`u/docs/${modelValue.linkedItemId}`)"
-			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-			v-on:contextmenu.prevent="docsContextMenu?.openMenu"
-			v-else
 		>
 			<h5
 				class="mb-2 flex items-center gap-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
 			>
 				{{ modelValue.name }}
-
 				<svg
+					v-if="modelValue instanceof ShortcutClass"
 					class="h-6 w-6 text-gray-800 dark:text-white"
 					aria-hidden="true"
 					xmlns="http://www.w3.org/2000/svg"
@@ -41,15 +34,11 @@
 			<ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
 				<li>
 					<a
-						v-if="!(modelValue instanceof ShortcutClass)"
-						:href="url(`u/docs/${modelValue.id}`)"
-						target="_blank"
-						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.docs.action.openInNewTab') }}</a
-					>
-					<a
-						v-else
-						:href="url(`u/docs/${modelValue.linkedItemId}`)"
+						:href="
+							modelValue instanceof ShortcutClass
+								? url(`u/docs/${modelValue.linkedItemId}`)
+								: url(`u/docs/${modelValue.id}`)
+						"
 						target="_blank"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
 						>{{ t('fileBrowser.docs.action.openInNewTab') }}</a
@@ -68,7 +57,7 @@
 						href="javascript:void(0)"
 						@click="editShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.rename') }}</a
+						>{{ t('fileBrowser.shortcut.action.edit') }}</a
 					>
 				</li>
 				<li v-if="!(modelValue instanceof ShortcutClass)">
@@ -76,7 +65,7 @@
 						href="javascript:void(0)"
 						@click="createShortcutModal?.open()"
 						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-						>{{ t('fileBrowser.shortcut.create') }}</a
+						>{{ t('fileBrowser.shortcut.action.create') }}</a
 					>
 				</li>
 				<li>
