@@ -2,9 +2,10 @@
 	<div class="relative">
 		<!-- File -->
 		<a
-			href="#"
+			href="javascript:void(0)"
 			class="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
 			v-on:contextmenu.prevent="fileContextMenu?.openMenu"
+			@click.prevent="downloadFile"
 		>
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				{{ modelValue.name }}
@@ -30,6 +31,14 @@
 						>{{ t('fileBrowser.file.action.share') }}</a
 					>
 				</li>
+				<li>
+					<a
+						href="javascript:void(0)"
+						@click="downloadFile"
+						class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+						>{{ t('fileBrowser.file.action.download') }}</a
+					>
+				</li>
 			</ul>
 			<div class="py-2">
 				<a
@@ -51,14 +60,20 @@
 </template>
 
 <script setup lang="ts">
+// Lib
 import { ref, type PropType } from 'vue';
-import { FileClass } from '@lib/items/files';
-import ContextMenu from '@components/base/contextMenu.vue';
-import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
-import EditFileModal from './EditModal.vue';
-import ShareItemModal from '../ShareItemModal.vue';
+
+// Helpers
 import { t } from '@lib/i18n';
+
+// Components
+import ContextMenu from '@components/base/contextMenu.vue';
+
+// Stores
 import { removeItem } from '@stores/items';
+
+// File
+import { FileClass } from '@lib/items/files';
 
 const fileContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
@@ -69,6 +84,19 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+function downloadFile() {
+	window.open(props.modelValue.blobUrl, '_blank');
+
+	fileContextMenu.value?.closeMenu();
+}
+
+/*
+ * Modals
+ */
+import BaseConfirmModal, { ConfirmModalType } from '@components/base/confirmModal.vue';
+import EditFileModal from './EditModal.vue';
+import ShareItemModal from '../ShareItemModal.vue';
 
 const deleteFileModal = ref<InstanceType<typeof BaseConfirmModal>>();
 async function deleteFile() {

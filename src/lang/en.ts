@@ -55,6 +55,7 @@ export default {
 				edit: 'Rename file',
 				share: 'Share',
 				delete: 'Delete',
+				download: 'Download',
 				confirmDelete: 'Are you sure you want to delete this file?',
 			},
 		},
