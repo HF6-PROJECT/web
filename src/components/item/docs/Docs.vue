@@ -68,7 +68,7 @@
 						>{{ t('fileBrowser.shortcut.action.create') }}</a
 					>
 				</li>
-				<li>
+				<li v-if="!(modelValue instanceof ShortcutClass)">
 					<a
 						href="javascript:void(0)"
 						@click="shareItemModal?.open()"
