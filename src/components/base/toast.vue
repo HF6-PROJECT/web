@@ -80,7 +80,7 @@
 				type="button"
 				class="-mx-1.5 -my-1.5 ml-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
 				aria-label="Close"
-				@click="closeToast(props.toast)"
+				@click="closeToast()"
 			>
 				<span class="sr-only">Close</span>
 				<svg
@@ -126,7 +126,7 @@ const showToast = ref(true);
 
 const isMouseOver = ref(false);
 
-let value = ref(100);
+const value = ref(100);
 const timer = setInterval(() => {
 	if (isMouseOver.value) return;
 
@@ -134,13 +134,13 @@ const timer = setInterval(() => {
 	if (value.value < 0) {
 		value.value = 100;
 		clearInterval(timer);
-		closeToast(props.toast);
+		closeToast();
 	}
 }, 10);
 
-function closeToast(toast: Toast) {
+function closeToast() {
 	showToast.value = false;
-	removeToast(toast);
+	removeToast(props.toast);
 }
 
 const props = defineProps({

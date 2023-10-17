@@ -58,6 +58,12 @@ export default {
 				download: 'Download',
 				confirmDelete: 'Er du sikker på, at du vil slette denne fil?',
 			},
+			toast: {
+				upload: {
+					success: 'er blevet oprettet',
+					failed: 'Fejl i upload af ',
+				},
+			},
 		},
 		folder: {
 			create: {

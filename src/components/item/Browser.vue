@@ -193,7 +193,7 @@ async function uploadFiles(e: Event) {
 		} catch (error) {
 			addToast({
 				id: uuid(),
-				message: `Failed to upload file ${file.name}`,
+				message: t('fileBrowser.file.toast.upload.failed') + ' ' + file.name,
 				type: ToastType.Danger,
 			});
 		}
@@ -232,7 +232,7 @@ channel.bind('update', (data: ItemType) => {
 	if (isNew && isOwner) {
 		addToast({
 			id: uuid(),
-			message: `${item.name} has been created`,
+			message: item.name + ' ' + t('fileBrowser.file.toast.upload.success'),
 			type: ToastType.Success,
 		});
 	}

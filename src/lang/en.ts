@@ -100,6 +100,12 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
+			toast: {
+				upload: {
+					success: 'has been created',
+					failed: 'Failed to upload file',
+				},
+			},
 		},
 		docs: {
 			create: {
