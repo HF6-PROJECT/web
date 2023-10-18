@@ -190,10 +190,16 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
+
+			addToast({
+				id: uuid(),
+				message: file.name + ' ' + t('fileBrowser.file.toast.create.success'),
+				type: ToastType.Success,
+			});
 		} catch (error) {
 			addToast({
 				id: uuid(),
-				message: t('fileBrowser.file.toast.upload.failed') + ' ' + file.name,
+				message: t('fileBrowser.file.toast.create.failed') + ' ' + file.name,
 				type: ToastType.Danger,
 			});
 		}
@@ -225,17 +231,6 @@ channel.bind('update', (data: ItemType) => {
 	const item = ItemFactory.getItemFromObject(data);
 
 	if (item === null) return;
-
-	const isNew = items.value[item.id] === undefined;
-	const isOwner = item.ownerId === props.user.id;
-
-	if (isNew && isOwner) {
-		addToast({
-			id: uuid(),
-			message: item.name + ' ' + t('fileBrowser.file.toast.upload.success'),
-			type: ToastType.Success,
-		});
-	}
 
 	addItem(item);
 });

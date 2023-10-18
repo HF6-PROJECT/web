@@ -97,6 +97,9 @@ import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import type { ItemClass } from '@lib/items/items';
 import { fetchFromApi, getInitialsByName, getUserColorByInitials } from '@lib/helpers';
+import { addToast } from '@stores/toasts';
+import { v4 as uuid } from 'uuid';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	item: {
@@ -205,8 +208,18 @@ async function shareFile() {
 
 		getItem();
 
-		// TODO: Show success toast
-	} catch (e) {}
+		addToast({
+			id: uuid(),
+			message: t('shareItemModal.toast.create.success'),
+			type: ToastType.Success,
+		});
+	} catch (e) {
+		addToast({
+			id: uuid(),
+			message: t('shareItemModal.toast.create.failed'),
+			type: ToastType.Danger,
+		});
+	}
 }
 
 async function deleteSharing(sharingId: number | undefined) {
@@ -235,8 +248,18 @@ async function deleteSharing(sharingId: number | undefined) {
 
 		getItem().catch(() => close());
 
-		// TODO: Show success toast
-	} catch (e) {}
+		addToast({
+			id: uuid(),
+			message: t('shareItemModal.toast.delete.success'),
+			type: ToastType.Success,
+		});
+	} catch (e) {
+		addToast({
+			id: uuid(),
+			message: t('shareItemModal.toast.delete.failed'),
+			type: ToastType.Danger,
+		});
+	}
 }
 
 function open() {

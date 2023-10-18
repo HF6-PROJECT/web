@@ -59,9 +59,17 @@ export default {
 				confirmDelete: 'Er du sikker på, at du vil slette denne fil?',
 			},
 			toast: {
-				upload: {
-					success: 'er blevet oprettet',
-					failed: 'Fejl i upload af ',
+				create: {
+					success: 'er blevet uploaded',
+					failed: 'Fejl i upload af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
 				},
 			},
 		},
@@ -106,6 +114,20 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 		docs: {
 			create: {
@@ -125,6 +147,20 @@ export default {
 				delete: 'Slet',
 				openInNewTab: 'Åben i nyt faneblad',
 				confirmDelete: 'Er du sikker på, at du vil slette denne Docs?',
+			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
 			},
 		},
 	},
@@ -153,5 +189,15 @@ export default {
 		addPeople: 'Tilføj personer',
 		owner: 'Ejer',
 		confirm: 'Bekræft',
+		toast: {
+			create: {
+				success: 'Adgangen er blevet opdateret',
+				failed: 'Fejlede i at give adgang',
+			},
+			delete: {
+				success: 'Adgangen er blevet slettet',
+				failed: 'Fejlede i at fjerne adgangen',
+			},
+		},
 	},
 };
