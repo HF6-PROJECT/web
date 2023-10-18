@@ -90,7 +90,7 @@ function getBreadCrumbItems(
 		items.unshift({
 			id: 0,
 			name: t('layout.link.sharedWithMe'),
-			url: url('u'),
+			url: url('u/shared'),
 			active: true,
 		});
 
@@ -119,7 +119,7 @@ function getBreadCrumbItems(
 		items.unshift({
 			id: 0,
 			name: t('layout.link.sharedWithMe'),
-			url: url('u'),
+			url: url('u/shared'),
 			active: itemPath.id === null,
 		});
 
