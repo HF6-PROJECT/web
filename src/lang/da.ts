@@ -163,6 +163,34 @@ export default {
 				},
 			},
 		},
+		shortcut: {
+			link: {
+				myfiles: 'Mine Filer',
+			},
+			action: {
+				create: 'Opret genvej',
+				edit: 'Omdøb genvej',
+				share: 'Del',
+				delete: 'Slet',
+				openInNewTab: 'Åben i nyt faneblad',
+				createIn: 'Opret i',
+				empty: 'Tom',
+			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet (Genvej)',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
+		},
 	},
 	layout: {
 		sr: {

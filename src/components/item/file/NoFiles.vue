@@ -38,7 +38,6 @@ import { t } from '@lib/i18n';
 import { FileClass } from '@lib/items/files';
 import type { FolderType } from '@lib/items/folders';
 import { ref, type PropType } from 'vue';
-import { t } from '@lib/i18n';
 import { addToast } from '@stores/toasts';
 import { ToastType } from '@components/base/toast.vue';
 

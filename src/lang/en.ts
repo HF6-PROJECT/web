@@ -163,6 +163,34 @@ export default {
 				},
 			},
 		},
+		shortcut: {
+			link: {
+				myfiles: 'My Files',
+			},
+			action: {
+				create: 'Create shortcut',
+				edit: 'Rename shortcut',
+				share: 'Share',
+				delete: 'Delete',
+				openInNewTab: 'Open in new tab',
+				createIn: 'Create in',
+				empty: 'Empty',
+			},
+			toast: {
+				create: {
+					success: 'has been created (Shortcut)',
+					failed: 'Failed to create',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
+		},
 	},
 	layout: {
 		sr: {

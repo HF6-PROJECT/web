@@ -114,6 +114,7 @@ function openContextMenu(e: MouseEvent) {
  */
 import { ItemClass, type ItemType } from '@lib/items/items';
 import { ItemFactory } from '@lib/items/factory';
+import { ShortcutClass } from '@lib/items/shortcuts';
 
 import NoFiles from './file/NoFiles.vue';
 
@@ -148,7 +149,7 @@ async function getItems() {
 		for (const rawItem of rawItems) {
 			if (!ItemClass.isItem(rawItem)) continue;
 
-			const item = ItemFactory.getItemFromObject(rawItem);
+			const item = await ItemFactory.getItemFromObject(rawItem);
 
 			if (item === null) continue;
 
@@ -171,7 +172,11 @@ import CreateFolderModal from './folder/CreateModal.vue';
 const createFolderModal = ref<InstanceType<typeof CreateFolderModal>>();
 
 const folders = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FolderClass) as FolderClass[];
+	return Object.values(items.value).filter(
+		(item) =>
+			item instanceof FolderClass ||
+			(item instanceof ShortcutClass && item._linkedItem instanceof FolderClass),
+	) as FolderClass[];
 });
 
 /**
@@ -181,7 +186,11 @@ import { FileClass } from '@lib/items/files';
 import File from './file/File.vue';
 
 const files = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof FileClass) as FileClass[];
+	return Object.values(items.value).filter(
+		(item) =>
+			item instanceof FileClass ||
+			(item instanceof ShortcutClass && item._linkedItem instanceof FileClass),
+	) as FileClass[];
 });
 
 const fileInput = ref<HTMLInputElement>();
@@ -214,7 +223,11 @@ import CreateDocsModal from './docs/CreateModal.vue';
 const createDocsModal = ref<InstanceType<typeof CreateDocsModal>>();
 
 const docs = computed(() => {
-	return Object.values(items.value).filter((item) => item instanceof DocsClass) as DocsClass[];
+	return Object.values(items.value).filter(
+		(item) =>
+			item instanceof DocsClass ||
+			(item instanceof ShortcutClass && item._linkedItem instanceof DocsClass),
+	) as DocsClass[];
 });
 
 /**
@@ -223,10 +236,10 @@ const docs = computed(() => {
 import { getFolderChannel } from '@lib/pusher';
 
 const channel = getFolderChannel(props.user.id, props.modelValue?.id);
-channel.bind('update', (data: ItemType) => {
+channel.bind('update', async (data: ItemType) => {
 	if (!ItemClass.isItem(data)) return;
 
-	const item = ItemFactory.getItemFromObject(data);
+	const item = await ItemFactory.getItemFromObject(data);
 
 	if (item === null) return;
 
@@ -242,10 +255,10 @@ channel.bind('update', (data: ItemType) => {
 	addItem(item);
 });
 
-channel.bind('delete', (data: ItemType) => {
+channel.bind('delete', async (data: ItemType) => {
 	if (!ItemClass.isItem(data)) return;
 
-	const item = ItemFactory.getItemFromObject(data);
+	const item = await ItemFactory.getItemFromObject(data);
 
 	if (item === null) return;
 
