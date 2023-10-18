@@ -148,4 +148,12 @@ export default {
 		owner: 'Owner',
 		confirm: 'Confirm',
 	},
+	noFiles: {
+		clickToUpload: 'Click to upload',
+		orDragAndDrop: 'or drag and drop files here',
+		fileRequirements: 'Files can max. have a size of 500 MB',
+	},
+	noSharedItems: {
+		description: 'No items have been shared with you yet...',
+	},
 };

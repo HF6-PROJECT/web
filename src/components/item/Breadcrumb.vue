@@ -12,7 +12,7 @@
 					:href="breadcrumbItem.url"
 					class="hover:text-gray-700 dark:hover:text-gray-100"
 					:class="{
-						'font-semibold hover:text-gray-700 dark:hover:text-gray-100': breadcrumbItem.active,
+						'font-semibold': breadcrumbItem.active,
 					}"
 					>{{ breadcrumbItem.name }}</a
 				>
