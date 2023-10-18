@@ -36,10 +36,17 @@
 import { FileClass } from '@lib/items/files';
 import type { FolderType } from '@lib/items/folders';
 import { ref, type PropType } from 'vue';
+import { t } from '@lib/i18n';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	modelValue: {
 		type: Object as PropType<FolderType | undefined>,
+		required: true,
+	},
+	user: {
+		type: Object as PropType<User>,
 		required: true,
 	},
 });
@@ -55,15 +62,11 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
-
-			// TODO: replace waiting 1 second with websocket
-			setTimeout(async () => {
-				window.location.reload();
-
-				// TODO: Toast
-			}, 1000);
 		} catch (error) {
-			// TODO: Toast
+			addToast({
+				message: t('fileBrowser.file.toast.create.failed') + ' ' + file.name,
+				type: ToastType.Danger,
+			});
 		}
 	});
 }

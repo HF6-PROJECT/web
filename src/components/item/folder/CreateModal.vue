@@ -52,6 +52,8 @@ import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import BaseSelect from '@components/base/select.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	parentFolder: {
@@ -99,10 +101,18 @@ async function createFolder() {
 
 		addItem(createdFolder);
 
-		// TODO: Show success toast
+		addToast({
+			message: folder.value.name + ' ' + t('fileBrowser.folder.toast.create.success'),
+			type: ToastType.Success,
+		});
 
 		close();
-	} catch (e) {}
+	} catch (e) {
+		addToast({
+			message: t('fileBrowser.folder.toast.failed.success') + ' ' + folder.value.name,
+			type: ToastType.Danger,
+		});
+	}
 }
 
 function open() {

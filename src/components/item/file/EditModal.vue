@@ -27,6 +27,8 @@ import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import type { FileClass } from '@lib/items/files';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	file: {
@@ -63,10 +65,18 @@ async function updateFile() {
 
 		updateItem(updatedFile);
 
-		// TODO: Show success toast
+		addToast({
+			message: file.value.name + ' ' + t('fileBrowser.file.toast.update.success'),
+			type: ToastType.Success,
+		});
 
 		close(false);
-	} catch (e) {}
+	} catch (e) {
+		addToast({
+			message: t('fileBrowser.file.toast.update.failed') + ' ' + file.value.name,
+			type: ToastType.Danger,
+		});
+	}
 }
 
 function open() {

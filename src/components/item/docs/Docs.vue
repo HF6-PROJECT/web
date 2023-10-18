@@ -68,6 +68,8 @@ import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
 import type { DocsClass } from '@lib/items/docs';
 import { url } from '@lib/helpers';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const docsContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
@@ -86,11 +88,17 @@ async function deleteDocs() {
 
 		removeItem(props.modelValue);
 
-		// TODO: Show success toast
+		addToast({
+			message: props.modelValue.name + ' ' + t('fileBrowser.docs.toast.delete.success'),
+			type: ToastType.Success,
+		});
 	} catch (e) {
 		console.error('Error: ' + e);
 
-		// TODO: Show error toast
+		addToast({
+			message: t('fileBrowser.docs.toast.delete.success') + ' ' + props.modelValue.name,
+			type: ToastType.Danger,
+		});
 	}
 }
 
