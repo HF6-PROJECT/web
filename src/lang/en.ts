@@ -58,6 +58,20 @@ export default {
 				download: 'Download',
 				confirmDelete: 'Are you sure you want to delete this file?',
 			},
+			toast: {
+				create: {
+					success: 'has been uploaded',
+					failed: 'Failed to upload file',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
 		},
 		folder: {
 			create: {
@@ -100,6 +114,20 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
+			toast: {
+				create: {
+					success: 'has been created',
+					failed: 'Failed to create',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
 		},
 		docs: {
 			create: {
@@ -120,6 +148,20 @@ export default {
 				openInNewTab: 'Open in new tab',
 				confirmDelete: 'Are you sure you want to delete this docs?',
 			},
+			toast: {
+				create: {
+					success: 'has been created',
+					failed: 'Failed to create',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
 		},
 		shortcut: {
 			link: {
@@ -133,6 +175,20 @@ export default {
 				openInNewTab: 'Open in new tab',
 				createIn: 'Create in',
 			},
+			toast: {
+				create: {
+					success: 'has been created (Shortcut)',
+					failed: 'Failed to create',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
 		},
 	},
 	layout: {
@@ -141,7 +197,7 @@ export default {
 			openUserMenu: 'Open user menu',
 		},
 		link: {
-			myfiles: 'My Files',
+			myFiles: 'My Files',
 			sharedWithMe: 'Shared with me',
 			settings: 'Settings',
 			signOut: 'Sign out',
@@ -160,5 +216,23 @@ export default {
 		addPeople: 'Add people',
 		owner: 'Owner',
 		confirm: 'Confirm',
+		toast: {
+			create: {
+				success: 'Access has been given',
+				failed: 'Failed to give access',
+			},
+			delete: {
+				success: 'Access has been removed',
+				failed: 'Failed to remove access',
+			},
+		},
+	},
+	noFiles: {
+		clickToUpload: 'Click to upload',
+		orDragAndDrop: 'or drag and drop files here',
+		fileRequirements: 'Files can max. have a size of 500 MB',
+	},
+	noSharedItems: {
+		description: 'No items have been shared with you yet...',
 	},
 };

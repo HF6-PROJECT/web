@@ -5,7 +5,6 @@ import { t } from '@lib/i18n';
 const currentPath = Astro.url.pathname;
 ---
 
-<!-- TODO: Dynamic dropdowns -->
 <aside
 	id="sidebar"
 	class="fixed left-0 top-0 z-20 hidden h-full w-64 flex-shrink-0 flex-col pt-16 font-normal transition-width duration-75 lg:flex"
@@ -43,7 +42,7 @@ const currentPath = Astro.url.pathname;
 									d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg
 							>
 							<span class="ml-3" sidebar-toggle-item
-								>{t('layout.link.myfiles', Astro.locals.currentLocale)}</span
+								>{t('layout.link.myFiles', Astro.locals.currentLocale)}</span
 							>
 						</a>
 					</li>

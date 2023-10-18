@@ -68,7 +68,7 @@
 						>{{ t('fileBrowser.shortcut.action.create') }}</a
 					>
 				</li>
-				<li>
+				<li v-if="!(modelValue instanceof ShortcutClass)">
 					<a
 						href="javascript:void(0)"
 						@click="shareItemModal?.open()"
@@ -111,6 +111,8 @@ import { removeItem } from '@stores/items';
 import { DocsClass } from '@lib/items/docs';
 import CreateShortcutModal from '../CreateShortcutModal.vue';
 import { url } from '@lib/helpers';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const docsContextMenu = ref<InstanceType<typeof ContextMenu>>();
 
@@ -129,11 +131,17 @@ async function deleteDocs() {
 
 		removeItem(props.modelValue);
 
-		// TODO: Show success toast
+		addToast({
+			message: props.modelValue.name + ' ' + t('fileBrowser.docs.toast.delete.success'),
+			type: ToastType.Success,
+		});
 	} catch (e) {
 		console.error('Error: ' + e);
 
-		// TODO: Show error toast
+		addToast({
+			message: t('fileBrowser.docs.toast.delete.success') + ' ' + props.modelValue.name,
+			type: ToastType.Danger,
+		});
 	}
 }
 

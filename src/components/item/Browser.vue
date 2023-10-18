@@ -1,7 +1,12 @@
 <template>
+	<Breadcrumb :item="modelValue" />
 	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
-		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" :modelValue="modelValue" />
+		<NoFiles
+			v-if="hasItemsLoaded && !Object.values(items).length"
+			:modelValue="modelValue"
+			:user="user"
+		/>
 		<template v-else-if="items">
 			<div class="flex flex-wrap gap-3">
 				<!-- prettier-ignore-attribute -->
@@ -61,11 +66,6 @@
 	<!-- Modals -->
 	<CreateFolderModal ref="createFolderModal" :parentFolder="props.modelValue" />
 	<CreateDocsModal ref="createDocsModal" :parentFolder="props.modelValue" />
-
-	<!-- Toasts -->
-	<div class="fixed right-5 top-24 z-50 flex w-full max-w-xs flex-col">
-		<BaseToast v-for="toast in toasts" :type="toast.type">{{ toast.message }}</BaseToast>
-	</div>
 </template>
 
 <script setup lang="ts">
@@ -79,11 +79,13 @@ import { fetchFromApi } from '@lib/helpers';
 // Stores
 import { useStore } from '@nanostores/vue';
 import { addItem, removeItem, itemsStore } from '@stores/items';
+import { addToast } from '@stores/toasts';
 import { isModalOpen } from '@stores/modal';
 
 // Components
+import Breadcrumb from '@components/item/Breadcrumb.vue';
 import ContextMenu from '@components/base/contextMenu.vue';
-import BaseToast, { ToastType } from '@components/base/toast.vue';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	modelValue: {
@@ -106,9 +108,6 @@ function openContextMenu(e: MouseEvent) {
 	e.preventDefault();
 	fileBrowserContextMenu?.value?.openMenu(e);
 }
-
-// TODO: Fix toasts
-const toasts = ref<{ message: string; type: ToastType }[]>([]);
 
 /**
  * Items
@@ -206,8 +205,8 @@ async function uploadFiles(e: Event) {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
 		} catch (error) {
-			toasts.value.push({
-				message: `Failed to upload file ${file.name}`,
+			addToast({
+				message: t('fileBrowser.file.toast.create.failed') + ' ' + file.name,
 				type: ToastType.Danger,
 			});
 		}
@@ -246,11 +245,9 @@ channel.bind('update', async (data: ItemType) => {
 
 	const isNew = items.value[item.id] === undefined;
 	const isOwner = item.ownerId === props.user.id;
-
-	if (isNew && isOwner) {
-		// TODO: Fix toasts
-		toasts.value.push({
-			message: `${item.name} has been created`,
+	if (isNew && isOwner && item instanceof FileClass) {
+		addToast({
+			message: item.name + ' ' + t('fileBrowser.file.toast.create.success'),
 			type: ToastType.Success,
 		});
 	}

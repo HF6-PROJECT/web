@@ -27,6 +27,8 @@ import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import type { DocsClass } from '@lib/items/docs';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	docs: {
@@ -61,11 +63,18 @@ async function updateFile() {
 
 		updateItem(updatedDocs);
 
-		// TODO: Show success toast
+		addToast({
+			message: docs.value.name + ' ' + t('fileBrowser.docs.toast.update.success'),
+			type: ToastType.Success,
+		});
 
 		close(false);
 	} catch (e) {
 		console.error('Error: ' + e);
+		addToast({
+			message: t('fileBrowser.docs.toast.update.success') + ' ' + docs.value.name,
+			type: ToastType.Danger,
+		});
 	}
 }
 

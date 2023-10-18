@@ -58,6 +58,20 @@ export default {
 				download: 'Download',
 				confirmDelete: 'Er du sikker på, at du vil slette denne fil?',
 			},
+			toast: {
+				create: {
+					success: 'er blevet uploaded',
+					failed: 'Fejl i upload af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 		folder: {
 			create: {
@@ -100,6 +114,20 @@ export default {
 				pink: 'Pink',
 				rose: 'Rose',
 			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 		docs: {
 			create: {
@@ -120,6 +148,20 @@ export default {
 				openInNewTab: 'Åben i nyt faneblad',
 				confirmDelete: 'Er du sikker på, at du vil slette denne Docs?',
 			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 		shortcut: {
 			link: {
@@ -133,6 +175,20 @@ export default {
 				openInNewTab: 'Åben i nyt faneblad',
 				createIn: 'Opret i',
 			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet (Genvej)',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 	},
 	layout: {
@@ -141,7 +197,7 @@ export default {
 			openUserMenu: 'Åben brugermenu',
 		},
 		link: {
-			myfiles: 'Mine Filer',
+			myFiles: 'Mine Filer',
 			sharedWithMe: 'Delt med mig',
 			settings: 'Indstillinger',
 			signOut: 'Log ud',
@@ -160,5 +216,23 @@ export default {
 		addPeople: 'Tilføj personer',
 		owner: 'Ejer',
 		confirm: 'Bekræft',
+		toast: {
+			create: {
+				success: 'Adgang er blevet givet',
+				failed: 'Fejlede i at give adgang',
+			},
+			delete: {
+				success: 'Adgangen er blevet fjernet',
+				failed: 'Fejlede i at fjerne adgangen',
+			},
+		},
+	},
+	noFiles: {
+		clickToUpload: 'Klik for at uploade',
+		orDragAndDrop: 'eller træk og slip filer her',
+		fileRequirements: 'Filer må maks. have en størrelse på 500 MB',
+	},
+	noSharedItems: {
+		description: 'Ingen filer er blevet delt med dig endnu...',
 	},
 };

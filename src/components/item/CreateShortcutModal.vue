@@ -38,7 +38,7 @@
 					xmlns="http://www.w3.org/2000/svg"
 					height="1em"
 					:class="`${selectedFolderId === HOME_FOLDER_ID ? 'visible' : 'invisible'}`"
-					class="ml-2 mr-2 group-hover:visible fill-black hover:fill-gray-500 dark:fill-white"
+					class="ml-2 mr-2 fill-black group-hover:visible hover:fill-gray-500 dark:fill-white"
 					@click.stop="setFolders(HOME_FOLDER_ID)"
 					viewBox="0 0 448 512"
 				>
@@ -100,6 +100,8 @@ import { t } from '@lib/i18n';
 import { api } from '@lib/helpers';
 import { ItemFactory } from '@lib/items/factory';
 import { ItemClass } from '@lib/items/items';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const HOME_FOLDER_PARENT_ID = -1 as const;
 const HOME_FOLDER_ID = null;
@@ -113,12 +115,24 @@ const props = defineProps({
 
 // Shortcut
 async function createShortcut() {
-	await ShortcutClass.create({
-		name: props.item.name,
-		parentId: selectedFolderId.value,
-		linkedItemId: props.item.id,
-	});
-	close();
+	try {
+		await ShortcutClass.create({
+			name: props.item.name,
+			parentId: selectedFolderId.value,
+			linkedItemId: props.item.id,
+		});
+		close();
+
+		addToast({
+			message: props.item.name + ' ' + t('fileBrowser.shortcut.toast.create.success'),
+			type: ToastType.Success,
+		});
+	} catch (e) {
+		addToast({
+			message: t('fileBrowser.shortcut.toast.create.failed') + ' ' + props.item.name,
+			type: ToastType.Danger,
+		});
+	}
 }
 
 // Browser
@@ -138,7 +152,7 @@ const selectedFolderName = computed(() => {
 		if (parentFolder.value?.id === selectedFolderId.value) {
 			return parentFolder.value.name;
 		} else {
-			return ''
+			return '';
 		}
 	}
 

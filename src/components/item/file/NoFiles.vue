@@ -21,10 +21,11 @@
 					/>
 				</svg>
 				<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-					<span class="font-semibold">Click to upload</span> or drag and drop
+					<span class="font-semibold">{{ t('noFiles.clickToUpload') }}</span>
+					{{ t('noFiles.orDragAndDrop') }}
 				</p>
 				<p class="text-xs text-gray-500 dark:text-gray-400">
-					SVG, PNG, JPG or GIF (MAX. 800x400px)
+					{{ t('noFiles.fileRequirements') }}
 				</p>
 			</div>
 			<input id="dropzone-file" ref="fileInput" type="file" class="hidden" @change="uploadFiles" />
@@ -33,13 +34,20 @@
 </template>
 
 <script setup lang="ts">
+import { t } from '@lib/i18n';
 import { FileClass } from '@lib/items/files';
 import type { FolderType } from '@lib/items/folders';
 import { ref, type PropType } from 'vue';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	modelValue: {
 		type: Object as PropType<FolderType | undefined>,
+		required: true,
+	},
+	user: {
+		type: Object as PropType<User>,
 		required: true,
 	},
 });
@@ -55,15 +63,11 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
-
-			// TODO: replace waiting 1 second with websocket
-			setTimeout(async () => {
-				window.location.reload();
-
-				// TODO: Toast
-			}, 1000);
 		} catch (error) {
-			// TODO: Toast
+			addToast({
+				message: t('fileBrowser.file.toast.create.failed') + ' ' + file.name,
+				type: ToastType.Danger,
+			});
 		}
 	});
 }

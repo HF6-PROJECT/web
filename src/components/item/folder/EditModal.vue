@@ -52,6 +52,8 @@ import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import BaseSelect from '@components/base/select.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	folder: {
@@ -101,10 +103,18 @@ async function updateFolder() {
 
 		updateItem(updatedFolder);
 
-		// TODO: Show success toast
+		addToast({
+			message: props.folder.name + ' ' + t('fileBrowser.folder.toast.update.success'),
+			type: ToastType.Success,
+		});
 
 		close(false);
-	} catch (e) {}
+	} catch (e) {
+		addToast({
+			message: t('fileBrowser.folder.toast.update.failed') + ' ' + props.folder.name,
+			type: ToastType.Danger,
+		});
+	}
 }
 
 function open() {
