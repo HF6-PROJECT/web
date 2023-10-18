@@ -174,6 +174,7 @@ export default {
 				delete: 'Delete',
 				openInNewTab: 'Open in new tab',
 				createIn: 'Create in',
+				empty: 'Empty',
 			},
 			toast: {
 				create: {

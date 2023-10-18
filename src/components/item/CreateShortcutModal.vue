@@ -53,7 +53,9 @@
 				v-else-if="folders.length === 0"
 				class="group relative inline-flex w-full select-none items-center rounded-lg py-1 text-white"
 			>
-				<h1 class="ml-2 mr-auto text-black dark:text-white">Empty</h1>
+				<h1 class="ml-2 mr-auto text-black dark:text-white">
+					{{ t('fileBrowser.shortcut.action.empty') }}
+				</h1>
 			</div>
 
 			<!-- Folders -->

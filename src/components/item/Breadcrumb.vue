@@ -1,5 +1,5 @@
 <template>
-	<div class="relative w-full px-4 py-6">
+	<div class="relative w-full px-4 pt-2">
 		<div class="mt-3 flex flex-wrap">
 			<div
 				v-if="hasLoaded"

@@ -174,6 +174,7 @@ export default {
 				delete: 'Slet',
 				openInNewTab: 'Åben i nyt faneblad',
 				createIn: 'Opret i',
+				empty: 'Tom',
 			},
 			toast: {
 				create: {
