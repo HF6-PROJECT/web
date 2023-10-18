@@ -174,6 +174,20 @@ export default {
 				delete: 'Slet',
 				openInNewTab: 'Åben i nyt faneblad',
 			},
+			toast: {
+				create: {
+					success: 'er blevet oprettet (Genvej)',
+					failed: 'Fejl i opretning af',
+				},
+				update: {
+					success: 'er blevet opdateret',
+					failed: 'Fejl under opdatering af',
+				},
+				delete: {
+					success: 'er blevet slettet',
+					failed: 'Fejl i sletning af',
+				},
+			},
 		},
 	},
 	layout: {

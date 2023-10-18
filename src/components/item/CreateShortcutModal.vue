@@ -71,6 +71,8 @@ import { t } from '@lib/i18n';
 import { api } from '@lib/helpers';
 import { ItemFactory } from '@lib/items/factory';
 import { ItemClass } from '@lib/items/items';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	item: {
@@ -134,12 +136,24 @@ async function createShortcut() {
 	const folder = await folders.value.filter((x) => x.id === selectedFolder)[0];
 
 	if (folder || selectedFolder === 0) {
-		await ShortcutClass.create({
-			name: item.value.name,
-			parentId: folder?.id ?? null,
-			linkedItemId: item.value.id,
-		});
-		close();
+		try {
+			await ShortcutClass.create({
+				name: item.value.name,
+				parentId: folder?.id ?? null,
+				linkedItemId: item.value.id,
+			});
+			close();
+
+			addToast({
+				message: item.value.name + ' ' + t('fileBrowser.shortcut.toast.create.success'),
+				type: ToastType.Success,
+			});
+		} catch (e) {
+			addToast({
+				message: t('fileBrowser.shortcut.toast.create.failed') + ' ' + item.value.name,
+				type: ToastType.Danger,
+			});
+		}
 	}
 }
 

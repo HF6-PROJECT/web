@@ -27,6 +27,8 @@ import BaseButton, { ButtonColor } from '@components/base/button.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import type { ShortcutClass } from '@lib/items/shortcuts';
+import { addToast } from '@stores/toasts';
+import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
 	shortcut: {
@@ -65,10 +67,18 @@ async function updateFile() {
 
 		updateItem(updatedShortcut);
 
-		// TODO: Show success toast
+		addToast({
+			message: props.shortcut.name + ' ' + t('fileBrowser.shortcut.toast.update.success'),
+			type: ToastType.Success,
+		});
 
 		close();
-	} catch (e) {}
+	} catch (e) {
+		addToast({
+			message: t('fileBrowser.folder.toast.update.failed') + ' ' + props.shortcut.name,
+			type: ToastType.Danger,
+		});
+	}
 }
 
 function open() {

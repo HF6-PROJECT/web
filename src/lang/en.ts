@@ -174,6 +174,20 @@ export default {
 				delete: 'Delete',
 				openInNewTab: 'Open in new tab',
 			},
+			toast: {
+				create: {
+					success: 'has been created (Shortcut)',
+					failed: 'Failed to create',
+				},
+				update: {
+					success: 'has been updated',
+					failed: 'Failed to update',
+				},
+				delete: {
+					success: 'has been deleted',
+					failed: 'Failed to delete',
+				},
+			},
 		},
 	},
 	layout: {
