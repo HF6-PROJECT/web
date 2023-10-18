@@ -104,9 +104,11 @@ import { t } from '@lib/i18n';
 
 // Components
 import ContextMenu from '@components/base/contextMenu.vue';
+import { ToastType } from '@components/base/toast.vue';
 
 // Stores
 import { removeItem } from '@stores/items';
+import { addToast } from '@stores/toasts';
 
 // File
 import { FileClass } from '@lib/items/files';
@@ -153,11 +155,17 @@ async function deleteFile() {
 
 		removeItem(props.modelValue);
 
-		// TODO: Show success toast
+		addToast({
+			message: props.modelValue.name + ' ' + t('fileBrowser.file.toast.delete.success'),
+			type: ToastType.Success,
+		});
 	} catch (e) {
 		console.error('Error: ' + e);
 
-		// TODO: Show error toast
+		addToast({
+			message: t('fileBrowser.file.toast.delete.failed') + ' ' + props.modelValue.name,
+			type: ToastType.Danger,
+		});
 	}
 }
 
