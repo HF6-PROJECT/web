@@ -1,5 +1,4 @@
 <template>
-	<Breadcrumb :item="modelValue" />
 	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
 		<NoFiles
@@ -83,7 +82,6 @@ import { addToast } from '@stores/toasts';
 import { isModalOpen } from '@stores/modal';
 
 // Components
-import Breadcrumb from '@components/item/Breadcrumb.vue';
 import ContextMenu from '@components/base/contextMenu.vue';
 import { ToastType } from '@components/base/toast.vue';
 

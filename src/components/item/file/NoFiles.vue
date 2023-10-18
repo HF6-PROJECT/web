@@ -21,11 +21,10 @@
 					/>
 				</svg>
 				<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-					<span class="font-semibold">{{ t('noFiles.clickToUpload') }}</span>
-					{{ t('noFiles.orDragAndDrop') }}
+					<span class="font-semibold">Click to upload</span> or drag and drop
 				</p>
 				<p class="text-xs text-gray-500 dark:text-gray-400">
-					{{ t('noFiles.fileRequirements') }}
+					SVG, PNG, JPG or GIF (MAX. 800x400px)
 				</p>
 			</div>
 			<input id="dropzone-file" ref="fileInput" type="file" class="hidden" @change="uploadFiles" />
@@ -34,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { t } from '@lib/i18n';
 import { FileClass } from '@lib/items/files';
 import type { FolderType } from '@lib/items/folders';
 import { ref, type PropType } from 'vue';
