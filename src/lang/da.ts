@@ -196,7 +196,7 @@ export default {
 			openUserMenu: 'Åben brugermenu',
 		},
 		link: {
-			myfiles: 'Mine Filer',
+			myFiles: 'Mine Filer',
 			sharedWithMe: 'Delt med mig',
 			settings: 'Indstillinger',
 			signOut: 'Log ud',
@@ -225,5 +225,13 @@ export default {
 				failed: 'Fejlede i at fjerne adgangen',
 			},
 		},
+	},
+	noFiles: {
+		clickToUpload: 'Klik for at uploade',
+		orDragAndDrop: 'eller træk og slip filer her',
+		fileRequirements: 'Filer må maks. have en størrelse på 500 MB',
+	},
+	noSharedItems: {
+		description: 'Ingen filer er blevet delt med dig endnu...',
 	},
 };
