@@ -53,7 +53,6 @@ import BaseSelect from '@components/base/select.vue';
 import ErrorAlert, { type ErrorObject } from '@components/base/errorAlert.vue';
 import { t } from '@lib/i18n';
 import { addToast } from '@stores/toasts';
-import { v4 as uuid } from 'uuid';
 import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
@@ -105,7 +104,6 @@ async function updateFolder() {
 		updateItem(updatedFolder);
 
 		addToast({
-			id: uuid(),
 			message: props.folder.name + ' ' + t('fileBrowser.folder.toast.update.success'),
 			type: ToastType.Success,
 		});
@@ -113,7 +111,6 @@ async function updateFolder() {
 		close(false);
 	} catch (e) {
 		addToast({
-			id: uuid(),
 			message: t('fileBrowser.folder.toast.update.failed') + ' ' + props.folder.name,
 			type: ToastType.Danger,
 		});

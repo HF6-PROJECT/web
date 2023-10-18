@@ -98,7 +98,6 @@ import { t } from '@lib/i18n';
 import type { ItemClass } from '@lib/items/items';
 import { fetchFromApi, getInitialsByName, getUserColorByInitials } from '@lib/helpers';
 import { addToast } from '@stores/toasts';
-import { v4 as uuid } from 'uuid';
 import { ToastType } from '@components/base/toast.vue';
 
 const props = defineProps({
@@ -209,13 +208,11 @@ async function shareFile() {
 		getItem();
 
 		addToast({
-			id: uuid(),
 			message: t('shareItemModal.toast.create.success'),
 			type: ToastType.Success,
 		});
 	} catch (e) {
 		addToast({
-			id: uuid(),
 			message: t('shareItemModal.toast.create.failed'),
 			type: ToastType.Danger,
 		});
@@ -249,13 +246,11 @@ async function deleteSharing(sharingId: number | undefined) {
 		getItem().catch(() => close());
 
 		addToast({
-			id: uuid(),
 			message: t('shareItemModal.toast.delete.success'),
 			type: ToastType.Success,
 		});
 	} catch (e) {
 		addToast({
-			id: uuid(),
 			message: t('shareItemModal.toast.delete.failed'),
 			type: ToastType.Danger,
 		});

@@ -64,7 +64,6 @@ async function createDocs() {
 		addItem(createdDocs);
 
 		addToast({
-			id: uuid(),
 			message: docs.value.name + ' ' + t('fileBrowser.docs.toast.create.success'),
 			type: ToastType.Success,
 		});
@@ -72,7 +71,6 @@ async function createDocs() {
 		close();
 	} catch (e) {
 		addToast({
-			id: uuid(),
 			message: t('fileBrowser.docs.toast.create.failed') + ' ' + docs.value.name,
 			type: ToastType.Danger,
 		});

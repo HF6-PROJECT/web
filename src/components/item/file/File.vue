@@ -65,7 +65,6 @@ import { ref, type PropType } from 'vue';
 
 // Helpers
 import { t } from '@lib/i18n';
-import { v4 as uuid } from 'uuid';
 
 // Components
 import ContextMenu from '@components/base/contextMenu.vue';
@@ -109,7 +108,6 @@ async function deleteFile() {
 		removeItem(props.modelValue);
 
 		addToast({
-			id: uuid(),
 			message: props.modelValue.name + ' ' + t('fileBrowser.file.toast.delete.success'),
 			type: ToastType.Success,
 		});
@@ -117,7 +115,6 @@ async function deleteFile() {
 		console.error('Error: ' + e);
 
 		addToast({
-			id: uuid(),
 			message: t('fileBrowser.file.toast.delete.failed') + ' ' + props.modelValue.name,
 			type: ToastType.Danger,
 		});

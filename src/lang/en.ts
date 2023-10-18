@@ -191,7 +191,7 @@ export default {
 		confirm: 'Confirm',
 		toast: {
 			create: {
-				success: 'Access has been added',
+				success: 'Access has been given',
 				failed: 'Failed to give access',
 			},
 			delete: {

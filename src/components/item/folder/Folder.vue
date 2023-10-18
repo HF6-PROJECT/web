@@ -72,7 +72,6 @@ import ShareItemModal from '../ShareItemModal.vue';
 import { t } from '@lib/i18n';
 import { removeItem } from '@stores/items';
 import { addToast } from '@stores/toasts';
-import { v4 as uuid } from 'uuid';
 import { ToastType } from '@components/base/toast.vue';
 
 const folderContextMenu = ref<InstanceType<typeof ContextMenu>>();
@@ -97,7 +96,6 @@ async function deleteFolder() {
 		removeItem(props.modelValue);
 
 		addToast({
-			id: uuid(),
 			message: props.modelValue.name + ' ' + t('fileBrowser.folder.toast.delete.success'),
 			type: ToastType.Success,
 		});
@@ -105,7 +103,6 @@ async function deleteFolder() {
 		console.error('Error: ' + e);
 
 		addToast({
-			id: uuid(),
 			message: t('fileBrowser.folder.toast.delete.failed') + ' ' + props.modelValue.name,
 			type: ToastType.Danger,
 		});

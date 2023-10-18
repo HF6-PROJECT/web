@@ -191,11 +191,11 @@ export default {
 		confirm: 'Bekræft',
 		toast: {
 			create: {
-				success: 'Adgangen er blevet opdateret',
+				success: 'Adgang er blevet givet',
 				failed: 'Fejlede i at give adgang',
 			},
 			delete: {
-				success: 'Adgangen er blevet slettet',
+				success: 'Adgangen er blevet fjernet',
 				failed: 'Fejlede i at fjerne adgangen',
 			},
 		},

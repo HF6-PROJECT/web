@@ -1,7 +1,11 @@
 <template>
 	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
-		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" :modelValue="modelValue" />
+		<NoFiles
+			v-if="hasItemsLoaded && !Object.values(items).length"
+			:modelValue="modelValue"
+			:user="user"
+		/>
 		<template v-else-if="items">
 			<div class="flex flex-wrap gap-3">
 				<!-- prettier-ignore-attribute -->
@@ -70,7 +74,6 @@ import { computed, ref, type PropType } from 'vue';
 // Helpers
 import { t } from '@lib/i18n';
 import { fetchFromApi } from '@lib/helpers';
-import { v4 as uuid } from 'uuid';
 
 // Stores
 import { useStore } from '@nanostores/vue';
@@ -190,15 +193,8 @@ async function uploadFiles(e: Event) {
 	Array.from(fileInput.files).forEach(async (file) => {
 		try {
 			await FileClass.create(file, props.modelValue ?? null);
-
-			addToast({
-				id: uuid(),
-				message: file.name + ' ' + t('fileBrowser.file.toast.create.success'),
-				type: ToastType.Success,
-			});
 		} catch (error) {
 			addToast({
-				id: uuid(),
 				message: t('fileBrowser.file.toast.create.failed') + ' ' + file.name,
 				type: ToastType.Danger,
 			});
@@ -209,7 +205,7 @@ async function uploadFiles(e: Event) {
 /**
  * Docs
  */
-import { DocsClass, type DocsType } from '@lib/items/docs';
+import { DocsClass } from '@lib/items/docs';
 import Docs from './docs/Docs.vue';
 import CreateDocsModal from './docs/CreateModal.vue';
 
@@ -231,6 +227,15 @@ channel.bind('update', (data: ItemType) => {
 	const item = ItemFactory.getItemFromObject(data);
 
 	if (item === null) return;
+
+	const isNew = items.value[item.id] === undefined;
+	const isOwner = item.ownerId === props.user.id;
+	if (isNew && isOwner && item instanceof FileClass) {
+		addToast({
+			message: item.name + ' ' + t('fileBrowser.file.toast.create.success'),
+			type: ToastType.Success,
+		});
+	}
 
 	addItem(item);
 });
