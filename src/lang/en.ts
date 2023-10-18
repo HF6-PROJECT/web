@@ -128,7 +128,7 @@ export default {
 			openUserMenu: 'Open user menu',
 		},
 		link: {
-			myfiles: 'My Files',
+			myFiles: 'My Files',
 			sharedWithMe: 'Shared with me',
 			settings: 'Settings',
 			signOut: 'Sign out',

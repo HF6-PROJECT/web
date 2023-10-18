@@ -1,4 +1,5 @@
 <template>
+	<Breadcrumb :item="modelValue" />
 	<div class="relative h-full w-full px-4 pt-6" v-on:contextmenu.capture="openContextMenu">
 		<!-- Files & Folders -->
 		<NoFiles v-if="hasItemsLoaded && !Object.values(items).length" :modelValue="modelValue" />
@@ -82,6 +83,7 @@ import { addItem, removeItem, itemsStore } from '@stores/items';
 import { isModalOpen } from '@stores/modal';
 
 // Components
+import Breadcrumb from '@components/item/Breadcrumb.vue';
 import ContextMenu from '@components/base/contextMenu.vue';
 import BaseToast, { ToastType } from '@components/base/toast.vue';
 
