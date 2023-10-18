@@ -131,6 +131,7 @@ export default {
 				share: 'Del',
 				delete: 'Slet',
 				openInNewTab: 'Åben i nyt faneblad',
+				createIn: 'Opret i',
 			},
 		},
 	},

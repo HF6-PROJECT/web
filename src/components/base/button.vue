@@ -2,7 +2,7 @@
 	<button
 		:type="props.type"
 		:class="buttonClasses"
-		class="w-full rounded-lg px-5 py-3 text-center text-base font-medium focus:ring-4 sm:w-auto"
+		class="w-full rounded-lg px-5 py-3 text-center text-base font-medium focus:ring-4 sm:w-auto cursor-pointer"
 		@click="emit('click')"
 	>
 		<slot />

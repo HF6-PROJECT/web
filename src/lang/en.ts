@@ -131,6 +131,7 @@ export default {
 				share: 'Share',
 				delete: 'Delete',
 				openInNewTab: 'Open in new tab',
+				createIn: 'Create in',
 			},
 		},
 	},
