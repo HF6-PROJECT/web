@@ -9,6 +9,25 @@ const user = Astro.locals.user as User;
 const userInitials = getInitialsByName(user.name);
 
 const userColor = getUserColorByInitials(userInitials);
+
+// Randomize logo
+let logo = 'logo_name.svg';
+const specials = [
+	'special/logo_blue.svg',
+	'special/logo_clay.svg',
+	'special/logo_lime.svg',
+	'special/logo_sick.svg',
+	'special/logo_slate.svg',
+	'special/logo_spots.svg',
+];
+
+if (Math.random() >= 0.5) {
+	const special = specials[Math.floor(Math.random() * specials.length)];
+
+	if (special) {
+		logo = special;
+	}
+}
 ---
 
 <nav
@@ -47,7 +66,7 @@ const userColor = getUserColorByInitials(userInitials);
 					>
 				</button>
 				<a href="/" class="md:mr-18 ml-2 flex">
-					<img src={asset('images/logo_name.svg')} class="mr-3 h-5" alt="Logo" />
+					<img src={asset(`images/${logo}`)} class="mr-3 h-5" alt="Logo" />
 				</a>
 			</div>
 
