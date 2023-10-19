@@ -1,4 +1,4 @@
-import { api, fetchFromApi } from '@lib/helpers';
+import { fetchFromApi } from '@lib/helpers';
 import { ItemClass, type ItemType } from './items';
 import { FolderClass } from './folders';
 import { FileClass } from './files';
@@ -15,7 +15,7 @@ export class ShortcutClass extends ItemClass {
 	}
 
 	async setLinkedItem(linkedItemId: number) {
-		const response = await fetch(api('item/' + linkedItemId + '/single'), {
+		const response = await fetchFromApi('item/' + linkedItemId + '/single', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export class ShortcutClass extends ItemClass {
 	}
 
 	static async create(input: { name: string; parentId: number | null; linkedItemId: number }) {
-		const response = await fetch(api('shortcut'), {
+		const response = await fetchFromApi('shortcut', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export class ShortcutClass extends ItemClass {
 	}
 
 	async delete() {
-		const response = await fetch(api('shortcut/' + this.id), {
+		const response = await fetchFromApi('shortcut/' + this.id, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
